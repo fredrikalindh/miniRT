@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/12 16:57:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/13 11:46:29 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,27 @@
 
 # include <math.h>
 # include <stdlib.h>
+# include "libmlx.a"
+# include <fcntl.h>
+# include <unistd.h>
+
+int		get_next_line(int fd, char **line);
+double	ft_atof(char *str);
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
+typedef struct		s_rt
+{
+	int		r1;
+	int		r2;
+	int		a;
+	int		ar;
+	int		ag;
+	int		ab;
+	int		ab;
+}					t_rt;
 
 typedef struct		s_vector
 {
