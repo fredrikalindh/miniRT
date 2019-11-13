@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/13 11:46:29 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/13 12:51:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ double	ft_atof(char *str);
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
+
+# define RAY_T_MIN 0.0001
+# define RAY_T_MAX 1.0e30 // ?
 
 typedef struct		s_rt
 {

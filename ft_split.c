@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 17:11:48 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/16 14:13:03 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/13 11:53:59 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,25 @@ static void	fill_split(char **split, char const *str, char c)
 	a = 0;
 	while (str[i])
 	{
-		while (str[i] == c && str[i])
+		while ((str[i] == ' ' || str[i] == '	' || str[i] == ',') && str[i])
 			i++;
 		j = 0;
-		while (str[i + j] != c && str[i + j])
+		while ((str[i + j] != ' ' || str[i + j] != '	' || str[i + j] == ',')
+				&& str[i + j])
 			j++;
 		if (!(split[a] = (char *)malloc(sizeof(char) * (j + 1))))
 			return ;
 		j = 0;
-		while (str[i] != c && str[i])
+		while ((str[i] != ' ' || str[i] != '	' || str[i] != ',') && str[i])
 			split[a][j++] = str[i++];
 		split[a][j] = '\0';
-		if (str[i - 1] != c)
+		if (str[i - 1] !=  ' ' || str[i - 1] != '	' || str[i - 1] != ',')
 			a++;
 	}
 	split[a] = NULL;
 }
 
-char		**ft_split(char const *str, char c)
+char		**ft_split(char const *str)
 {
 	int		wc;
 	int		i;
@@ -51,10 +52,10 @@ char		**ft_split(char const *str, char c)
 		return (NULL);
 	while (str[i])
 	{
-		while (str[i] == c && str[i])
+		while ((str[i] == ' ' || str[i] == '	' || str[i] == ',') && str[i])
 			i++;
 		wc++;
-		while (str[i] != c && str[i])
+		while ((str[i] != ' ' || str[i] != '	' || str[i] != ',') && str[i])
 			i++;
 	}
 	if (!(split = (char**)malloc(sizeof(char *) * (wc + 1))))
