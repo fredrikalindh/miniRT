@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/12 17:01:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/13 13:13:57 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ float	normalize(t_vector *v) //NOT GOOD, do i do all elem / l ?
 	return (l);
 }
 
-float	normalized(t_vector v) // ALSO NOT GOOD
+t_vector	normalized(t_vector v) // ALSO NOT GOOD
 {
-	normalize(v);
+	normalize(&v);
 	return (v);
 }
 

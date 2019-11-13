@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:47:35 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/12 16:48:01 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/13 13:12:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ void op_min(t_vector *v, t_vector op)
 	v->x -= op.x;
 	v->y -= op.y;
 	v->z -= op.z;
+}
+
+t_vector op_minv(t_vector v, t_vector op)
+{
+	v->x -= op.x;
+	v->y -= op.y;
+	v->z -= op.z;
+
+	return (v);
 }
 
 void op_mult(t_vector *v, t_vector op)
