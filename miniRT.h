@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/13 13:42:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/15 12:32:32 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ double	ft_atof(char *str);
 
 # define RAY_T_MIN 0.0001
 # define RAY_T_MAX 1.0e30 // ?
+
+typedef unsigned int	t_bool;
 
 typedef struct		s_rt
 {
@@ -72,14 +74,14 @@ typedef struct		s_shapeset // ??
 
 typedef struct		s_sphere
 {
-
-
+	t_point	centre;
+	float radius;
 }					t_sphere;
 
 typedef struct		s_plane
 {
-
-
+	t_point	position;
+	t_vector normal;
 }					t_plane;
 
 typedef struct		s_camera
