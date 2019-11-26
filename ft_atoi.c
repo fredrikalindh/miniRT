@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 14:41:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 16:02:16 by frlindh          ###   ########.fr       */
+/*   Created: 2019/11/26 18:12:46 by frlindh           #+#    #+#             */
+/*   Updated: 2019/11/26 18:26:48 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_strnlen(char *str, int n)
-{
-	int i;
+#include "miniRT.h"
 
-	i = 0;
-	while (str && str[i] && i != n)
-		i++;
-	return (i);
+int		ft_atoi(char *str)
+{
+	int n;
+
+	n = 0;
+	while (str && *str)
+		n = n * 10 + *str++ - '0';
+	return (n);
 }

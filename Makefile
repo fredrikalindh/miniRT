@@ -6,8 +6,38 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/11/25 19:03:18 by frlindh          ###   ########.fr        #
+#    Updated: 2019/11/26 18:26:20 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
--lmlx -framework OpenGL -framework AppKit
+# NAME - COMPILATOR - FLAGS ************************************************** #
+NAME			=	minirt
+GCC				=	gcc
+FLAGS			=	-Wall -Wextra -Werror
+EXTRA			= 	-I minilibx_opengl_20191021 -L minilibx_opengl_20191021 -lmlx -framework OpenGL -framework AppKit
+
+# SRCS *********************************************************************** #
+SRCS			=	window.c ft_strcmp.c ft_puterr.c ft_split.c get_next_line.c ft_atoi.c
+
+# OBJS *********************************************************************** #
+OBJS			=	$(patsubst %.c, %.o, $(SRCS))
+
+# RULES ********************************************************************** #
+
+.PHONY: all clean fclean re
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(GCC) $(FLAGS) $(EXTRA) $(OBJS) -o $(NAME)
+
+%.o: %.c
+	$(GCC) $(FLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all

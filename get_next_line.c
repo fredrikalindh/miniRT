@@ -6,11 +6,11 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 09:54:38 by fredrika          #+#    #+#             */
-/*   Updated: 2019/11/04 17:18:40 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/26 18:15:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "miniRT.h"
 
 static int	ft_fullen(char *str, int flag)
 {

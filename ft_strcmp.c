@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 14:41:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 16:02:16 by frlindh          ###   ########.fr       */
+/*   Created: 2019/10/07 14:42:09 by frlindh           #+#    #+#             */
+/*   Updated: 2019/11/26 18:00:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_strnlen(char *str, int n)
+#include <stdio.h>
+
+int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	unsigned int i;
 
 	i = 0;
-	while (str && str[i] && i != n)
+	while (s1[i] || s2[i])
 		i++;
-	return (i);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
