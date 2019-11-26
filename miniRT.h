@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/25 19:14:46 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/26 13:16:29 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef unsigned int	t_bool;
 
 typedef struct		s_rt
 {
-	int			save;
+	int			save:1;
 
 	int			res_x;
 	int			res_y;
@@ -131,9 +131,9 @@ typedef struct		s_image
 
 typedef struct		s_color // necessary ? could just use one int or floats ???
 {
-	int red;
-	int green;
-	int blue;
+	int red:8;
+	int green:8;
+	int blue:8;
 }					t_color;
 
 
