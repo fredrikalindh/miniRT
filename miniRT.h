@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 18:15:57 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/26 20:25:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ typedef struct		s_rt
 	int			res_x;
 	int			res_y;
 	float		a_light_r;
-	t_color		a_light_c;
+	int			a_light_c;
 	t_vector	cam_pos;
-	t_vector	c_vec;
+	t_vector	cam_vec;
 	t_vector	light_coor;
 	float		light_bright;
 	t_color		light_col;

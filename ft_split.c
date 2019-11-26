@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 17:11:48 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 18:19:38 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/26 19:33:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char		**ft_split(char *str)
 
 	i = 0;
 	wc = 0;
-	if (str == NULL)
+	if (str == NULL || *str == '\0')
 		return (NULL);
 	while (str[i])
 	{

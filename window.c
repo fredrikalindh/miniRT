@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/11/26 18:28:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/26 20:26:44 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int		ft_res(char **split)
 		free(split[i]);
 		i++;
 	}
-	printf("%d\n", i);
 	if (i != 3)
 	{
 		free(split);
@@ -63,20 +62,68 @@ int		ft_res(char **split)
 	return (0);
 }
 
+int		ft_amb(char **split)
+{
+	int i;
+
+	i = 0;
+	g_rt.a_light_r = ft_atof(split[1]);
+	g_rt.a_light_c = (ft_atoi(split[2]) * 65536 + ft_atoi(split[3]) * 256 + ft_atoi(split[4]));
+	printf("%f %d\n", g_rt.a_light_r, g_rt.a_light_c);
+	while (split && split[i] != NULL)
+	{
+		free(split[i]);
+		i++;
+	}
+	if (i != 5)
+	{
+		free(split);
+		ft_puterr("error: incorrect ambient light instuction");
+		exit(-1);
+	}
+	return (0);
+}
+
+int		ft_cam(char **split)
+{
+	int i;
+
+	i = 0;
+	g_rt.cam_pos.x = ft_atof(split[1]);
+	g_rt.cam_pos.y = ft_atof(split[2]);
+	g_rt.cam_pos.z = ft_atof(split[3]);
+	g_rt.cam_vec.x = ft_atof(split[4]);
+	g_rt.cam_vec.y = ft_atof(split[5]);
+	g_rt.cam_vec.z = ft_atof(split[6]);
+	printf("%f %f %f %f %f %f \n", g_rt.cam_pos.x, g_rt.cam_pos.y, g_rt.cam_pos.z, g_rt.cam_vec.x, g_rt.cam_vec.y, g_rt.cam_vec.z);
+	while (split && split[i] != NULL)
+	{
+		free(split[i]);
+		i++;
+	}
+	if (i < 7)
+	{
+		free(split);
+		ft_puterr("error: incorrect ambient light instuction");
+		exit(-1);
+	}
+	return (0);
+}
+
 void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 {
 	fill_scene[0] = &ft_res;
-	// fill_scene[1] = ft_amb;
-	// fill_scene[2] = ft_cam;
-	// fill_scene[3] = ft_lig;
-	// fill_scene[4] = ft_pl;
-	// fill_scene[5] = ft_sp;
-	// fill_scene[6] = ft_sq;
-	// fill_scene[7] = ft_tr;
-	// fill_scene[8] = ft_cy;
+	fill_scene[1] = &ft_amb;
+	fill_scene[2] = &ft_cam;
+	fill_scene[3] = &ft_lig;
+	// fill_scene[4] = &ft_pl;
+	// fill_scene[5] = &ft_sp;
+	// fill_scene[6] = &ft_sq;
+	// fill_scene[7] = &ft_tr;
+	// fill_scene[8] = &ft_cy;
 }
 
-void	init_info(int fd, int argc, int ret)
+int		init_info(int fd, int argc)
 {
 	char	*line;
 	char	**split; //split with whitespace and ','
@@ -88,20 +135,20 @@ void	init_info(int fd, int argc, int ret)
 		g_rt.save = 1;
 	init_list(list);
 	init_ftptr(fill_scene);
-	while (ret == 1)
+	while ((get_next_line(fd, &line)) == 1)
 	{
-		if ((ret = get_next_line(fd, &line)) == -1)
-			return ;
 		split = ft_split(line); // splits line & frees str
-		printf("[%s] [%s] [%s] [%s]\n", split[0], split[1], split[2], split[3]);
 		i = 0;
-		printf("%s\n", list[i]);
-		while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
-			i++;
-		printf("%d\n", i);
-		i != LIST_SIZE ? fill_scene[i](split) : 0; // has to free elements of split in it
-		free(split);
+		if (split && split[0] != NULL && *split[0] != '\0')
+		{
+			// printf("[%s] [%s] [%s] [%s]\n", split[0], split[1], split[2], split[3]);
+			while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
+				i++;
+			(i < LIST_SIZE) ? fill_scene[i](split) : 0 ; // has to free elements of split in it
+		}
 	}
+	free(line);
+	return (1);
 }
 
 int		init_scene(int argc, char *argv[])
@@ -116,7 +163,8 @@ int		init_scene(int argc, char *argv[])
 		ft_puterr("error opening file");
 	else
 	{
-		init_info(fd, argc, 1);
+		init_info(fd, argc);
+		close(fd);
 		return (0);
 	}
 	exit(-1);
@@ -139,11 +187,16 @@ int deal_key(int key, void *param)
 
 int main(int ac, char *av[])
 {
+	int x;
+	int y;
+
 	init_scene(ac, av);
-	printf("WE GET HERE?\n");
 	if (!(g_p.mlx_ptr = mlx_init()))
 		return (-1);
-	g_p.win_ptr= mlx_new_window(g_p.mlx_ptr, 500, 500, "miniRT");
+	g_p.win_ptr= mlx_new_window(g_p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
+	for (x = 0; x < 100; x++)
+		for (y = 0; y < 100; y++)
+			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.a_light_c);
 	// c = (16711680 * 1/*r*/ + 65280 * 1/*g*/ + 255 * 1/*b*/);
 	mlx_key_hook(g_p.win_ptr, deal_key, (void *)0);
 	mlx_hook(g_p.win_ptr, 17, 0, exit_program, (void *)0); // exit when X button
