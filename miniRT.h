@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/15 12:32:32 by fredrikalindh    ###   ########.fr       */
+/*   Updated: 2019/11/25 19:14:46 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <math.h>
 # include <stdlib.h>
-# include "libmlx.a"
 # include <fcntl.h>
 # include <unistd.h>
+# include "mlx.h"
 
 int		get_next_line(int fd, char **line);
 double	ft_atof(char *str);
@@ -33,13 +33,41 @@ typedef unsigned int	t_bool;
 
 typedef struct		s_rt
 {
-	int		r1;
-	int		r2;
-	int		a;
-	int		ar;
-	int		ag;
-	int		ab;
-	int		ab;
+	int			save;
+
+	int			res_x;
+	int			res_y;
+	float		a_light_r;
+	t_color		a_light_c;
+	t_vector	cam_pos;
+	t_vector	c_vec;
+	t_vector	light_coor;
+	float		light_bright;
+	t_color		light_col;
+
+	t_vector	sp_coor;
+	float		sp_diam;
+	t_color		sp_col;
+
+	t_vector	pl_coor;
+	t_vector	pl_d;
+	t_color		pl_col;
+
+	t_vector	sq_coor;
+	t_vector	sq_ori;
+	float		sq_size;
+	t_color		sq_col;
+
+	t_vector	cy_coor;
+	t_vector	cy_ori;
+	float		cy_d;
+	float		cy_h;
+	t_color		cy_col;
+
+	t_vector	tr_c1;
+	t_vector	tr_c2;
+	t_vector	tr_c3;
+	t_color		tr_col;
 }					t_rt;
 
 typedef struct		s_vector

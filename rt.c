@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readfile.c                                         :+:      :+:    :+:   */
+/*   rt.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:12:32 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/13 11:09:12 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/25 20:10:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,15 @@ void	init_info(int fd, int argc, t_rt *rt)
 {
 	char	*line;
 	char	**split; //split with whitespace and ','
+	int		ret;
 
 	if (argc == 3)
 		rt->save = 1;
-	while (get_next_line(&line) > 0)
+	line = 0;
+	ret = 1;
+	while (ret == 1)
 	{
+		get_next_line(fd, &line);
 		if (line && *line)
 			split = ft_split(line);
 		ft_assign(split, rt); // so in here depending on split[0] the struct will be filled
@@ -49,9 +53,7 @@ int		ft_getinfo(int argc, char const *argv[], t_rt *rt)
 
 	if (argc == 0)
 		ft_puterr("Error: scene description file is missing");
-	else if (argc > 3)
-		ft_puterr("Error: unvalid amount of argument");
-	else if (argc == 3 && argv[2] != "–-save")
+	else if (argc > 2 && argv[2] != "–-save")
 		ft_puterr("Error: unvalid arguments");
 	else if (check_rt(argv[1]) < 1)
 		ft_puterr("Error: .rt file is missing");

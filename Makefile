@@ -6,6 +6,8 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/11/15 12:18:56 by fredrikalindh    ###   ########.fr        #
+#    Updated: 2019/11/25 19:03:18 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+-lmlx -framework OpenGL -framework AppKit
