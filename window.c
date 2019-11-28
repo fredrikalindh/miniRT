@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/11/28 15:03:37 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 16:16:28 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		ft_amb(char **split)
 	if (i >= 5)
 	{
 		g_rt.a_light_r = ft_atof(split[1]);
-		g_rt.a_light_c = (ft_atoi(split[2]) * 65536 + ft_atoi(split[3]) * 256 + ft_atoi(split[4]));
+		g_rt.a_light_c = new_color(ft_atoi(split[2]), ft_atoi(split[3]), ft_atoi(split[4]));
 	}
 	i = -1;
 	while (split && split[++i] != NULL)
@@ -153,7 +153,7 @@ int		ft_lig(char **split)
 		new->next = g_rt.light;
 		new->coor = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->bright = ft_atof(split[4]);
-		new->color = (ft_atoi(split[5]) * 65536 + ft_atoi(split[6]) * 256 + ft_atoi(split[7]));
+		new->color = new_color(ft_atoi(split[5]), ft_atoi(split[6]), ft_atoi(split[7]));
 		g_rt.light = new;
 	}
 	i = -1;
@@ -179,7 +179,7 @@ int		ft_pl(char **split) // best way?
 		new->next = g_rt.shapes->planes;
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->normal = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
-		new->color = (ft_atoi(split[7]) * 65536 + ft_atoi(split[8]) * 256 + ft_atoi(split[9]));
+		new->color = new_color(ft_atoi(split[7]), ft_atoi(split[8]), ft_atoi(split[9]));
 		g_rt.shapes->planes = new;
 	}
 	i = -1;
@@ -205,7 +205,7 @@ int		ft_sp(char **split) // best way?
 		new->next = g_rt.shapes->spheres;
 		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->radius = ft_atof(split[4]) / 2;
-		new->color = (ft_atoi(split[5]) * 65536 + ft_atoi(split[6]) * 256 + ft_atoi(split[7]));
+		new->color = new_color(ft_atoi(split[5]), ft_atoi(split[6]), ft_atoi(split[7]));
 		g_rt.shapes->spheres = new;
 	}
 	i = -1;
@@ -232,7 +232,8 @@ int		ft_sq(char **split) // best way?
 		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->orient = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->side = ft_atof(split[7]);
-		new->color = (ft_atoi(split[8]) * 65536 + ft_atoi(split[9]) * 256 + ft_atoi(split[10]));
+		new->color = new_color(ft_atoi(split[8]), ft_atoi(split[9]), ft_atoi(split[10]));
+;
 		g_rt.shapes->squares = new;
 	}
 	i = -1;
@@ -260,7 +261,7 @@ int		ft_cy(char **split) // best way?
 		new->direction = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->d = ft_atof(split[7]);
 		new->h = ft_atof(split[8]);
-		new->color = (ft_atoi(split[9]) * 65536 + ft_atoi(split[10]) * 256 + ft_atoi(split[11]));
+		new->color = new_color(ft_atoi(split[9]), ft_atoi(split[10]), ft_atoi(split[11]));
 		g_rt.shapes->cyls = new;
 	}
 	i = -1;
@@ -287,7 +288,7 @@ int		ft_tr(char **split) // best way?
 		new->c1 = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->c2 = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->c2 = vector_xyz(ft_atof(split[7]), ft_atof(split[8]), ft_atof(split[9]));
-		new->color = (ft_atoi(split[10]) * 65536 + ft_atoi(split[11]) * 256 + ft_atoi(split[12]));
+		new->color = new_color(ft_atoi(split[10]), ft_atoi(split[11]), ft_atoi(split[12]));
 		g_rt.shapes->triangles = new;
 	}
 	i = -1;
@@ -395,18 +396,20 @@ int		init_scene(int argc, char *argv[])
 	exit(-1);
 }
 
-int		exit_program(void)
+int		exit_program(void *param)
 {
-	// free stuff
-	mlx_destroy_window(g_p.mlx_ptr, g_p.win_ptr);
+	t_param *p;
+
+	// free stuff likeeeeee g_rt...
+	p = (t_param *)param;
+	mlx_destroy_window(p->mlx_ptr, p->win_ptr);
 	exit(0);
 }
 
 int deal_key(int key, void *param)
 {
-	(void)param;
-	if (key == 53 || key == 8) // exit when esc key or ctrl+c
-		exit_program();
+	if (key == ESC || key == CTRL_C) // exit when esc key or ctrl+c
+		exit_program(param);
 	return (0);
 }
 
@@ -414,19 +417,23 @@ int main(int ac, char *av[])
 {
 	int x;
 	int y;
+	t_param p;
 
 	init_scene(ac, av);
-	if (!(g_p.mlx_ptr = mlx_init()))
+	if (!(p.mlx_ptr = mlx_init()))
 		return (-1);
-	g_p.win_ptr= mlx_new_window(g_p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
+	p.win_ptr= mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
+	// p.imptr = mlx_new_image(p.mlx_ptr, g_rt.res_x, g_rt.res_y);
+	// image = mlx_get_data_addr (p.imptr, 32, g_rt.res_x * 32, 1);
+	// mlx_put_image_to_window (p.mlx_ptr, p.win_ptr, p.imptr,  g_rt.res_x, g_rt.res_y);
 	for (x = 0; x < 100; x++)
 		for (y = 0; y < 100; y++)
-			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.a_light_c);
+			mlx_pixel_put(p.mlx_ptr, p.win_ptr, x, y, ret_color(g_rt.a_light_c));
 		for (x = 100; x <= 500; x++)
 			for (y = 100; y <= 500; y++)
-			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.light->color);
+			mlx_pixel_put(p.mlx_ptr, p.win_ptr, x, y, ret_color(g_rt.light->color));
 	// c = (16711680 * 1/*r*/ + 65280 * 1/*g*/ + 255 * 1/*b*/);
-	mlx_key_hook(g_p.win_ptr, deal_key, (void *)0);
-	mlx_hook(g_p.win_ptr, 17, 0, exit_program, (void *)0); // exit when X button
-	mlx_loop(g_p.mlx_ptr);
+	mlx_key_hook(p.win_ptr, deal_key, (void *)&p);
+	mlx_hook(p.win_ptr, X_BUTT, 0, exit_program, (void *)&p); // exit when X button
+	mlx_loop(p.mlx_ptr);
 }

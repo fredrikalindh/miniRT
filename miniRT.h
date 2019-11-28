@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 15:01:46 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 16:16:38 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@
 #  define BUFFER_SIZE 1024
 # endif
 
+# define ESC 53
+# define CTRL_C 8
+# define X_BUTT 17
 # define RAY_T_MIN 0.0001
-# define RAY_T_MAX 1.0e30 // ?
+# define RAY_T_MAX 1.0e30
 
 typedef unsigned int	t_bool;
 
@@ -36,6 +39,7 @@ typedef	struct		s_param
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
+	void	*img_ptr;
 }					t_param;
 
 typedef struct		s_vector
@@ -45,30 +49,27 @@ typedef struct		s_vector
 	double	z;
 }					t_vector;
 
-typedef t_vector	t_point; // ??
-//
-// typedef struct		s_ray
-// {
-// 	t_point		origin; // ???
-// 	t_vector	direction;
-// 	double		tMax;
-// }					t_ray;
-//
-// typedef struct		s_intersection
-// {
-// 	t_ray ray;
-// 	double t;
-// 	t_shape *shape;
-// 	t_color color;
-// }					t_intersection;
-//
+typedef t_vector	t_point;
 
-//
+typedef struct		s_ray
+{
+	t_point		origin; // ???
+	t_vector	direction;
+	double		tMax;
+}					t_ray;
+
+typedef struct		s_color
+{
+	unsigned int r:8;
+	unsigned int g:8;
+	unsigned int b:8;
+}					t_color;
+
 typedef struct		s_sphere
 {
 	t_point			center;
 	double			radius;
-	int				color;
+	t_color			color;
 	struct s_sphere	*next;
 }					t_sphere;
 
@@ -76,7 +77,7 @@ typedef struct		s_plane
 {
 	t_point			position;
 	t_vector		normal;
-	int				color;
+	t_color			color;
 	struct s_plane	*next;
 }					t_plane;
 
@@ -86,7 +87,7 @@ typedef struct		s_cyl
 	t_vector		direction;
 	double			d;
 	double			h;
-	int				color;
+	t_color			color;
 	struct s_cyl	*next;
 }					t_cyl;
 
@@ -95,7 +96,7 @@ typedef struct		s_triangle
 	t_point				c1;
 	t_point				c2;
 	t_point				c3;
-	int					color;
+	t_color				color;
 	struct s_triangle	*next;
 }					t_triangle;
 
@@ -104,7 +105,7 @@ typedef struct		s_square
 	t_point			center;
 	t_vector		orient;
 	double			side;
-	int				color;
+	t_color			color;
 	struct s_square	*next;
 }					t_square;
 
@@ -140,23 +141,24 @@ typedef struct		s_light
 {
 	t_vector		coor;
 	double			bright;
-	int				color;
+	t_color			color;
 	struct s_light	*next;
 }					t_light;
-//
-// typedef struct		s_image
-// {
-// 	int width;
-// 	int height;
-// 	double *data;
-// }					t_image;
 
-typedef struct		s_color // necessary ? could just use one int or doubles ???
+typedef struct		s_intersection
 {
-	int red:8;
-	int green:8;
-	int blue:8;
-}					t_color;
+	t_ray ray;
+	double t;
+	t_shapes *shape;
+	t_color color;
+}					t_intersection;
+
+typedef struct		s_image
+{
+	int width;
+	int height;
+	double *data;
+}					t_image;
 
 typedef struct		s_rt
 {
@@ -165,34 +167,10 @@ typedef struct		s_rt
 	int			res_x;
 	int			res_y;
 	double		a_light_r;
-	int			a_light_c;
+	t_color		a_light_c;
 	t_camera	*camera;
 	t_light		*light;
 	t_shapes	*shapes;
-
-	// t_vector	sp_coor;
-	// double		sp_diam;
-	// t_color		sp_col;
-	//
-	// t_vector	pl_coor;
-	// t_vector	pl_d;
-	// t_color		pl_col;
-	//
-	// t_vector	sq_coor;
-	// t_vector	sq_ori;
-	// double		sq_size;
-	// t_color		sq_col;
-	//
-	// t_vector	cy_coor;
-	// t_vector	cy_ori;
-	// double		cy_d;
-	// double		cy_h;
-	// t_color		cy_col;
-	//
-	// t_vector	tr_c1;
-	// t_vector	tr_c2;
-	// t_vector	tr_c3;
-	// t_color		tr_col;
 }					t_rt;
 
 int			get_next_line(int fd, char **line);
@@ -203,7 +181,11 @@ int			ft_strcmp(char *s1, char *s2);
 char		**ft_split(char *str);
 t_vector	vector_xyz(double x, double y, double z);
 
-t_param g_p;
+void		clamp(t_color *c);
+void		apply_gamma(t_color *c, double exposure, double gamma);
+int			ret_color(t_color c);
+t_color		new_color(int r, int g, int b);
+
 t_rt	g_rt;
 
 #endif
