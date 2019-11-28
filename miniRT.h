@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 12:31:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 13:15:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,17 @@ typedef struct		s_triangle
 
 typedef struct		s_camera
 {
-	t_vector	position;
-	t_vector	vector;
-	void		*next;
+	t_vector		position;
+	t_vector		vector;
+	struct s_camera	*next;
 }					t_camera;
 
 typedef struct		s_light
 {
-	t_vector	coor;
-	float		bright;
-	int			color;
-	void		*next;
+	t_vector		coor;
+	float			bright;
+	int				color;
+	struct s_light	*next;
 }					t_light;
 //
 // typedef struct		s_image
