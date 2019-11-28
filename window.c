@@ -6,14 +6,11 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/11/28 13:16:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 15:03:37 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-t_param g_p;
-t_rt	g_rt;
 
 // void	free_rt()
 // {
@@ -111,11 +108,7 @@ int		ft_amb(char **split)
 	while (split && split[++i] != NULL)
 		free(split[i]);
 	if (i < 4)
-	{
-		free(split);
 		ft_puterr("error: incorrect ambient light instruction");
-		exit(-1);
-	}
 	return (0);
 }
 
@@ -132,11 +125,8 @@ int		ft_cam(char **split)
 		if (!(new = (t_camera *)malloc(sizeof(t_camera))))
 			return (-1);
 		new->next = g_rt.camera;
-		printf("1\n");
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		printf("2\n");
 		new->vector = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
-		printf("3\n");
 		g_rt.camera = new;
 	}
 	// printf("%f %f %f %f %f %f \n", g_rt.cam_pos.x, g_rt.cam_pos.y, g_rt.cam_pos.z, g_rt.cam_vec.x, g_rt.cam_vec.y, g_rt.cam_vec.z);
@@ -144,12 +134,7 @@ int		ft_cam(char **split)
 	while (split && split[++i] != NULL)
 		free(split[i]);
 	if (i < 7)
-	{
-		free(split);
-		// free_shit
 		ft_puterr("error: incorrect camera instruction");
-		exit(-1);
-	}
 	return (0);
 }
 
@@ -175,11 +160,7 @@ int		ft_lig(char **split)
 	while (split && split[++i] != NULL)
 		free(split[i]);
 	if (i < 8) 		// free shit == split and cam, light and shapes
-	{
-		free(split);
 		ft_puterr("error: incorrect light instruction");
-		exit(-1);
-	}
 	return (0);
 }
 
@@ -191,25 +172,129 @@ int		ft_pl(char **split) // best way?
 	i = 0;
 	while (split && split[i] != NULL)
 		i++;
-	if (i >= 8)
+	if (i >= 10)
 	{
 		if (!(new = (t_plane *)malloc(sizeof(t_plane))))
 			return (-1);
-		new->next = g_rt.shapes;
-		new->coor = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		new->bright = ft_atof(split[4]);
+		new->next = g_rt.shapes->planes;
+		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		new->normal = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->color = (ft_atoi(split[7]) * 65536 + ft_atoi(split[8]) * 256 + ft_atoi(split[9]));
+		g_rt.shapes->planes = new;
+	}
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	if (i < 10) 		// free shit == split and cam, light and shapes
+		ft_puterr("error: incorrect plane instruction");
+	return (0);
+}
+
+int		ft_sp(char **split) // best way?
+{
+	int i;
+	t_sphere *new;
+
+	i = 0;
+	while (split && split[i] != NULL)
+		i++;
+	if (i >= 8)
+	{
+		if (!(new = (t_sphere *)malloc(sizeof(t_sphere))))
+			return (-1);
+		new->next = g_rt.shapes->spheres;
+		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		new->radius = ft_atof(split[4]) / 2;
 		new->color = (ft_atoi(split[5]) * 65536 + ft_atoi(split[6]) * 256 + ft_atoi(split[7]));
-		g_rt.shapes->shape = (void *)new;
+		g_rt.shapes->spheres = new;
 	}
 	i = -1;
 	while (split && split[++i] != NULL)
 		free(split[i]);
 	if (i < 8) 		// free shit == split and cam, light and shapes
+		ft_puterr("error: incorrect sphere instruction");
+	return (0);
+}
+
+int		ft_sq(char **split) // best way?
+{
+	int i;
+	t_square *new;
+
+	i = 0;
+	while (split && split[i] != NULL)
+		i++;
+	if (i >= 11)
 	{
-		free(split);
-		ft_puterr("error: incorrect light instruction");
-		exit(-1);
+		if (!(new = (t_square *)malloc(sizeof(t_square))))
+			return (-1);
+		new->next = g_rt.shapes->squares;
+		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		new->orient = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->side = ft_atof(split[7]);
+		new->color = (ft_atoi(split[8]) * 65536 + ft_atoi(split[9]) * 256 + ft_atoi(split[10]));
+		g_rt.shapes->squares = new;
 	}
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	if (i < 11) 		// free shit == split and cam, light and shapes
+		ft_puterr("error: incorrect square instruction");
+	return (0);
+}
+
+int		ft_cy(char **split) // best way?
+{
+	int i;
+	t_cyl *new;
+
+	i = 0;
+	while (split && split[i] != NULL)
+		i++;
+	if (i >= 12)
+	{
+		if (!(new = (t_cyl *)malloc(sizeof(t_cyl))))
+			return (-1);
+		new->next = g_rt.shapes->cyls;
+		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		new->direction = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->d = ft_atof(split[7]);
+		new->h = ft_atof(split[8]);
+		new->color = (ft_atoi(split[9]) * 65536 + ft_atoi(split[10]) * 256 + ft_atoi(split[11]));
+		g_rt.shapes->cyls = new;
+	}
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	if (i < 12) 		// free shit == split and cam, light and shapes
+		ft_puterr("error: incorrect cylinder instruction");
+	return (0);
+}
+
+int		ft_tr(char **split) // best way?
+{
+	int i;
+	t_triangle *new;
+
+	i = 0;
+	while (split && split[i] != NULL)
+		i++;
+	if (i >= 13)
+	{
+		if (!(new = (t_triangle *)malloc(sizeof(t_triangle))))
+			return (-1);
+		new->next = g_rt.shapes->triangles;
+		new->c1 = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		new->c2 = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->c2 = vector_xyz(ft_atof(split[7]), ft_atof(split[8]), ft_atof(split[9]));
+		new->color = (ft_atoi(split[10]) * 65536 + ft_atoi(split[11]) * 256 + ft_atoi(split[12]));
+		g_rt.shapes->triangles = new;
+	}
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	if (i < 13) 		// free shit == split and cam, light and shapes
+		ft_puterr("error: incorrect cylinder instruction");
 	return (0);
 }
 
@@ -223,17 +308,21 @@ void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 	g_rt.light->next = NULL;
 	if (!(g_rt.shapes = (t_shapes *)malloc(sizeof(t_shapes))))
 		exit (-1);
-	g_rt.shapes->next = NULL;
+	g_rt.shapes->planes = NULL;
+	g_rt.shapes->spheres = NULL;
+	g_rt.shapes->squares = NULL;
+	g_rt.shapes->triangles = NULL;
+	g_rt.shapes->cyls = NULL;
 
 	fill_scene[0] = &ft_res;
 	fill_scene[1] = &ft_amb;
 	fill_scene[2] = &ft_cam;
 	fill_scene[3] = &ft_lig;
 	fill_scene[4] = &ft_pl;
-	// fill_scene[5] = &ft_sp;
-	// fill_scene[6] = &ft_sq;
-	// fill_scene[7] = &ft_tr;
-	// fill_scene[8] = &ft_cy;
+	fill_scene[5] = &ft_sp;
+	fill_scene[6] = &ft_sq;
+	fill_scene[7] = &ft_tr;
+	fill_scene[8] = &ft_cy;
 }
 
 // int		init_info(int fd, int argc)
@@ -280,7 +369,6 @@ int		init_info(int fd, int argc)
 			// printf("[%s] [%s] [%s] [%s]\n", split[0], split[1], split[2], split[3]);
 			while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
 				i++;
-			printf("%s\n", split[0]);
 			(i < LIST_SIZE) ? fill_scene[i](split) : 0 ; // has to free elements of split in it
 		}
 	}
@@ -336,7 +424,7 @@ int main(int ac, char *av[])
 			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.a_light_c);
 		for (x = 100; x <= 500; x++)
 			for (y = 100; y <= 500; y++)
-			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.light->next->color);
+			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.light->color);
 	// c = (16711680 * 1/*r*/ + 65280 * 1/*g*/ + 255 * 1/*b*/);
 	mlx_key_hook(g_p.win_ptr, deal_key, (void *)0);
 	mlx_hook(g_p.win_ptr, 17, 0, exit_program, (void *)0); // exit when X button

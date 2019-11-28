@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/13 13:10:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 14:40:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_vector	vector_cpy(t_vector old)
 	return (v);
 }
 
-t_vector	vector_xyz(float x, float y, float z)
+t_vector	vector_xyz(double x, double y, double z)
 {
 	t_vector v;
 
@@ -42,7 +42,7 @@ t_vector	vector_xyz(float x, float y, float z)
 	return (v);
 }
 
-t_vector	vector_f(float f)
+t_vector	vector_f(double f)
 {
 	t_vector v;
 

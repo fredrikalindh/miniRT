@@ -1,37 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atof.c                                          :+:      :+:    :+:   */
+/*   vectors.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 11:11:41 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 14:38:58 by frlindh          ###   ########.fr       */
+/*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
+/*   Updated: 2019/11/13 13:10:34 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-double	ft_atof(char *str)
+t_vector	vector_blank()
 {
-	double f;
-	double div;
-	double neg;
+	t_vector v;
 
-	f = 0.0;
-	neg = 1;
-	if (str && *str == '-')
-	{
-		neg = -1;
-		str++;
-	}
-	while (str && *str && *str != '.' && *str >= '0' && *str <= '9')
-		f = f * 10 + *str++ - '0';
-	div = 0.1;
-	while (str && *(++str) && *str >= '0' && *str <= '9')
-	{
-		f += ((*str - '0') * div);
-		div /= 10.0;
-	}
-	return (f * neg);
+	v.x = 0.0;
+	v.y = 1.0;
+	v.z = 0.0;
+	return (v);
+}
+
+t_vector	vector_cpy(t_vector old)
+{
+	t_vector v;
+
+	v.x = old.x;
+	v.y = old.y;
+	v.z = old.z;
+	return (v);
+}
+
+t_vector	vector_xyz(float x, float y, float z)
+{
+	t_vector v;
+
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	return (v);
+}
+
+t_vector	vector_f(float f)
+{
+	t_vector v;
+
+	v.x = f;
+	v.y = f;
+	v.z = f;
+	return (v);
 }
