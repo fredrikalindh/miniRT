@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 20:25:13 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/26 22:41:25 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "mlx.h"
+# include "./minilibx/mlx.h"
 # include <stdio.h>
 
 # include "parce.h"
