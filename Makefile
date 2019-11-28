@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/11/28 15:20:13 by frlindh          ###   ########.fr        #
+#    Updated: 2019/11/28 18:32:27 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,10 @@ FLAGS			=	-Wall -Wextra -Werror #-g3 -fsanitize=address
 EXTRA			= 	-I ./minilibx -L ./minilibx -lmlx -framework OpenGL -framework AppKit
 
 # SRCS *********************************************************************** #
-SRCS			=	window.c ft_strcmp.c ft_puterr.c ft_split.c get_next_line.c \
-					ft_atoi.c ft_atof.c vectors.c color.c
+SRCS			=	main.c ft_strcmp.c ft_puterr.c ft_split.c get_next_line.c \
+					ft_atoi.c ft_atof.c vectors.c color.c parse_objects.c parce.c \
+					ft_minmax.c
+
 
 # OBJS *********************************************************************** #
 OBJS			=	$(patsubst %.c, %.o, $(SRCS))

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puterr.c                                        :+:      :+:    :+:   */
+/*   ft_minmax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 20:02:18 by frlindh          ###   ########.fr       */
+/*   Created: 2019/11/28 18:31:00 by frlindh           #+#    #+#             */
+/*   Updated: 2019/11/28 18:32:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	ft_puterr(char *str)
+int		ft_min(int a, int b)
 {
-	while (str && *str)
-	{
-		write(2, str, 1);
-		str++;
-	}
-	write(2, "\n", 1);
+	return (a < b) ? a : b;
+}
+
+int		ft_max(int a, int b)
+{
+	return (a > b) ? a : b;
 }

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 16:16:38 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 19:51:55 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <stdio.h>
 
 # include "parce.h"
-
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -40,6 +39,10 @@ typedef	struct		s_param
 	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img_ptr;
+	char	*data;
+	int		bpp;
+	int		size_line;
+	int		endian;
 }					t_param;
 
 typedef struct		s_vector
@@ -153,19 +156,21 @@ typedef struct		s_intersection
 	t_color color;
 }					t_intersection;
 
-typedef struct		s_image
-{
-	int width;
-	int height;
-	double *data;
-}					t_image;
+// typedef struct		s_image
+// {
+// 	int width;
+// 	int height;
+// 	double *data;
+// }					t_image;
 
 typedef struct		s_rt
 {
 	int			save:1;
+	char		*image;
+	int			fd:4;
 
-	int			res_x;
-	int			res_y;
+	int			res_x:12;
+	int			res_y:12;
 	double		a_light_r;
 	t_color		a_light_c;
 	t_camera	*camera;
@@ -173,18 +178,37 @@ typedef struct		s_rt
 	t_shapes	*shapes;
 }					t_rt;
 
+// library functions ?
 int			get_next_line(int fd, char **line);
 double		ft_atof(char *str);
 int			ft_atoi(char *str);
 void		ft_puterr(char *str);
 int			ft_strcmp(char *s1, char *s2);
 char		**ft_split(char *str);
+int			ft_min(int a, int b);
+int			ft_max(int a, int b);
+void		ft_putnbr_fd(int n, int fd);
+
 t_vector	vector_xyz(double x, double y, double z);
 
 void		clamp(t_color *c);
 void		apply_gamma(t_color *c, double exposure, double gamma);
 int			ret_color(t_color c);
 t_color		new_color(int r, int g, int b);
+
+// parce_objects.c
+int			ft_pl(char **split);
+int			ft_sp(char **split);
+int			ft_sq(char **split);
+int			ft_cy(char **split);
+int			ft_tr(char **split);
+// parce.c
+int			ft_res(char **split);
+int			ft_amb(char **split);
+int			ft_cam(char **split);
+int			ft_lig(char **split);
+void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
+
 
 t_rt	g_rt;
 
