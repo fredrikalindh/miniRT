@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/11/26 22:20:56 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 12:32:42 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,34 @@
 
 t_param g_p;
 t_rt	g_rt;
+
+void	free_rt()
+{
+	void *iter;
+	void *next;
+
+	iter = g_rt.camera;
+	while (iter != NULL)
+	{
+		next = iter->next;
+		free(iter);
+		iter = next;
+	}
+	iter = g_rt.light;
+	while (iter != NULL)
+	{
+		next = iter->next;
+		free(iter);
+		iter = next;
+	}
+	iter = g_rt.shapes;
+	while (iter != NULL) // extra for freeing shapes ?
+	{
+		next = iter->next;
+		free(iter);
+		iter = next;
+	}
+}
 
 int		check_rt(char *f)
 {
@@ -46,14 +74,17 @@ int		ft_res(char **split)
 	int i;
 
 	i = 0;
-	g_rt.res_x = ft_atoi(split[1]);
-	g_rt.res_y = ft_atoi(split[2]);
 	while (split && split[i] != NULL)
-	{
-		free(split[i]);
 		i++;
+	if (i >= 3)
+	{
+		g_rt.res_x = ft_atoi(split[1]);
+		g_rt.res_y = ft_atoi(split[2]);
 	}
-	if (i != 3)
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	if (i < 3)
 	{
 		free(split);
 		ft_puterr("error: incorrect resolution");
@@ -67,18 +98,20 @@ int		ft_amb(char **split)
 	int i;
 
 	i = 0;
-	g_rt.a_light_r = ft_atof(split[1]);
-	g_rt.a_light_c = (ft_atoi(split[2]) * 65536 + ft_atoi(split[3]) * 256 + ft_atoi(split[4]));
-	printf("%f %d\n", g_rt.a_light_r, g_rt.a_light_c);
 	while (split && split[i] != NULL)
-	{
-		free(split[i]);
 		i++;
+	if (i >= 5)
+	{
+		g_rt.a_light_r = ft_atof(split[1]);
+		g_rt.a_light_c = (ft_atoi(split[2]) * 65536 + ft_atoi(split[3]) * 256 + ft_atoi(split[4]));
 	}
-	if (i != 5)
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	if (i < 4)
 	{
 		free(split);
-		ft_puterr("error: incorrect ambient light instuction");
+		ft_puterr("error: incorrect ambient light instruction");
 		exit(-1);
 	}
 	return (0);
@@ -87,24 +120,50 @@ int		ft_amb(char **split)
 int		ft_cam(char **split)
 {
 	int i;
+	t_camera new;
 
 	i = 0;
-	g_rt.cam_pos.x = ft_atof(split[1]);
-	g_rt.cam_pos.y = ft_atof(split[2]);
-	g_rt.cam_pos.z = ft_atof(split[3]);
-	g_rt.cam_vec.x = ft_atof(split[4]);
-	g_rt.cam_vec.y = ft_atof(split[5]);
-	g_rt.cam_vec.z = ft_atof(split[6]);
-	printf("%f %f %f %f %f %f \n", g_rt.cam_pos.x, g_rt.cam_pos.y, g_rt.cam_pos.z, g_rt.cam_vec.x, g_rt.cam_vec.y, g_rt.cam_vec.z);
+	if (!())
 	while (split && split[i] != NULL)
-	{
-		free(split[i]);
 		i++;
+	if (i >= 7)
+	{
+		g_rt.cam_pos = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		g_rt.cam_vec = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 	}
+	// printf("%f %f %f %f %f %f \n", g_rt.cam_pos.x, g_rt.cam_pos.y, g_rt.cam_pos.z, g_rt.cam_vec.x, g_rt.cam_vec.y, g_rt.cam_vec.z);
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
 	if (i < 7)
 	{
 		free(split);
-		ft_puterr("error: incorrect ambient light instuction");
+		ft_puterr("error: incorrect camera instruction");
+		exit(-1);
+	}
+	return (0);
+}
+
+int		ft_lig(char **split)
+{
+	int i;
+
+	i = 0;
+	while (split && split[i] != NULL)
+		i++;
+	if (i >= 8)
+	{
+		g_rt.light_coor = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+		g_rt.light_bright = ft_atof(split[4]);
+		g_rt.light_col = ft_atoi(split[5]) * 65536 + ft_atoi(split[6]) * 256 + ft_atoi(split[7]);
+	}
+	i = -1;
+	while (split && split[++i] != NULL)
+		free(split[i]);
+	free(split);
+	if (i < 8)
+	{
+		ft_puterr("error: incorrect light instruction");
 		exit(-1);
 	}
 	return (0);
@@ -112,16 +171,43 @@ int		ft_cam(char **split)
 
 void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 {
+	g_rt.camera = NULL;
+	g_rt.light = NULL;
+	g_rt.shapes = NULL;
+
 	fill_scene[0] = &ft_res;
 	fill_scene[1] = &ft_amb;
 	fill_scene[2] = &ft_cam;
-	// fill_scene[3] = &ft_lig;
-	// fill_scene[4] = &ft_pl;
-	// fill_scene[5] = &ft_sp;
-	// fill_scene[6] = &ft_sq;
-	// fill_scene[7] = &ft_tr;
-	// fill_scene[8] = &ft_cy;
+	fill_scene[3] = &ft_lig;
+	fill_scene[4] = &ft_pl;
+	fill_scene[5] = &ft_sp;
+	fill_scene[6] = &ft_sq;
+	fill_scene[7] = &ft_tr;
+	fill_scene[8] = &ft_cy;
 }
+
+// int		init_info(int fd, int argc)
+// {
+// 	char	*line;
+// 	char	**split; //split with whitespace and ','
+// 	int 	(*fill_scene[LIST_SIZE])(char**);
+// 	enum scene_info{R, A, c, l, pl, sp, sq, tr, cy}test;
+//
+// 	if (argc == 3)
+// 		g_rt.save = 1;
+// 	init_ftptr(fill_scene);
+// 	while ((get_next_line(fd, &line)) == 1)
+// 	{
+// 		split = ft_split(line); // splits line & frees str
+// 		if ((test = split[0]) >= 0)
+// 		{
+// 			// printf("[%s] [%s] [%s] [%s]\n", split[0], split[1], split[2], split[3]);
+// 			fill_scene[test](split); // has to free elements of split in it
+// 		}
+// 	}
+// 	free(line);
+// 	return (1);
+// }
 
 int		init_info(int fd, int argc)
 {
@@ -147,7 +233,7 @@ int		init_info(int fd, int argc)
 			(i < LIST_SIZE) ? fill_scene[i](split) : 0 ; // has to free elements of split in it
 		}
 	}
-	free(line);
+	free(split);
 	return (1);
 }
 
@@ -197,6 +283,9 @@ int main(int ac, char *av[])
 	for (x = 0; x < 100; x++)
 		for (y = 0; y < 100; y++)
 			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.a_light_c);
+		for (x = 100; x <= 500; x++)
+			for (y = 100; y <= 500; y++)
+			mlx_pixel_put(g_p.mlx_ptr, g_p.win_ptr, x, y, g_rt.light_col);
 	// c = (16711680 * 1/*r*/ + 65280 * 1/*g*/ + 255 * 1/*b*/);
 	mlx_key_hook(g_p.win_ptr, deal_key, (void *)0);
 	mlx_hook(g_p.win_ptr, 17, 0, exit_program, (void *)0); // exit when X button

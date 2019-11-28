@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 17:11:48 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 19:33:12 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 11:46:02 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ static void	fill_split(char **split, char *str)
 		while ((str[i] != ' ' && str[i] != '	' && str[i] != ',') && str[i])
 			split[a][j++] = str[i++];
 		split[a][j] = '\0';
-		if (str[i - 1] !=  ' ' || str[i - 1] != '	' || str[i - 1] != ',')
-			a++;
+		a++;
 	}
+	if (str[i - 1] == ' ' || str[i - 1] == '	' || str[i - 1] == ',')
+		a--;
 	split[a] = NULL;
 }
 

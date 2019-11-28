@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 11:11:41 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/13 11:46:04 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 11:37:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ double	ft_atof(char *str)
 {
 	double f;
 	double div;
+	double neg;
 
 	f = 0.0;
+	neg = (str && *str++ == '-') ? -1.0 : 1.0;
 	while (str && *str && *str != '.' && *str >= '0' && *str <= '9')
 		f = f * 10 + *str++ - '0';
 	div = 0.1;
@@ -26,5 +28,5 @@ double	ft_atof(char *str)
 		f += ((*str - '0') * div);
 		div /= 10.0;
 	}
-	return (f);
+	return (f * neg);
 }

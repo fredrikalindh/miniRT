@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 14:42:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/26 19:33:48 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/28 11:26:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "miniRT.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
