@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 19:51:55 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/29 15:19:17 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ typedef struct		s_square
 	struct s_square	*next;
 }					t_square;
 
-
 typedef struct		s_shapes // ??
 {
 	t_plane		*planes;
@@ -122,6 +121,11 @@ typedef struct		s_shapes // ??
 	t_cyl		*cyls;
 }					t_shapes;
 
+// typedef struct		s_scene
+// {
+// 	t_shapes	shapes;
+// 	t_light		lights;
+// }					t_scene;
 
 // typedef struct		s_camera
 // {
@@ -135,7 +139,7 @@ typedef struct		s_shapes // ??
 
 typedef struct		s_camera
 {
-	t_vector		position;
+	t_point			position;
 	t_vector		vector;
 	struct s_camera	*next;
 }					t_camera;
@@ -188,7 +192,7 @@ char		**ft_split(char *str);
 int			ft_min(int a, int b);
 int			ft_max(int a, int b);
 void		ft_putnbr_fd(int n, int fd);
-
+// functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 
 void		clamp(t_color *c);
