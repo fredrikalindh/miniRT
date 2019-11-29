@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/29 17:34:29 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/29 17:54:15 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,10 @@ float	dot(t_vector v1, t_vector v2)
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
-t_vector	cross(t_vector v1, t_vector v2)
+t_vector	cross(t_vector v1, t_vector v2) // cross product returns normal from v1 & v2
 {
 	return (vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z,
 						v1.x * v2.u - v1.y * v2.x));
-}
-
-void	v_mult(t_vector *v, float len)
-{
-	v->x *= len;
-	v->y *= len;
-	v->z *= len;
 }
 
 float	length2(t_vector v)
