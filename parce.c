@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 18:37:09 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/01 16:50:50 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,9 @@ int		ft_lig(char **split)
 
 void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 {
-	if (!(g_rt.camera = (t_camera *)malloc(sizeof(t_camera))))
-		exit (-1);
-	g_rt.camera->next = NULL;
-	if (!(g_rt.light = (t_light *)malloc(sizeof(t_light))))
-		exit (-1);
-	g_rt.light->next = NULL;
-	if (!(g_rt.shapes = (t_shapes *)malloc(sizeof(t_shapes))))
-		exit (-1);
-	g_rt.shapes->planes = NULL;
-	g_rt.shapes->spheres = NULL;
-	g_rt.shapes->squares = NULL;
-	g_rt.shapes->triangles = NULL;
-	g_rt.shapes->cyls = NULL;
+	g_rt.camera = NULL;
+	g_rt.light = NULL;
+	g_rt.shapes = NULL;
 
 	fill_scene[0] = &ft_res;
 	fill_scene[1] = &ft_amb;

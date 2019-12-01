@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/29 15:19:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/01 18:49:29 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct		s_ray
 	double		tMax;
 }					t_ray;
 
-typedef struct		s_color
+typedef struct		s_color // -> double ??
 {
 	unsigned int r:8;
 	unsigned int g:8;
@@ -73,7 +73,6 @@ typedef struct		s_sphere
 	t_point			center;
 	double			radius;
 	t_color			color;
-	struct s_sphere	*next;
 }					t_sphere;
 
 typedef struct		s_plane
@@ -81,7 +80,6 @@ typedef struct		s_plane
 	t_point			position;
 	t_vector		normal;
 	t_color			color;
-	struct s_plane	*next;
 }					t_plane;
 
 typedef struct		s_cyl
@@ -91,7 +89,6 @@ typedef struct		s_cyl
 	double			d;
 	double			h;
 	t_color			color;
-	struct s_cyl	*next;
 }					t_cyl;
 
 typedef struct		s_triangle
@@ -100,7 +97,6 @@ typedef struct		s_triangle
 	t_point				c2;
 	t_point				c3;
 	t_color				color;
-	struct s_triangle	*next;
 }					t_triangle;
 
 typedef struct		s_square
@@ -109,23 +105,23 @@ typedef struct		s_square
 	t_vector		orient;
 	double			side;
 	t_color			color;
-	struct s_square	*next;
 }					t_square;
 
-typedef struct		s_shapes // ??
-{
-	t_plane		*planes;
-	t_sphere	*spheres;
-	t_square	*squares;
-	t_triangle	*triangles;
-	t_cyl		*cyls;
-}					t_shapes;
-
-// typedef struct		s_scene
+// typedef struct		s_shapes // ??
 // {
-// 	t_shapes	shapes;
-// 	t_light		lights;
-// }					t_scene;
+// 	t_plane		*planes;
+// 	t_sphere	*spheres;
+// 	t_square	*squares;
+// 	t_triangle	*triangles;
+// 	t_cyl		*cyls;
+// }					t_shapes;
+
+typedef struct		s_shapes // ?? could have one t per box so i.e. 100x100x100 = one box
+{
+	enum id{sp, pl, cy, tr, sq}	id;
+	void					*shape;
+	void					*next;
+}					t_shapes;
 
 // typedef struct		s_camera
 // {
@@ -194,6 +190,7 @@ int			ft_max(int a, int b);
 void		ft_putnbr_fd(int n, int fd);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
+t_vector	vector_f(double f);
 
 void		clamp(t_color *c);
 void		apply_gamma(t_color *c, double exposure, double gamma);
