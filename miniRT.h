@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/02 16:01:07 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/02 19:32:57 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ typedef struct		s_rt
 
 	int			res_x:12;
 	int			res_y:12;
+	int			fov;
 	double		a_light_r;
 	t_color		a_light_c;
 	t_camera	*camera;

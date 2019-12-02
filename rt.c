@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/02 16:48:18 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/02 21:36:14 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,10 @@ int		ray_trace()
 		while (++x <= g_rt.res_x)
 		{
 			hit.t = RAY_T_MAX;
-			hit.color = same_color(0); // sets color to black
 			shoot = compute_ray(x, y);
 			while (g_rt.shapes != NULL)
 				intersect[g_rt.shapes.id](shoot, &hit); //tests if intersection with shape and if so if it's closer than curret t; if if is changes t and shape
-			if (hit.t != RAY_T_MAX)
-				get_color(shoot, &hit); // gets color from closest shape
+			hit.color = ray_cast(shoot, hit); // gets color from closest shape
 			put_pixel(hit.color); //puts into image / file
 		}
 	}
