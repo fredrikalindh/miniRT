@@ -6,24 +6,28 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:47:35 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/29 17:58:08 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/02 15:03:40 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void op_plus(t_vector *v, t_vector op)
+t_vector op_add(t_vector v, t_vector op)
 {
 	v->x += op.x;
 	v->y += op.y;
 	v->z += op.z;
+
+	return (v);
 }
 
-void op_min(t_vector *v, t_vector op)
+t_vector op_min(t_vector v, t_vector op)
 {
 	v->x -= op.x;
 	v->y -= op.y;
 	v->z -= op.z;
+
+	return (v);
 }
 
 t_vector op_minv(t_vector v, t_vector op)

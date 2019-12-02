@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 16:58:45 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/01 17:02:28 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/02 16:00:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void op_min(t_vector *v, t_vector op)
 	v->z -= op.z;
 }
 
-t_bool	s_intersect(t_intersection *intersection, t_sphere sphere)
+t_bool	sp_intersect(t_intersection *intersection, t_sphere sphere)
 {
 	t_ray ray;
 	float a;

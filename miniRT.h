@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/02 12:43:30 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/02 16:01:07 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef struct		s_shapes // ?? could have one t per box so i.e. 100x100x100 = on
 typedef struct		s_camera
 {
 	t_point			position;
-	t_vector		vector;
+	t_vector		dir;
 	struct s_camera	*next;
 }					t_camera;
 
@@ -193,6 +193,12 @@ void		ft_putnbr_fd(int n, int fd);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 t_vector	vector_f(double f);
+
+// op_vectors
+t_vector	op_add(t_vector *v, t_vector op);
+t_vector	op_min(t_vector *v, t_vector op);
+t_vector	op_minv(t_vector v, t_vector op);
+void		op_mult(t_vector *v, t_vector op);
 
 void		clamp(t_color *c);
 void		apply_gamma(t_color *c, double exposure, double gamma);
