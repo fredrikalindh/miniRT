@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:37:52 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/01 19:00:09 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/01 22:00:42 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,24 @@
 #include <math.h>
 
 
-t_vector	compute_ray(int x, int y)
-{
-	t_ray ray;
-	double w;
-	double h;
-	double h;
-
-	w = g_rt.res_x / 2 - x;
-	h = g_rt.res_y / 2 - y;
-	ray.origin = g_rt.camera.position; //?
-	ray.direction = sinh(sqrt(w * w + h * h));
-}
+// t_vector	compute_ray(int x, int y)
+// {
+// 	t_ray ray;
+// 	double w;
+// 	double h;
+// 	double h;
+//
+// 	w = g_rt.res_x / 2 - x;
+// 	h = g_rt.res_y / 2 - y;
+// 	ray.origin = g_rt.camera.position; //?
+// 	ray.direction = sinh(sqrt(w * w + h * h));
+// }
 
 int main()
 {
-	t_ray ray;
-
-	ray =
-	return 0;
+	int actualWindow;
+	GetWindowRect(GetDesktopWindow(), &actualDesktop);
+	printf("%d\n", actualWindow);
 }
 
 

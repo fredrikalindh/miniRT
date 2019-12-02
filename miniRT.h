@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/01 18:49:29 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/02 12:43:30 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ typedef struct		s_ray
 	t_point		origin; // ???
 	t_vector	direction;
 	double		tMax;
+	//enum type{prim, shad, reflx, refract}id;
+	//int		nr:4;
 }					t_ray;
 
 typedef struct		s_color // -> double ??
