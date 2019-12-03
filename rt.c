@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/02 21:36:14 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/03 12:34:33 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,46 @@ void	(*intersect[5])(t_ray, t_intersection *);
 	intersect[4] = &sq_intersect;
 }
 
-t_ray	compute_ray(int x, int y)
+double	**get_camtoworld()
+{
+	double[4][4] matrix;
+	t_vector forward;
+	t_vector right;
+	t_vector up;
+
+	forward = normalize(op_min(g_rt.camera.dir, g_rt.camera.origin));
+	right = cross(vector_xyz(0, 1, 0), forward);
+	up = cross(right, forward);
+	matrix[0][0] = right.x;
+	matrix[0][1] = right.y;
+	matrix[0][2] = right.z;
+	matrix[1][0] = up.x;
+	matrix[1][1] = up.y;
+	matrix[1][2] = up.z;
+	matrix[2][0] = forward.x;
+	matrix[2][1] = forward.y;
+	matrix[2][2] = forward.z;
+	matrix[3][0] = g_rt.camera.origin.x;
+	matrix[3][1] = g_rt.camera.origin.y;
+	matrix[3][2] = g_rt.camera.origin.z;
+	return (matrix);
+}
+
+t_ray	compute_ray(int pixx, int pixy)
 {
 	t_ray ray;
-	double w;
-	double h;
+	double x;
+	double y;
+	double r;
+	double **matrix;
 
-	w = g_rt.res_x / 2 - x;
-	h = g_rt.res_y / 2 - y;
+	r = g_rt.res_x / g_rt.res_y;
+	x = (2 * pixx - 1) * r; // * g_rt.fov
+	y = 1 - 2 * pixy; // * g_rt.fov
+	matrix = get_camtoworld();
 	ray.origin = g_rt->camera.position; //?
-	ray.direction = vector_xyz(g_rt->camera.dir);
+	ray.direction = mult_vec_matrix(matrix, vector_xyz(x, y, 0));
+	return (ray);
 }
 
 PointOnTheRay = op_add(origin + op_mulf_f(dir, t));
