@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 13:03:06 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/13 13:26:57 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/03 15:18:38 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_camera	camera(t_point origin, t_vector target, t_vector upguide, float fov, float aRatio) // too many arguments
+t_camera	camera(t_point origin, t_vector target, float fov, float aRatio) // too many arguments
 {
 	t_camera cam;
 

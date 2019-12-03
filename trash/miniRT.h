@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/03 16:01:22 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/03 14:40:45 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
-
 # include "./minilibx/mlx.h"
-# include "./libft/ft.h"
-
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
@@ -186,7 +183,7 @@ typedef struct		s_rt
 	int			res_x:12;
 	int			res_y:12;
 	int			fov;
-	double 		m[9];
+	double 		**matrix;
 	double		a_light_r;
 	t_color		a_light_c;
 	t_camera	*camera;
@@ -194,22 +191,24 @@ typedef struct		s_rt
 	t_shapes	*shapes;
 }					t_rt;
 
+// library functions ?
+int			get_next_line(int fd, char **line);
+double		ft_atof(char *str);
+int			ft_atoi(char *str);
+void		ft_puterr(char *str);
+int			ft_strcmp(char *s1, char *s2);
+char		**ft_split(char *str);
+int			ft_min(int a, int b);
+int			ft_max(int a, int b);
+void		ft_putnbr_fd(int n, int fd);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 t_vector	vector_f(double f);
-// vector_math
-double		dot(t_vector v1, t_vector v2);
-t_vector	cross(t_vector v1, t_vector v2);
-t_vector	cross(t_vector v1, t_vector v2);
-double		length2(t_vector v);
-double		length(t_vector v);
-double		normalize(t_vector *v);
-t_vector	normalized(t_vector v);
 
 // op_vectors
-t_vector	op_add(t_vector v, t_vector op);
-t_vector	op_min(t_vector v, t_vector op);
-t_vector	op_minv(t_vector *v, t_vector op);
+t_vector	op_add(t_vector *v, t_vector op);
+t_vector	op_min(t_vector *v, t_vector op);
+t_vector	op_minv(t_vector v, t_vector op);
 void		op_mult(t_vector *v, t_vector op);
 
 void		clamp(t_color *c);
@@ -229,14 +228,7 @@ int			ft_amb(char **split);
 int			ft_cam(char **split);
 int			ft_lig(char **split);
 void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
-// rt.c
-int			ray_trace();
-t_ray		compute_ray(int pixx, int pixy);
-t_vector	mult_vec_matrix(t_vector src);
-void		get_camtoworld();
-void		init_iftptr(t_bool (*intersect[5])(t_ray, t_intersection *));
-// intersect.c
-t_bool	sp_intersect(t_ray ray, t_intersection *intersection);
+
 
 t_rt	g_rt;
 

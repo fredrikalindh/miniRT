@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/01 16:20:42 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/03 15:13:02 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int main(int ac, char *av[])
 	// 	g_rt.image[x++] = (unsigned char)0;
 	// 	g_rt.image[x++] = (unsigned char)0;
 	// }
-	// ray_trace();
+	ray_trace();
 	p.win_ptr= mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img_ptr, 0, 0);
 	mlx_key_hook(p.win_ptr, deal_key, (void *)&p);
