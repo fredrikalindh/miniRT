@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/04 14:33:33 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 20:34:48 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int		init_info(int fd, int argc)
 	char	*list[LIST_SIZE];
 	int 	(*fill_scene[LIST_SIZE])(char**);
 
-	if (argc == 3)
-		g_rt.save = 1;
+	g_rt.save = (argc == 3) ? 1 : 0;
+	printf("%d\n", g_rt.save);
 	init_list(list);
 	init_ftptr(fill_scene);
 	while ((get_next_line(fd, &line)) == 1)
@@ -132,6 +132,40 @@ int deal_key(int key, void *param)
 	return (0);
 }
 
+void	create_header()
+{
+	int size;
+	int div;
+	int i;
+
+	i = 1;
+	div = 1000000000;
+	size = g_rt.res_x * g_rt.res_y * 4;
+	*g_rt.image++ = 'B';
+	*g_rt.image++ = 'A';
+	while (g_rt.image && ++i < 20)
+	{
+		while (size / div > 0)
+			div /= 10;
+		while (size > 0 && div > 0)
+		{
+			*g_rt.image++ = size / div + '0';
+			size %= div;
+			div /= div;
+			i++;
+		}
+		g_rt.image += 6;
+		*g_rt.image++ = '2';
+		*g_rt.image++ = '0';
+	}
+}
+
+void		open_image()
+{
+	if ((g_rt.fd = open("/Users/frlindh/Desktop/minirt.bmp", O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) == -1)
+		ft_puterr("failed to create image.bmp");
+}
+
 int main(int ac, char *av[])
 {
 	t_param p;
@@ -140,6 +174,18 @@ int main(int ac, char *av[])
 	init_scene(ac, av);
 	if (!(p.mlx_ptr = mlx_init()))
 		return (-1);
+	if (g_rt.save == 1)
+	{
+		if (!(g_rt.image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 20)))
+			return (-1);
+		create_header();
+		ray_trace();
+		open_image();
+		write(g_rt.fd, g_rt.image, (g_rt.res_x * g_rt.res_y * 4) + 20);
+		// if (!(close(g_rt.fd)))
+		// 	ft_puterr("failed to close file");
+		return (0);
+	}
 	p.bpp = 32;
 	p.size_line = g_rt.res_x * 32;
 	p.endian = 1;

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 19:21:46 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 20:33:35 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ typedef struct		s_intersection
 
 typedef struct		s_rt
 {
-	int			save:1;
+	unsigned int	save:1;
 	char		*image;
 	int			fd:4;
 
