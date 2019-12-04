@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 20:13:01 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 20:43:28 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,13 @@ t_color ray_cast(t_intersection hit)
 
 void	put_pixel(t_color c)
 {
+	if (g_rt.save == 1)
+		g_rt.image++;
 	*g_rt.image++ = (unsigned char)c.b;
 	*g_rt.image++ = (unsigned char)c.g;
 	*g_rt.image++ = (unsigned char)c.r;
-	g_rt.image++;
+	if (g_rt.save == 0)
+		g_rt.image++;
 }
 
 int		ray_trace()

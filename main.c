@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/04 20:34:48 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 20:50:24 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,33 +143,35 @@ void	create_header()
 	size = g_rt.res_x * g_rt.res_y * 4;
 	*g_rt.image++ = 'B';
 	*g_rt.image++ = 'A';
+	while (size / div == 0)
+		div /= 10;
+	while (div > 0)
+	{
+		*g_rt.image++ = size / div + '0';
+		size = size % div;
+		div /= 10;
+		i++;
+	}
 	while (g_rt.image && ++i < 20)
 	{
-		while (size / div > 0)
-			div /= 10;
-		while (size > 0 && div > 0)
-		{
-			*g_rt.image++ = size / div + '0';
-			size %= div;
-			div /= div;
-			i++;
-		}
 		g_rt.image += 6;
 		*g_rt.image++ = '2';
 		*g_rt.image++ = '0';
 	}
 }
 
-void		open_image()
+void		open_image(char *print)
 {
+	create_header();
 	if ((g_rt.fd = open("/Users/frlindh/Desktop/minirt.bmp", O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) == -1)
 		ft_puterr("failed to create image.bmp");
+	write(g_rt.fd, print, (g_rt.res_x * g_rt.res_y * 4) + 20);
 }
 
 int main(int ac, char *av[])
 {
 	t_param p;
-	// int x;
+	char *print;
 
 	init_scene(ac, av);
 	if (!(p.mlx_ptr = mlx_init()))
@@ -178,12 +180,9 @@ int main(int ac, char *av[])
 	{
 		if (!(g_rt.image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 20)))
 			return (-1);
-		create_header();
+		print = g_rt.image;
 		ray_trace();
-		open_image();
-		write(g_rt.fd, g_rt.image, (g_rt.res_x * g_rt.res_y * 4) + 20);
-		// if (!(close(g_rt.fd)))
-		// 	ft_puterr("failed to close file");
+		open_image(print);
 		return (0);
 	}
 	p.bpp = 32;
