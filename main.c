@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/04 20:50:24 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 20:54:18 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,11 +178,12 @@ int main(int ac, char *av[])
 		return (-1);
 	if (g_rt.save == 1)
 	{
-		if (!(g_rt.image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 20)))
+		if (!(g_rt.image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 21)))
 			return (-1);
 		print = g_rt.image;
 		ray_trace();
 		open_image(print);
+		// printf("%d\n", g_rt.i);
 		return (0);
 	}
 	p.bpp = 32;

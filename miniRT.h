@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 20:33:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 20:53:28 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ typedef struct		s_rt
 	unsigned int	save:1;
 	char		*image;
 	int			fd:4;
+	int			i;
 
 	int			res_x:12;
 	int			res_y:12;
