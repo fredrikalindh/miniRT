@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 17:05:52 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 19:21:46 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,11 +238,15 @@ t_ray		compute_ray(float pixx, float pixy);
 // void		get_camtoworld();
 void		init_iftptr(t_bool (*intersect[5])(t_intersection *, t_ray, void *));
 // intersect.c
-t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *);
-
+t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *shape);
+t_bool		pl_intersect(t_intersection *intersection, t_ray ray, void *shape);
+t_bool tr_intersect(t_intersection *intersection, t_ray inside, void *shape);
 
 //color.c
 t_color		same_color(int col);
+void		apply_gamma(t_color *c, double exposure, double gamma);
+void		clamp(t_color *c);
+t_color		color_add(t_color c1, t_color c2);
 
 t_rt	g_rt;
 
