@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/01 16:26:12 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 16:30:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		ft_pl(char **split)
 			return (-1);
 		if (!(new = (t_plane *)malloc(sizeof(t_plane))))
 			return (-1);
-		shell->next = g_rt.shapes->shape;
+		shell->next = g_rt.shapes;
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->normal = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->color = new_color(ft_atoi(split[7]), ft_atoi(split[8]), ft_atoi(split[9]));
@@ -58,13 +58,14 @@ int		ft_sp(char **split)
 			return (-1);
 		if (!(new = (t_sphere *)malloc(sizeof(t_sphere))))
 			return (-1);
-		shell->next = g_rt.shapes->shape;
+		shell->next = g_rt.shapes;
 		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->radius = ft_atof(split[4]) / 2;
 		new->color = new_color(ft_atoi(split[5]), ft_atoi(split[6]), ft_atoi(split[7]));
 		shell->shape = (void *)new;
 		shell->id = sp;
 		g_rt.shapes = (void *)shell;
+		// printf("%f %f %f %f %d %d %d \n", new->center.x, new->center.y, new->center.z, new->radius, new->color.r, new->color.g, new->color.b);
 	}
 	i = -1;
 	while (split && split[++i] != NULL)
@@ -89,7 +90,7 @@ int		ft_sq(char **split)
 			return (-1);
 		if (!(new = (t_square *)malloc(sizeof(t_square))))
 			return (-1);
-		shell->next = g_rt.shapes->shape;
+		shell->next = g_rt.shapes;
 		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->orient = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->side = ft_atof(split[7]);
@@ -121,7 +122,7 @@ int		ft_cy(char **split)
 			return (-1);
 		if (!(new = (t_cyl *)malloc(sizeof(t_cyl))))
 			return (-1);
-		shell->next = g_rt.shapes->shape;
+		shell->next = g_rt.shapes;
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->direction = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->d = ft_atof(split[7]);
@@ -154,7 +155,7 @@ int		ft_tr(char **split)
 			return (-1);
 		if (!(new = (t_triangle *)malloc(sizeof(t_triangle))))
 			return (-1);
-		shell->next = g_rt.shapes->shape;
+		shell->next = g_rt.shapes;
 		new->c1 = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->c2 = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->c2 = vector_xyz(ft_atof(split[7]), ft_atof(split[8]), ft_atof(split[9]));

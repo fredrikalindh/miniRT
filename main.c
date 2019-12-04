@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/03 15:13:02 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 14:33:33 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,6 @@ int main(int ac, char *av[])
 	p.endian = 1;
 	p.img_ptr = mlx_new_image(p.mlx_ptr, g_rt.res_x, g_rt.res_y);
 	g_rt.image = mlx_get_data_addr(p.img_ptr, &p.bpp, &p.size_line, &p.endian); // BITS PER PIZEL & SIZE_LINE & ENDIAN
-	// for (x = 0; x < g_rt.res_x  * g_rt.res_y * 4; x++)
-	// {
-	// 	g_rt.image[x++] = (unsigned char)255;
-	// 	g_rt.image[x++] = (unsigned char)0;
-	// 	g_rt.image[x++] = (unsigned char)0;
-	// }
 	ray_trace();
 	p.win_ptr= mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img_ptr, 0, 0);

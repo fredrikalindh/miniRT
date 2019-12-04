@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/03 16:01:22 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/04 17:05:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 # define RAY_T_MIN 0.0001
 # define RAY_T_MAX 1.0e30
 
-typedef unsigned int	t_bool;
+typedef enum {FALSE, TRUE} t_bool;
 
 typedef	struct		s_param
 {
@@ -70,7 +70,6 @@ typedef struct		s_ray
 {
 	t_point		origin; // ???
 	t_vector	direction;
-	double		tMax;
 	//enum type{prim, shad, reflx, refract}id;
 	//int		nr:4;
 }					t_ray;
@@ -166,7 +165,7 @@ typedef struct		s_intersection
 {
 	t_ray ray;
 	double t;
-	t_shapes *shape;
+	void *shape;
 	t_color color;
 }					t_intersection;
 
@@ -198,6 +197,7 @@ typedef struct		s_rt
 t_vector	vector_xyz(double x, double y, double z);
 t_vector	vector_f(double f);
 // vector_math
+double		sqr(double f);
 double		dot(t_vector v1, t_vector v2);
 t_vector	cross(t_vector v1, t_vector v2);
 t_vector	cross(t_vector v1, t_vector v2);
@@ -209,8 +209,9 @@ t_vector	normalized(t_vector v);
 // op_vectors
 t_vector	op_add(t_vector v, t_vector op);
 t_vector	op_min(t_vector v, t_vector op);
-t_vector	op_minv(t_vector *v, t_vector op);
+void		op_minv(t_vector *v, t_vector op);
 void		op_mult(t_vector *v, t_vector op);
+t_vector	op_mult_f(t_vector v, float f);
 
 void		clamp(t_color *c);
 void		apply_gamma(t_color *c, double exposure, double gamma);
@@ -231,12 +232,17 @@ int			ft_lig(char **split);
 void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
 // rt.c
 int			ray_trace();
-t_ray		compute_ray(int pixx, int pixy);
-t_vector	mult_vec_matrix(t_vector src);
-void		get_camtoworld();
-void		init_iftptr(t_bool (*intersect[5])(t_ray, t_intersection *));
+t_color 	ray_cast(t_intersection hit);
+t_ray		compute_ray(float pixx, float pixy);
+// t_vector	mult_vec_matrix(t_vector src);
+// void		get_camtoworld();
+void		init_iftptr(t_bool (*intersect[5])(t_intersection *, t_ray, void *));
 // intersect.c
-t_bool	sp_intersect(t_ray ray, t_intersection *intersection);
+t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *);
+
+
+//color.c
+t_color		same_color(int col);
 
 t_rt	g_rt;
 
