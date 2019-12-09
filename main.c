@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/04 20:54:18 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/08 17:53:55 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int		init_info(int fd, int argc)
 	int 	(*fill_scene[LIST_SIZE])(char**);
 
 	g_rt.save = (argc == 3) ? 1 : 0;
-	printf("%d\n", g_rt.save);
 	init_list(list);
 	init_ftptr(fill_scene);
 	while ((get_next_line(fd, &line)) == 1)
@@ -163,7 +162,7 @@ void	create_header()
 void		open_image(char *print)
 {
 	create_header();
-	if ((g_rt.fd = open("/Users/frlindh/Desktop/minirt.bmp", O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) == -1)
+	if ((g_rt.fd = open("./minirt.bmp", O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) == -1)
 		ft_puterr("failed to create image.bmp");
 	write(g_rt.fd, print, (g_rt.res_x * g_rt.res_y * 4) + 20);
 }

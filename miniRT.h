@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 20:53:28 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/05 01:05:25 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 
 # include "./minilibx/mlx.h"
-# include "./libft/ft.h"
+// # include "./libft/ft.h"
 
 # include <stdio.h>
 
@@ -45,6 +45,23 @@
 # define RAY_T_MAX 1.0e30
 
 typedef enum {FALSE, TRUE} t_bool;
+
+/*###############################################*/
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
+// library functions ?
+int			get_next_line(int fd, char **line);
+double		ft_atof(char *str);
+int			ft_atoi(char *str);
+void		ft_puterr(char *str);
+int			ft_strcmp(char *s1, char *s2);
+char		**ft_split(char *str);
+int			ft_min(int a, int b);
+int			ft_max(int a, int b);
+void		ft_putnbr_fd(int n, int fd);
+/*################################################*/
 
 typedef	struct		s_param
 {

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 20:53:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/06 22:30:08 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	t_vector forward;
 	t_vector right;
 	t_vector up;
-	// int fd = open("./xy.tx", O_WRONLY, O_APPEND);
+	// int fd = open("./rays.txt", O_WRONLY, O_APPEND);
 
-	forward = normalized(op_min(g_rt.camera->dir, g_rt.camera->position));
+	forward = normalized(g_rt.camera->dir);
 	right = cross(vector_xyz(0, 1, 0), forward);
-	up = cross(right, forward);
+	up = cross(forward, right);
 	// double fov;
 	//
 	// fov = tan(g_rt.res_y / 2);
@@ -43,6 +43,7 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	y = 1 - 2 * pixy; // * g_rt.fov
 	// dprintf(fd, "%f %f\n", x, y);
 	ray.direction = op_add(forward, op_add(op_mult_f(right, x), op_mult_f(up, y)));
+	// printf("D %f %f %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
 	ray.origin = g_rt.camera->position; //?
 	return (ray);
 }
@@ -75,7 +76,6 @@ int		ray_trace()
 
 	y = -1;
 	init_iftptr(intersect);
-	// get_camtoworld();
 	while (++y < g_rt.res_y)
 	{
 		x = -1;
