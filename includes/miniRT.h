@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/05 01:05:25 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:15:00 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-# include "./minilibx/mlx.h"
-// # include "./libft/ft.h"
+# include "../minilibx/mlx.h"
+# include "ft.h"
 
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
+
+# define MAX_X 2560
+# define MAX_Y 1395
 
 # define LIST_SIZE 9
 # define RESOLUTION	"R"
@@ -43,24 +46,28 @@
 # define X_BUTT 17
 # define RAY_T_MIN 0.0001
 # define RAY_T_MAX 1.0e30
+# define EPSILON 0.000001
 
 typedef enum {FALSE, TRUE} t_bool;
 
 /*###############################################*/
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
-
-// library functions ?
-int			get_next_line(int fd, char **line);
-double		ft_atof(char *str);
-int			ft_atoi(char *str);
-void		ft_puterr(char *str);
-int			ft_strcmp(char *s1, char *s2);
-char		**ft_split(char *str);
-int			ft_min(int a, int b);
-int			ft_max(int a, int b);
-void		ft_putnbr_fd(int n, int fd);
+// # include "ft_printf.h"
+//
+// # ifndef BUFFER_SIZE
+// #  define BUFFER_SIZE 1024
+// # endif
+//
+// int		get_next_line(int fd, char **line);
+// double	ft_atof(char *str);
+// int		ft_atoi(char *str);
+// void	ft_puterr(char *str);
+// int		ft_strcmp(char *s1, char *s2);
+// int		ft_strlen(char *str);
+// char	**ft_split(char *str);
+// int		ft_min(int a, int b);
+// int		ft_max(int a, int b);
+// void	ft_putchar_fd(char c, int fd);
+// void	ft_putnbr_fd(int n, int fd);
 /*################################################*/
 
 typedef	struct		s_param
@@ -116,7 +123,7 @@ typedef struct		s_cyl
 {
 	t_point			position;
 	t_vector		direction;
-	double			d;
+	double			r;
 	double			h;
 	t_color			color;
 }					t_cyl;
@@ -126,6 +133,8 @@ typedef struct		s_triangle
 	t_point				c1;
 	t_point				c2;
 	t_point				c3;
+	t_point				e1;
+	t_point				e2;
 	t_color				color;
 }					t_triangle;
 
@@ -200,8 +209,8 @@ typedef struct		s_rt
 	int			fd:4;
 	int			i;
 
-	int			res_x:12;
-	int			res_y:12;
+	int			res_x;
+	int			res_y;
 	int			fov;
 	double 		m[9];
 	double		a_light_r;

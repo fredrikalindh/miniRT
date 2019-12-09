@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/06 22:30:08 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 16:41:15 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,22 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	double x;
 	double y;
 	double r;
-	t_vector forward;
 	t_vector right;
 	t_vector up;
 	// int fd = open("./rays.txt", O_WRONLY, O_APPEND);
 
-	forward = normalized(g_rt.camera->dir);
-	right = cross(vector_xyz(0, 1, 0), forward);
-	up = cross(forward, right);
+	right = cross(vector_xyz(0, 1, 0), g_rt.camera->dir);
+	up = cross(g_rt.camera->dir, right);
 	// double fov;
 	//
 	// fov = tan(g_rt.res_y / 2);
 	r = (float)g_rt.res_x / g_rt.res_y;
-	x = (2 * pixx - 1) * r; // * g_rt.fov
-	y = 1 - 2 * pixy; // * g_rt.fov
+	// x = (2 * pixx - 1) * r * tanh((float)g_rt.res_y); // * g_rt.fov
+	// y = (1 - 2 * pixy) * tanh((float)g_rt.res_y); // * g_rt.fov
+	x = (2 * pixx - 1) * r * cos(1); // * g_rt.fov
+	y = (1 - 2 * pixy) * cos(1); // * g_rt.fov
 	// dprintf(fd, "%f %f\n", x, y);
-	ray.direction = op_add(forward, op_add(op_mult_f(right, x), op_mult_f(up, y)));
+	ray.direction = normalized(op_add(g_rt.camera->dir, op_add(op_mult_f(right, x), op_mult_f(up, y))));
 	// printf("D %f %f %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
 	ray.origin = g_rt.camera->position; //?
 	return (ray);

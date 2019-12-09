@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/12/05 13:08:42 by frlindh          ###   ########.fr        #
+#    Updated: 2019/12/09 14:35:47 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,29 @@ NAME			=	minirt
 GCC				=	gcc
 FLAGS			=	-Wall -Wextra -Werror #-g3 -fsanitize=address
 EXTRA			= 	-I ./minilibx -L ./minilibx -lmlx -framework OpenGL -framework AppKit
-LIBFT			=	./libft/libft.a
+# LIBFT			=	./my_lib/libft.a
+IDIR			=	-I ./includes
 
 # SRCS *********************************************************************** #
 SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					intersect.c vectors_math.c vectors_op.c \
-					#ft_strcmp.c ft_puterr.c ft_split.c get_next_line.c \
-					ft_atoi.c ft_atof.c ft_minmax.c
+					ft_atof.c \
+					ft_atoi.c \
+					ft_minmax.c \
+					ft_printf.c \
+					ft_puterr.c \
+					ft_putnbr_fd.c \
+					ft_putchar_fd.c \
+					ft_split.c \
+					ft_strcmp.c \
+					ft_strlen.c \
+					ft_strnlen.c \
+					get_next_line.c \
+					skip_atoi.c \
+					to_c.c \
+					to_n.c \
+					to_nbr.c \
+					to_s.c
 
 # OBJS *********************************************************************** #
 OBJS			=	$(patsubst %.c, %.o, $(SRCS))
@@ -32,19 +48,19 @@ OBJS			=	$(patsubst %.c, %.o, $(SRCS))
 
 all: $(NAME) clean #remove this OBS !!!!!!!!!!!!
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(GCC) $(FLAGS) $(EXTRA) -I ./libft $(LIBFT) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS)
+	$(GCC) $(FLAGS) $(EXTRA) $(OBJS) -o $(NAME)
 
-$(LIBFT):
-	cd libft && make
+# $(LIBFT):
+# 	cd my_lib && make && cd ..
 
 %.o: %.c
-	$(GCC) $(FLAGS) -c $< -o $@
+	$(GCC) $(FLAGS) $(IDIR) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(LIBFT)
+	rm -f $(NAME)
 
 re: fclean all

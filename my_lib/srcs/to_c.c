@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atof.c                                          :+:      :+:    :+:   */
+/*   to_c.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 11:11:41 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/05 00:25:35 by frlindh          ###   ########.fr       */
+/*   Created: 2019/11/03 12:06:37 by frlindh           #+#    #+#             */
+/*   Updated: 2019/12/09 11:53:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
-double	ft_atof(char *str)
+int			to_c(char *buf, int *dir, va_list ap)
 {
-	double f;
-	double div;
-	double neg;
+	char	*str;
+	char	fill;
 
-	f = 0.0;
-	neg = 1.0;
-	if (str && *str == '-')
-	{
-		neg = -1.0;
-		str++;
-	}
-	while (str && *str && *str != '.' && *str >= '0' && *str <= '9')
-		f = f * 10 + *str++ - '0';
-	div = 0.1;
-	while (str && *(++str) && *str >= '0' && *str <= '9')
-	{
-		f += ((*str - '0') * div);
-		div /= 10.0;
-	}
-	return (f * neg);
+	str = buf;
+	fill = ' ';
+	dir[WIDTH]--;
+	if (dir[PREC] == -1 && dir[ZERO] == 1)
+		fill = '0';
+	if (dir[LEFT] != 1)
+		while (0 < dir[WIDTH]--)
+			*str++ = fill;
+	if (dir[SPEC] == -1)
+		*str++ = '\0';
+	else
+		*str++ = (dir[SPEC] == 8) ? '%' : va_arg(ap, int);
+	while (0 < dir[WIDTH]--)
+		*str++ = ' ';
+	return (dir[SPEC] == -1) ? (str - buf - 1) : (str - buf);
 }

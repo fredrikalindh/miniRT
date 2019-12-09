@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/12/03 15:07:14 by frlindh          ###   ########.fr        #
+#    Updated: 2019/12/09 13:48:54 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,25 +14,42 @@
 NAME			=	libft.a
 GCC				=	gcc
 FLAGS			=	-Wall -Wextra -Werror
+IDIR			=	-I ../includes/
 
 # SRCS *********************************************************************** #
-SRCS			=	ft_strcmp.c ft_puterr.c ft_split.c get_next_line.c \
-					ft_atoi.c ft_atof.c ft_minmax.c
+SRCSLIST		=	ft_atof.c \
+					ft_atoi.c \
+					ft_minmax.c \
+					ft_printf.c \
+					ft_puterr.c \
+					ft_putnbr_fd.c \
+					ft_putchar_fd.c \
+					ft_split.c \
+					ft_strcmp.c \
+					ft_strlen.c \
+					ft_strnlen.c \
+					get_next_line.c \
+					skip_atoi.c \
+					to_c.c \
+					to_n.c \
+					to_nbr.c \
+					to_s.c
+
+SRCS			=	$(addprefix srcs/, $(SRCSLIST))
 
 # OBJS *********************************************************************** #
-OBJS			=	$(patsubst %.c, %.o, $(SRCS))
+OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 # RULES ********************************************************************** #
-
 .PHONY: all clean fclean re
 
-all: $(NAME) clean
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
 %.o: %.c
-	$(GCC) $(FLAGS) -c $< -o $@
+	$(GCC) $(FLAGS) $(IDIR) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 18:17:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:22:44 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int		ft_cy(char **split)
 		shell->next = g_rt.shapes;
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->direction = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
-		new->d = ft_atof(split[7]);
+		new->r = ft_atof(split[7]) / 2.0;
 		new->h = ft_atof(split[8]);
 		new->color = new_color(ft_atoi(split[9]), ft_atoi(split[10]), ft_atoi(split[11]));
 		shell->shape = (void *)new;
@@ -158,8 +158,10 @@ int		ft_tr(char **split)
 		shell->next = g_rt.shapes;
 		new->c1 = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->c2 = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
-		new->c2 = vector_xyz(ft_atof(split[7]), ft_atof(split[8]), ft_atof(split[9]));
+		new->c3 = vector_xyz(ft_atof(split[7]), ft_atof(split[8]), ft_atof(split[9]));
 		new->color = new_color(ft_atoi(split[10]), ft_atoi(split[11]), ft_atoi(split[12]));
+		new->e1 = op_min(new->c2, new->c1);
+		new->e2 = op_min(new->c3, new->c1);
 		shell->shape = (void *)new;
 		shell->id = tr;
 		g_rt.shapes = (void *)shell;
@@ -171,3 +173,41 @@ int		ft_tr(char **split)
 		ft_puterr("error: incorrect cylinder instruction");
 	return (0);
 }
+//
+// int		ft_tr(char **split)
+// {
+// 	int i;
+// 	t_triangle *new;
+// 	t_shapes *shell;
+// 	t_vector temp;
+//
+// 	i = 0;
+// 	while (split && split[i] != NULL)
+// 		i++;
+// 	if (i >= 13)
+// 	{
+// 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
+// 			return (-1);
+// 		if (!(new = (t_triangle *)malloc(sizeof(t_triangle))))
+// 			return (-1);
+// 		shell->next = g_rt.shapes;
+// 		temp = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
+// 		new->c2 = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+// 		new->c3 = vector_xyz(ft_atof(split[7]), ft_atof(split[8]), ft_atof(split[9]));
+// 		new->c1 = op_min(temp, new->c2);
+// 		new->c2 = op_min(new->c2, new->c3);
+// 		new->c3 = op_min(temp, new->c3);
+// 		new->color = new_color(ft_atoi(split[10]), ft_atoi(split[11]), ft_atoi(split[12]));
+// 		new->n = normalized(cross(op_min(new->c1, new->c2), op_min(new->c3, new->c2)));
+// 		printf("%f %f %f\n", new->n.x, new->n.y, new->n.z);
+// 		shell->shape = (void *)new;
+// 		shell->id = tr;
+// 		g_rt.shapes = (void *)shell;
+// 	}
+// 	i = -1;
+// 	while (split && split[++i] != NULL)
+// 		free(split[i]);
+// 	if (i < 13) 		// free shit == split and cam, light and shapes
+// 		ft_puterr("error: incorrect cylinder instruction");
+// 	return (0);
+// }

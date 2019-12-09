@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/02 16:01:31 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 16:23:56 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int		ft_res(char **split)
 		i++;
 	if (i >= 3)
 	{
-		g_rt.res_x = ft_min(ft_atoi(split[1]), 2560);
-		g_rt.res_y = ft_min(ft_atoi(split[2]), 1395);
+		g_rt.res_x = ft_min(ft_atoi(split[1]), MAX_X);
+		g_rt.res_y = ft_min(ft_atoi(split[2]), MAX_Y);
 	}
 	i = -1;
 	while (split && split[++i] != NULL)
@@ -70,7 +70,7 @@ int		ft_cam(char **split)
 			return (-1);
 		new->next = g_rt.camera;
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		new->dir = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->dir = normalized(vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6])));
 		g_rt.camera = new;
 	}
 	// printf("%f %f %f %f %f %f \n", g_rt.cam_pos.x, g_rt.cam_pos.y, g_rt.cam_pos.z, g_rt.cam_vec.x, g_rt.cam_vec.y, g_rt.cam_vec.z);
