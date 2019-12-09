@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 20:15:00 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:35:30 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ typedef struct		s_triangle
 typedef struct		s_square
 {
 	t_point			center;
-	t_vector		orient;
+	t_vector		normal;
 	double			side;
 	t_color			color;
 }					t_square;

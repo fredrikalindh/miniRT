@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 20:22:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:37:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,23 @@ t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
 	i->t = t;
 	i->shape = tr;
 	i->color = tr->color;
+	return (TRUE);
+}
+
+t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
+{
+	t_square	*sq;
+	t_vector	q;
+	t_vector	s;
+	double		t;
+
+	sq = (t_square *)shape;
+	
+	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
+		return (FALSE);
+	i->t = t;
+	i->shape = sq;
+	i->color = sq->color;
 	return (TRUE);
 }
 

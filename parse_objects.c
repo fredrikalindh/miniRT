@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 20:22:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:35:20 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		ft_sq(char **split)
 			return (-1);
 		shell->next = g_rt.shapes;
 		new->center = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		new->orient = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->normal = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
 		new->side = ft_atof(split[7]);
 		new->color = new_color(ft_atoi(split[8]), ft_atoi(split[9]), ft_atoi(split[10]));
 		shell->shape = (void *)new;
