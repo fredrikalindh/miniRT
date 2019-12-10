@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 20:35:30 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 18:42:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,7 @@
 
 typedef enum {FALSE, TRUE} t_bool;
 
-/*###############################################*/
-// # include "ft_printf.h"
-//
-// # ifndef BUFFER_SIZE
-// #  define BUFFER_SIZE 1024
-// # endif
-//
-// int		get_next_line(int fd, char **line);
-// double	ft_atof(char *str);
-// int		ft_atoi(char *str);
-// void	ft_puterr(char *str);
-// int		ft_strcmp(char *s1, char *s2);
-// int		ft_strlen(char *str);
-// char	**ft_split(char *str);
-// int		ft_min(int a, int b);
-// int		ft_max(int a, int b);
-// void	ft_putchar_fd(char c, int fd);
-// void	ft_putnbr_fd(int n, int fd);
-/*################################################*/
-
-typedef	struct		s_param
+typedef	struct		s_param // insert inside g_rt?
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -143,6 +123,8 @@ typedef struct		s_square
 	t_point			center;
 	t_vector		normal;
 	double			side;
+	t_vector		e0;
+	t_vector		e1;
 	t_color			color;
 }					t_square;
 
@@ -205,14 +187,15 @@ typedef struct		s_intersection
 typedef struct		s_rt
 {
 	unsigned int	save:1;
-	char		*image;
-	int			fd:4;
-	int			i;
+	unsigned int	err:3;
+	char			*image;
+	int				fd:4;
+	int				line;
 
 	int			res_x;
 	int			res_y;
-	int			fov;
-	double 		m[9];
+	// int			fov;
+	// double 		m[9];
 	double		a_light_r;
 	t_color		a_light_c;
 	t_camera	*camera;
@@ -220,6 +203,10 @@ typedef struct		s_rt
 	t_shapes	*shapes;
 }					t_rt;
 
+
+void		ft_puterr(char *str);
+void		ft_puterr2(char c);
+void		free_globals();
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 t_vector	vector_f(double f);
@@ -261,8 +248,6 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
 int			ray_trace();
 t_color 	ray_cast(t_intersection hit);
 t_ray		compute_ray(float pixx, float pixy);
-// t_vector	mult_vec_matrix(t_vector src);
-// void		get_camtoworld();
 void		init_iftptr(t_bool (*intersect[5])(t_intersection *, t_ray, void *));
 // intersect.c
 t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *shape);

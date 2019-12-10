@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puterr.c                                        :+:      :+:    :+:   */
+/*   is_digit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 18:43:24 by frlindh          ###   ########.fr       */
+/*   Created: 2019/12/10 16:39:39 by frlindh           #+#    #+#             */
+/*   Updated: 2019/12/10 17:00:39 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "ft.h"
 
-void	ft_puterr(char *str)
+int		is_digit(char *str)
 {
-	write(2, "\033[1;31mError: ", 14);
-	write(2, str, ft_strlen(str));
-	write(2, "\n\033[0m", 5);
-	free_globals();
-	exit(-1);
+	while (str && *str)
+	{
+		if (!((*str >= '0' && *str <= '9') || *str == '.' || *str == '-'))
+			return (0);
+		str++;
+	}
+	return (1);
 }

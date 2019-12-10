@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 20:37:52 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 16:43:06 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,26 @@ t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
 	return (TRUE);
 }
 
-t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
-{
-	t_square	*sq;
-	t_vector	q;
-	t_vector	s;
-	double		t;
-
-	sq = (t_square *)shape;
-	
-	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
-		return (FALSE);
-	i->t = t;
-	i->shape = sq;
-	i->color = sq->color;
-	return (TRUE);
-}
+// t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
+// {
+// 	t_square	*sq;
+// 	t_vector	q;
+// 	t_vector	d;
+// 	double		t;
+//
+// 	sq = (t_square *)shape;
+// 	d = dot(i->ray.direction, sq->normal);
+// 	if (d == 0)
+// 		return (FALSE);
+// 	t = dot(op_min(sq->center, i->ray.origin), sq->normal) / d;
+// 	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
+// 		return (FALSE);
+//
+// 	i->t = t;
+// 	i->shape = sq;
+// 	i->color = sq->color;
+// 	return (TRUE);
+// }
 
 t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 {
@@ -105,19 +109,19 @@ t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 	i->color = sphere->color;
 	return (TRUE);
 }
-
-t_bool			cy_intersect(t_intersection *i, t_ray r, void *shape)
-{
-	t_cyl		*cy;
-	double		a;
-	double		b;
-	double		c;
-	double		d;
-	double		t;
-
-	cy = (t_cyl *)shape;
-	op_minv(&ray.origin, cy->direction);
-	a = length2(ray.direction);
-	b = 2 * dot(ray.direction, ray.origin);
-	c = length2(ray.origin) - sqr(sphere->radius);
-}
+//
+// t_bool			cy_intersect(t_intersection *i, t_ray r, void *shape)
+// {
+// 	t_cyl		*cy;
+// 	double		a;
+// 	double		b;
+// 	double		c;
+// 	double		d;
+// 	double		t;
+//
+// 	cy = (t_cyl *)shape;
+// 	op_minv(&ray.origin, cy->direction);
+// 	a = length2(ray.direction);
+// 	b = 2 * dot(ray.direction, ray.origin);
+// 	c = length2(ray.origin) - sqr(sphere->radius);
+// }

@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/12/09 14:35:47 by frlindh          ###   ########.fr        #
+#    Updated: 2019/12/10 17:30:29 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					ft_minmax.c \
 					ft_printf.c \
 					ft_puterr.c \
+					ft_puterr2.c \
 					ft_putnbr_fd.c \
 					ft_putchar_fd.c \
 					ft_split.c \
@@ -37,7 +38,8 @@ SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					to_c.c \
 					to_n.c \
 					to_nbr.c \
-					to_s.c
+					to_s.c	\
+					is_digit.c
 
 # OBJS *********************************************************************** #
 OBJS			=	$(patsubst %.c, %.o, $(SRCS))
@@ -46,7 +48,7 @@ OBJS			=	$(patsubst %.c, %.o, $(SRCS))
 
 .PHONY: all clean fclean re
 
-all: $(NAME) clean #remove this OBS !!!!!!!!!!!!
+all: $(NAME) #clean #remove this OBS !!!!!!!!!!!!
 
 $(NAME): $(OBJS)
 	$(GCC) $(FLAGS) $(EXTRA) $(OBJS) -o $(NAME)
