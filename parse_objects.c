@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 17:59:03 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 21:18:46 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int		ft_pl(char **s)
 		shell->next = g_rt.shapes;
 		new->position = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->normal = vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6]));
+		if (outside_range2(new->normal))
+			g_rt.err = 5;
 		new->color = new_color(ft_atoi(s[7]), ft_atoi(s[8]), ft_atoi(s[9]));
+		if (outside_range(new->color))
+			g_rt.err = 3;
 		shell->shape = (void *)new;
 		shell->id = pl;
 		g_rt.shapes = (void *)shell;
@@ -62,10 +66,11 @@ int		ft_sp(char **s)
 		new->center = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->radius = ft_atof(s[4]) / 2;
 		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
+		if (outside_range(new->color))
+			g_rt.err = 3;
 		shell->shape = (void *)new;
 		shell->id = sp;
 		g_rt.shapes = (void *)shell;
-		// printf("%f %f %f %f %d %d %d \n", new->center.x, new->center.y, new->center.z, new->radius, new->color.r, new->color.g, new->color.b);
 	}
 	i = -1;
 	while (s && s[++i] != NULL)
@@ -93,6 +98,8 @@ int		ft_sp(char **s)
 // 		shell->next = g_rt.shapes;
 // 		new->center = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 // 		new->normal = vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6]));
+		// if (outside_range2(new->normal))
+		// 	g_rt.err = 5;
 // 		new->side = ft_atof(s[7]);
 //
 // 		op_min((op_mult_f(cross(new->center, new->normal), new->side / 2.0), side / 2.0),
@@ -135,6 +142,8 @@ int		ft_cy(char **s)
 		new->r = ft_atof(s[7]) / 2.0;
 		new->h = ft_atof(s[8]);
 		new->color = new_color(ft_atoi(s[9]), ft_atoi(s[10]), ft_atoi(s[11]));
+		if (outside_range(new->color))
+			g_rt.err = 3;
 		shell->shape = (void *)new;
 		shell->id = cy;
 		g_rt.shapes = (void *)shell;
@@ -154,8 +163,8 @@ int		ft_tr(char **s)
 	t_shapes *shell;
 
 	i = 0;
-	while (s && s[i] != NULL)
-		i++;
+	while (s && s[++i] != NULL)
+		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
 	if (i >= 13)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
@@ -167,6 +176,8 @@ int		ft_tr(char **s)
 		new->c2 = vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6]));
 		new->c3 = vector_xyz(ft_atof(s[7]), ft_atof(s[8]), ft_atof(s[9]));
 		new->color = new_color(ft_atoi(s[10]), ft_atoi(s[11]), ft_atoi(s[12]));
+		if (outside_range(new->color))
+			g_rt.err = 3;
 		new->e1 = op_min(new->c2, new->c1);
 		new->e2 = op_min(new->c3, new->c1);
 		shell->shape = (void *)new;

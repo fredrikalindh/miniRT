@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/12/10 17:30:29 by frlindh          ###   ########.fr        #
+#    Updated: 2019/12/10 21:04:22 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					to_n.c \
 					to_nbr.c \
 					to_s.c	\
-					is_digit.c
+					is_digit.c \
+					ranges.c
 
 # OBJS *********************************************************************** #
 OBJS			=	$(patsubst %.c, %.o, $(SRCS))

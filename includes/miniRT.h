@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 18:42:52 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 21:24:06 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ typedef struct		s_ray
 
 typedef struct		s_color // -> double ??
 {
-	unsigned int r:8;
-	unsigned int g:8;
-	unsigned int b:8;
+	unsigned int r; // :16
+	unsigned int g; // :16
+	unsigned int b; // :16
 }					t_color;
 
 typedef struct		s_sphere
@@ -173,6 +173,7 @@ typedef struct		s_intersection
 {
 	t_ray ray;
 	double t;
+	t_vector normal;
 	void *shape;
 	t_color color;
 }					t_intersection;
@@ -187,7 +188,7 @@ typedef struct		s_intersection
 typedef struct		s_rt
 {
 	unsigned int	save:1;
-	unsigned int	err:3;
+	unsigned int	err:8;
 	char			*image;
 	int				fd:4;
 	int				line;
@@ -207,6 +208,8 @@ typedef struct		s_rt
 void		ft_puterr(char *str);
 void		ft_puterr2(char c);
 void		free_globals();
+t_bool		outside_range(t_color c);
+t_bool		outside_range2(t_vector v);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 t_vector	vector_f(double f);
@@ -259,6 +262,7 @@ t_color		same_color(int col);
 void		apply_gamma(t_color *c, double exposure, double gamma);
 void		clamp(t_color *c);
 t_color		color_add(t_color c1, t_color c2);
+t_color		color_mult(t_color c1, double f);
 
 t_rt	g_rt;
 

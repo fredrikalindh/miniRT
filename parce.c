@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 18:31:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 21:29:08 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int		ft_amb(char **split)
 	{
 		g_rt.a_light_r = ft_atof(split[1]);
 		g_rt.a_light_c = new_color(ft_atoi(split[2]), ft_atoi(split[3]), ft_atoi(split[4]));
+		if (outside_range(g_rt.a_light_c))
+			g_rt.err = 3;
 	}
 	i = -1;
 	while (split && split[++i] != NULL)
@@ -75,13 +77,16 @@ int		ft_cam(char **split)
 			return (-1);
 		new->next = g_rt.camera;
 		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		new->dir = normalized(vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6])));
+		new->dir = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		if (outside_range2(new->dir))
+			g_rt.err = 5;
+		normalized(new->dir);
 		g_rt.camera = new;
 	}
 	i = -1;
 	while (split && split[++i] != NULL)
 		free(split[i]);
-	if (i < 7 || g_rt.err == 1)
+	if (i < 7 || g_rt.err != 0)
 		ft_puterr2('c');
 	return (0);
 }
@@ -102,6 +107,8 @@ int		ft_lig(char **split)
 		new->coor = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
 		new->bright = ft_atof(split[4]);
 		new->color = new_color(ft_atoi(split[5]), ft_atoi(split[6]), ft_atoi(split[7]));
+		if (outside_range(new->color))
+			g_rt.err = 3;
 		g_rt.light = new;
 	}
 	i = -1;
@@ -129,7 +136,7 @@ void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 	fill_scene[5] = &ft_sp;
 	// fill_scene[6] = &ft_sq;
 	fill_scene[7] = &ft_tr;
-	fill_scene[8] = &ft_cy;
+	// fill_scene[8] = &ft_cy;
 }
 
 // int		init_info(int fd, int argc)

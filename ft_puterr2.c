@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 18:42:58 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 21:26:34 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ void	ft_puterr2(char id)
 	else
 		write(2, "unknown", 7);
 	if (g_rt.err == 3)
-		write(2, ", not within the correct range", 30);
+		write(2, " color not within the correct range", 35);
+	else if (g_rt.err == 5)
+		write(2, " vector not normalized", 22);
 	write(2, " on line: ", 10);
 	ft_putnbr_fd(g_rt.line, 2);
 	write(2, "\n\033[0m", 5);

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 16:43:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/10 20:23:45 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_bool			pl_intersect(t_intersection *i, t_ray ray, void *shape)
 	i->t = t;
 	i->shape = p;
 	i->color = p->color;
+	i->normal = p->normal;
 	return (TRUE);
 }
 
@@ -58,6 +59,7 @@ t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
 	i->t = t;
 	i->shape = tr;
 	i->color = tr->color;
+	i->normal = cross(tr->e1, tr->e2);
 	return (TRUE);
 }
 
@@ -107,6 +109,7 @@ t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 	i->shape = (void *)sphere;
 	i->t = t;
 	i->color = sphere->color;
+	i->normal = op_min(op_add(ray.origin, op_mult_f(ray.direction, t)), sphere->center);
 	return (TRUE);
 }
 //
