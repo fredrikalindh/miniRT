@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/10 18:48:45 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:44:48 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		exit_program(void *param)
 
 int deal_key(int key, void *param)
 {
-	if (key == ESC || key == CTRL_C) // exit when esc key or ctrl+c
+	if (key == ESC || key == CTRL_C || key == 259) // exit when esc key or ctrl+c
 		exit_program(param);
 	return (0);
 }

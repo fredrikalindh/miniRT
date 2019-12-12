@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 21:39:05 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:39:08 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_iftptr(t_bool (*intersect[5])(t_intersection *, t_ray ray, void *))
 	intersect[1] = &pl_intersect;
 	// intersect[2] = &cy_intersect;
 	intersect[3] = &tr_intersect;
-	// intersect[4] = &sq_intersect;
+	intersect[4] = &sq_intersect;
 }
 
 t_ray	compute_ray(float pixx, float pixy) // use cam struct
@@ -37,15 +37,14 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	//
 	// fov = tan(g_rt.res_y / 2);
 	r = (float)g_rt.res_x / g_rt.res_y;
-	// x = (2 * pixx - 1) * r * tanh((float)g_rt.res_y); // * g_rt.fov
-	// y = (1 - 2 * pixy) * tanh((float)g_rt.res_y); // * g_rt.fov
-	x = (2 * pixx - 1) * r * tan(0.5); // * g_rt.fov
-	y = (1 - 2 * pixy) * tan(0.5); // * g_rt.fov
-	// x = (2 * pixx - 1) * r * cos(1); // * g_rt.fov
-	// y = (1 - 2 * pixy) * cos(1); // * g_rt.fov
+	// x = (2 * pixx - 1) * r * tanh((double)g_rt.res_y); // * g_rt.fov
+	// y = (1 - 2 * pixy) * tanh((double)g_rt.res_y); // * g_rt.fov
+	x = (2 * pixx - 1) * r * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
+	y = (1 - 2 * pixy) * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
+	// x = (2 * pixx - 1) * r; // * g_rt.fov
+	// y = (1 - 2 * pixy) * ; // * g_rt.fov
 	// dprintf(fd, "%f %f\n", x, y);
 	ray.direction = normalized(op_add(g_rt.camera->dir, op_add(op_mult_f(right, x), op_mult_f(up, y))));
-	// printf("D %f %f %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
 	ray.origin = g_rt.camera->position; //?
 	return (ray);
 }

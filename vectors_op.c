@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:47:35 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 17:05:29 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:34:56 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void op_mult(t_vector *v, t_vector op)
 	v->z *= op.z;
 }
 
-t_vector op_mult_f(t_vector v, float f)
+t_vector op_mult_f(t_vector v, double f)
 {
 	v.x *= f;
 	v.y *= f;
@@ -60,7 +60,7 @@ void op_div(t_vector *v, t_vector op)
 	v->z /= op.z;
 }
 
-void op_div_f(t_vector *v, float f)
+void op_div_f(t_vector *v, double f)
 {
 	v->x /= f;
 	v->y /= f;

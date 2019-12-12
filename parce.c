@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 21:29:08 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:41:54 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 	fill_scene[3] = &ft_lig;
 	fill_scene[4] = &ft_pl;
 	fill_scene[5] = &ft_sp;
-	// fill_scene[6] = &ft_sq;
+	fill_scene[6] = &ft_sq;
 	fill_scene[7] = &ft_tr;
 	// fill_scene[8] = &ft_cy;
 }

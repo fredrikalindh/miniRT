@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 21:24:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 18:17:59 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,6 @@ typedef struct		s_square
 	t_point			center;
 	t_vector		normal;
 	double			side;
-	t_vector		e0;
-	t_vector		e1;
 	t_color			color;
 }					t_square;
 
@@ -228,7 +226,7 @@ t_vector	op_add(t_vector v, t_vector op);
 t_vector	op_min(t_vector v, t_vector op);
 void		op_minv(t_vector *v, t_vector op);
 void		op_mult(t_vector *v, t_vector op);
-t_vector	op_mult_f(t_vector v, float f);
+t_vector	op_mult_f(t_vector v, double f);
 
 void		clamp(t_color *c);
 void		apply_gamma(t_color *c, double exposure, double gamma);
@@ -255,7 +253,8 @@ void		init_iftptr(t_bool (*intersect[5])(t_intersection *, t_ray, void *));
 // intersect.c
 t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *shape);
 t_bool		pl_intersect(t_intersection *intersection, t_ray ray, void *shape);
-t_bool tr_intersect(t_intersection *intersection, t_ray inside, void *shape);
+t_bool 		tr_intersect(t_intersection *intersection, t_ray inside, void *shape);
+t_bool 		sq_intersect(t_intersection *intersection, t_ray inside, void *shape);
 
 //color.c
 t_color		same_color(int col);

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 20:23:45 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 18:52:14 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,32 @@ t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
 	return (TRUE);
 }
 
-// t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
-// {
-// 	t_square	*sq;
-// 	t_vector	q;
-// 	t_vector	d;
-// 	double		t;
-//
-// 	sq = (t_square *)shape;
-// 	d = dot(i->ray.direction, sq->normal);
-// 	if (d == 0)
-// 		return (FALSE);
-// 	t = dot(op_min(sq->center, i->ray.origin), sq->normal) / d;
-// 	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
-// 		return (FALSE);
-//
-// 	i->t = t;
-// 	i->shape = sq;
-// 	i->color = sq->color;
-// 	return (TRUE);
-// }
+t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
+{
+	t_square	*sq;
+	t_vector	q;
+	t_vector	side;
+	double		d;
+	double		t;
+	(void)r;
+
+	sq = (t_square *)shape;
+	d = dot(i->ray.direction, sq->normal);
+	if (d == 0)
+		return (FALSE);
+	t = dot(op_min(sq->center, i->ray.origin), sq->normal) / d;
+	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
+		return (FALSE);
+	q = op_min(op_add(i->ray.origin, op_mult_f(i->ray.direction, t)), sq->center);
+	side = cross(sq->normal, vector_xyz(0, 1, 0));
+	if (dot(q, side) > sq->side || dot(q, side) < -sq->side ||
+		dot(cross(sq->normal, side), q) > sq->side || dot(cross(sq->normal, side), q) < -sq->side)
+		return (FALSE);
+	i->t = t;
+	i->shape = sq;
+	i->color = sq->color;
+	return (TRUE);
+}
 
 t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 {
