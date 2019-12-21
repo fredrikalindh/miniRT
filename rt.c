@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 13:50:03 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/21 18:14:59 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,29 @@ t_color		test(t_color c, t_color l, double d)
 	return (n);
 }
 
+t_bool			ft_hit(t_ray ray, void *shape)
+{
+	t_sphere	*sphere;
+	double		a;
+	double		b;
+	double		c;
+	double		t;
 
-// t_color ray_cast(t_intersection hit)
-// {
-// 	t_ray p;
-// 	t_light	*l;
-// 	// t_shapes *shape;
-// 	float	d;
-// 	t_color final;
-//
-// 	l = g_rt.light;
-// 	p.direction = normalized(op_min(l->coor, hit.hit));
-// 	d = dot(hit.normal, p.direction);
-// 	if (d < 0.0)
-// 		return(same_color(0.0));
-// 	final = hit.color;
-// 	return(test(final, l->color, d));
-// }
+	sphere = (t_sphere *)shape;
+	op_minv(&ray.origin, sphere->center);
+	a = length2(ray.direction);
+	b = 2 * dot(ray.direction, ray.origin);
+	c = length2(ray.origin) - sqr(sphere->radius);
+	if ((sqr(b) - 4 * a * c) < 0.0)
+		return (FALSE);
+	t = (-b - sqrt(sqr(b) - 4 * a * c)) / (2 * a);
+	if (!(t > RAY_T_MIN && t < RAY_T_MAX))
+		t = (-b + sqrt(sqr(b) - 4 * a * c)) / (2 * a);
+	if (t > RAY_T_MIN && t < RAY_T_MAX)
+		return (TRUE);
+	return (FALSE);
+}
+
 
 t_color ray_cast(t_intersection hit)
 {
@@ -83,30 +89,61 @@ t_color ray_cast(t_intersection hit)
 	t_light	*l;
 	t_shapes *shape;
 	float	d;
-	t_bool (*intersect[5])(t_intersection *, t_ray, void *);
 
 	l = g_rt.light;
-	init_iftptr(intersect);
-	while (l != NULL)
+	p.direction = normalized(op_min(l->coor, hit.hit));
+	p.origin = hit.hit;
+	hit.t = RAY_T_MAX;
+	d = dot(hit.normal, p.direction);
+	if (d < 0.0)
+		d = 0.0;
+	shape = g_rt.shapes;
+	while (shape != NULL && hit.t == RAY_T_MAX)
 	{
-		p.direction = normalized(op_min(l->coor, hit.hit));
-		d = dot(hit.normal, p.direction);
-		d < 0.0 ? d = 0.0 : 0;
-		shape = g_rt.shapes;
-		while (shape != NULL)
+		if (shape->shape != hit.shape && ft_hit(p, shape->shape))
 		{
-			if (shape->shape != hit.shape && intersect[shape->id](&hit, p, shape->shape) == FALSE)
-			{
-				d = 0.0;
-				break ;
-			}
-			shape = shape->next;
+			d = 0.0;
+			break ;
 		}
-		hit.color = test(hit.color, l->color, d);
-		l = l->next;
+		shape = shape->next;
 	}
-	return(hit.color);
+	return(test(hit.color, l->color, d));
 }
+
+// t_color ray_cast(t_intersection hit)
+// {
+// 	t_ray p;
+// 	t_light	*l;
+// 	t_shapes *shape;
+// 	float	d;
+// 	t_bool (*intersect[5])(t_intersection *, t_ray, void *);
+// 	int flag;
+//
+// 	l = g_rt.light;
+// 	init_iftptr(intersect);
+// 	d = 0.0;
+// 	while (l != NULL)
+// 	{
+// 		p.direction = normalized(op_min(l->coor, hit.hit));
+// 		shape = g_rt.shapes;
+// 		flag = 0;
+// 		while (shape != NULL)
+// 		{
+// 			if (shape->shape != hit.shape && intersect[shape->id](&hit, p, shape->shape))
+// 			{
+// 				flag = 1;
+// 				break ;
+// 			}
+// 			shape = shape->next;
+// 		}
+// 		if (flag == 0)
+// 			d += dot(hit.normal, p.direction);
+// 		d = ft_mind(ft_maxd(d, 1), 0);
+// 		hit.color = test(hit.color, l->color, d);
+// 		l = l->next;
+// 	}
+// 	return(hit.color);
+// }
 
 void	put_pixel(t_color c)
 {

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 13:41:59 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/21 17:28:30 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 	i->shape = (void *)sphere;
 	i->t = t;
 	i->color = sphere->color;
-	i->hit = op_add(ray.origin, op_mult_f(ray.direction, t));
+	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
 	i->normal = normalized(op_min(i->hit, sphere->center));
 	return (TRUE);
 }
