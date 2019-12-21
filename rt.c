@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 12:56:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/21 13:50:03 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,87 +60,53 @@ t_color		test(t_color c, t_color l, double d)
 }
 
 
+// t_color ray_cast(t_intersection hit)
+// {
+// 	t_ray p;
+// 	t_light	*l;
+// 	// t_shapes *shape;
+// 	float	d;
+// 	t_color final;
+//
+// 	l = g_rt.light;
+// 	p.direction = normalized(op_min(l->coor, hit.hit));
+// 	d = dot(hit.normal, p.direction);
+// 	if (d < 0.0)
+// 		return(same_color(0.0));
+// 	final = hit.color;
+// 	return(test(final, l->color, d));
+// }
+
 t_color ray_cast(t_intersection hit)
 {
 	t_ray p;
 	t_light	*l;
 	t_shapes *shape;
 	float	d;
-	// t_bool (*intersect[5])(t_intersection *, t_ray, void *);
+	t_bool (*intersect[5])(t_intersection *, t_ray, void *);
 
-	p.origin = op_add(hit.ray.origin, op_mult_f(hit.ray.direction, hit.t));
 	l = g_rt.light;
-	p.direction = normalized(op_min(l->coor, p.origin));
-	d = dot(hit.normal, p.direction);
-	d < 0.0 ? d = 0.0 : 0;
-	shape = g_rt.shapes;
-	// while (shape != NULL)
-	// {
-	// 	if (!(intersect[shape.id](hit)))
-	// 		d = 0.0
-	// }
-	return(test(hit.color, l->color, d));
+	init_iftptr(intersect);
+	while (l != NULL)
+	{
+		p.direction = normalized(op_min(l->coor, hit.hit));
+		d = dot(hit.normal, p.direction);
+		d < 0.0 ? d = 0.0 : 0;
+		shape = g_rt.shapes;
+		while (shape != NULL)
+		{
+			if (shape->shape != hit.shape && intersect[shape->id](&hit, p, shape->shape) == FALSE)
+			{
+				d = 0.0;
+				break ;
+			}
+			shape = shape->next;
+		}
+		hit.color = test(hit.color, l->color, d);
+		l = l->next;
+	}
+	return(hit.color);
 }
-
-// t_color ray_cast(t_intersection hit)
-// {
-// 	t_ray p;
-// 	t_light	*l;
-// 	t_shapes *shape;
-// 	float	mult;
-// 	// t_color lcol;
-// 	// t_bool (*intersect[5])(t_intersection *, t_ray, void *);
-//
-// 	p.origin = op_add(hit.ray.origin, op_mult_f(hit.ray.direction, hit.t));
-// 	l = g_rt.light;
-// 	mult = 0.0;
-// 	while (l != NULL)
-// 	{
-// 		hit.t = RAY_T_MAX;
-// 		p.direction = op_min(l->coor, p.origin);
-// 		shape = g_rt.shapes;
-// 		normalize(&hit.normal);
-// 		normalize(&p.direction);
-// 		normalize(&hit.ray.direction);
-// 		if (dot(hit.normal, p.direction) > 0.0 && shape->id == sp)
-// 		{
-// 			mult = dot(hit.normal, p.direction) * l->bright;;
-// 			// mult -= dot(hit.ray.direction, hit.normal);
-// 		}
-// 		l = l->next;
-// 	}
-// 	return(color_mult(hit.color, mult));
-
-// t_color ray_cast(t_intersection hit)
-// {
-// 	// s_ray p;
-// 	// t_light	*l;
-// 	// t_shapes *shape;
-// 	// t_color lcol;
-// 	// t_bool (*intersect[5])(t_intersection *, t_ray, void *);
-// 	//
-// 	// p.origin = op_add(hit.ray.origin, op_mult_f(hit.ray.direction, hit.t));
-// 	// l = g_rt.light;
-// 	// while (l != NULL)
-// 	// {
-// 	// 	hit.t = RAY_T_MAX;
-// 	// 	p.direction = op_min(l->coor, p);
-// 	// 	shape = g_rt.shapes;
-// 	// 	if (dot(hit.normal, p.direction) > 0.0)
-// 	// 	{
-// 	// 		while (shape != NULL && hit.t == RAY_T_MAX)
-// 	// 		{
-// 	// 			if (shape->shape != hit.shape)
-// 	// 				intersect[shape->id](&hit, p, shape->shape);
-// 	// 			shape = shape->next;
-// 	// 		}
-// 	// 		if (hit.t == RAY_T_MAX)
-// 	// 			lcol = color_add(lcol, color_mult(l->color, l->bright));
-// 	// 	}
-// 	// 	l = l->next;
-// 	// }
-// 	return(hit.color);
-// }
 
 void	put_pixel(t_color c)
 {
@@ -172,7 +138,6 @@ int		ray_trace()
 			hit.t = RAY_T_MAX;
 			hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
 			shape = g_rt.shapes;
-			hit.color = same_color(0.0);
 			while (shape != NULL)
 			{
 				intersect[shape->id](&hit, hit.ray, shape->shape);
