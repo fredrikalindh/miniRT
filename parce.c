@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/12 17:41:54 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/12 22:03:55 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,28 +136,5 @@ void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**))
 	fill_scene[5] = &ft_sp;
 	fill_scene[6] = &ft_sq;
 	fill_scene[7] = &ft_tr;
-	// fill_scene[8] = &ft_cy;
+	fill_scene[8] = &ft_cy;
 }
-
-// int		init_info(int fd, int argc)
-// {
-// 	char	*line;
-// 	char	**split; //split with whitespace and ','
-// 	int 	(*fill_scene[LIST_SIZE])(char**);
-// 	enum scene_info{R, A, c, l, pl, sp, sq, tr, cy}test;
-//
-// 	if (argc == 3)
-// 		g_rt.save = 1;
-// 	init_ftptr(fill_scene);
-// 	while ((get_next_line(fd, &line)) == 1)
-// 	{
-// 		split = ft_split(line); // splits line & frees str
-// 		if ((test = split[0]) >= 0)
-// 		{
-// 			// printf("[%s] [%s] [%s] [%s]\n", split[0], split[1], split[2], split[3]);
-// 			fill_scene[test](split); // has to free elements of split in it
-// 		}
-// 	}
-// 	free(line);
-// 	return (1);
-// }

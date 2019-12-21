@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersect.c                                        :+:      :+:    :+:   */
+/*   intersect_old.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 19:49:01 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/16 15:48:32 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,5 +211,77 @@ t_bool tr_intersect(t_intersection *intersection, t_ray r, void *shape)
 // 	intersection->t = t;
 // 	intersection->shape = tr;
 // 	intersection->color = tr->color;
+// 	return (TRUE);
+// }
+
+
+// t_bool			cy_intersect(t_intersection *i, t_ray ray, void *shape)
+// {
+// 	t_cyl		*cy;
+// 	double		a;
+// 	double		b;
+// 	double		c;
+// 	double		caca;
+// 	double		card;
+// 	double		caoc;
+// 	double		t;
+//
+// 	cy = (t_cyl *)shape;
+// 	op_minv(&ray.origin, cy->direction);
+// 	ray.direction = op_min(cy->position, cy->direction);
+// 	caca = dot(ray.origin, ray.origin);
+// 	card = dot(ray.origin, i->ray.direction);
+// 	caoc = dot(ray.origin, ray.direction);
+// 	a = caca - sqr(card);
+// 	b = caca * dot(ray.direction, i->ray.direction) - caoc * card;
+// 	c = caca * dot(ray.direction, i->ray.direction) - caoc * caoc - sqr(cy->r) * caca;
+// 	printf("%f\n", b * b - a * c);
+// 	if (b * b - a * c < 0)
+// 		return (FALSE);
+// 	t = (-b - sqrt(b * b - a * c)) / a;
+// 	i->shape = (void *)cy;
+// 	i->t = t;
+// 	i->color = cy->color;
+// 	return (TRUE);
+// }
+
+// t_bool			cy_intersect(t_intersection *i, t_ray ray, void *shape)
+// {
+// 	t_cyl *cy;
+// 	t_vector pb;
+// 	t_vector ca;
+// 	t_vector oc;
+// 	double	caca;
+// 	double	card;
+// 	double	caoc;
+// 	double	a;
+// 	double	b;
+// 	double	c;
+// 	double	h;
+// 	double	y;
+// 	double	t;
+// 	(void)ray;
+//
+// 	cy = (t_cyl *)shape;
+// 	pb = op_add(cy->position, op_mult_f(cy->direction, cy->h));
+// 	ca = op_min(pb, cy->position);
+// 	oc = op_min(op_mult_f(cross(cy->direction, vector_xyz(0, 0, 1)), cy->r), cy->position);
+// 	caca = dot(ca,ca);
+// 	card = dot(ca, op_mult_f(cross(cy->direction, vector_xyz(0, 0, 1)), cy->r));
+// 	caoc = dot(ca,oc);
+// 	a = caca - card * card;
+// 	b = caca * dot(oc, op_mult_f(cross(cy->direction, vector_xyz(0, 0, 1)), cy->r)) - caoc * card;
+// 	c = caca * dot(oc, oc) - caoc * caoc - cy->r * cy->r * caca;
+// 	h = b * b - a * c;
+// 	if (h < 0.0)
+// 		return (FALSE); //no intersection
+// 	h = sqrt(h);
+// 	t = (-b -h) / a;
+// 	y = caoc + t * card;
+// 	if (y < 0.0 || y > caca)
+// 		return (FALSE);
+// 	i->shape = (void *)cy;
+// 	i->t = t;
+// 	i->color = cy->color;
 // 	return (TRUE);
 // }

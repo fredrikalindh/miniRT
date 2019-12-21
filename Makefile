@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/12/10 21:04:22 by frlindh          ###   ########.fr        #
+#    Updated: 2019/12/17 12:44:00 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ OBJS			=	$(patsubst %.c, %.o, $(SRCS))
 
 all: $(NAME) #clean #remove this OBS !!!!!!!!!!!!
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) ./includes/*.h
 	$(GCC) $(FLAGS) $(EXTRA) $(OBJS) -o $(NAME)
 
 # $(LIBFT):

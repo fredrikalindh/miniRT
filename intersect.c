@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/12 18:52:14 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/21 12:48:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
 	return (TRUE);
 }
 
-t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
+t_bool			sq_intersect(t_intersection *i, t_ray ray, void *shape)
 {
 	t_square	*sq;
 	t_vector	q;
 	t_vector	side;
 	double		d;
 	double		t;
-	(void)r;
+	(void)ray;
 
 	sq = (t_square *)shape;
 	d = dot(i->ray.direction, sq->normal);
@@ -82,11 +82,13 @@ t_bool			sq_intersect(t_intersection *i, t_ray r, void *shape)
 	q = op_min(op_add(i->ray.origin, op_mult_f(i->ray.direction, t)), sq->center);
 	side = cross(sq->normal, vector_xyz(0, 1, 0));
 	if (dot(q, side) > sq->side || dot(q, side) < -sq->side ||
-		dot(cross(sq->normal, side), q) > sq->side || dot(cross(sq->normal, side), q) < -sq->side)
+		fabs(dot(cross(sq->normal, side), q)) > sq->side)
 		return (FALSE);
 	i->t = t;
 	i->shape = sq;
 	i->color = sq->color;
+	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
+	i->normal = sq->normal;
 	return (TRUE);
 }
 
@@ -115,22 +117,55 @@ t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 	i->shape = (void *)sphere;
 	i->t = t;
 	i->color = sphere->color;
-	i->normal = op_min(op_add(ray.origin, op_mult_f(ray.direction, t)), sphere->center);
+	i->hit = op_add(ray.origin, op_mult_f(ray.direction, t));
+	i->normal = normalized(op_min(i->hit, sphere->center));
 	return (TRUE);
 }
-//
-// t_bool			cy_intersect(t_intersection *i, t_ray r, void *shape)
-// {
-// 	t_cyl		*cy;
-// 	double		a;
-// 	double		b;
-// 	double		c;
-// 	double		d;
-// 	double		t;
-//
-// 	cy = (t_cyl *)shape;
-// 	op_minv(&ray.origin, cy->direction);
-// 	a = length2(ray.direction);
-// 	b = 2 * dot(ray.direction, ray.origin);
-// 	c = length2(ray.origin) - sqr(sphere->radius);
-// }
+
+double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
+{
+	double	t1;
+	double	t2;
+	double l1;
+	double l2;
+
+	t1 = (-b - sqrt(d)) / (2 * a);
+	t2 = (-b + sqrt(d)) / (2 * a);
+	l1 = dot(op_min(op_add(ray.origin, op_mult_f(ray.direction, t1)), cy->position), cy->direction);
+	l2 = dot(op_min(op_add(ray.origin, op_mult_f(ray.direction, t2)), cy->position), cy->direction);
+	if ((t2 < 0 || t2 >= t1) && t1 > 0 && fabs(l1) < cy->h)
+		return (t1);
+	if (t2 > 0 && fabs(l2) < cy->h)
+		return (t2);
+	return (-1);
+}
+
+t_bool			cy_intersect(t_intersection *i, t_ray ray, void *shape)
+{
+	t_cyl	*cy;
+	t_vector x;
+	double	a;
+	double	b;
+	double	c;
+	double	d;
+
+	cy = (t_cyl *)shape;
+	x = op_min(ray.origin, cy->position);
+	a = dot(ray.direction, cy->direction);
+	a = dot(ray.direction, ray.direction) - a * a;
+	b = 2 * (dot(ray.direction, x) - dot(ray.direction, cy->direction) * dot(x, cy->direction));
+	c = dot(x, cy->direction);
+	c = dot(x, x) - c * c - cy->r * cy->r;
+	d = b * b - 4 * a * c;
+	d = (fabs(d) < 0.00001) ? 0 : get_t(a, b, d, cy, ray);
+	if (d > 0 && d < i->t)
+	{
+		i->shape = (void *)cy;
+		i->t = d;
+		i->color = cy->color;
+		i->hit = op_add(ray.origin, op_mult_f(ray.direction, d));
+		i->normal = op_min(i->hit, cy->position);
+		return (TRUE);
+	}
+	return (FALSE);
+}

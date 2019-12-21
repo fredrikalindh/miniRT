@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/12 18:17:59 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/21 12:33:31 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ typedef struct		s_intersection
 	t_ray ray;
 	double t;
 	t_vector normal;
+	t_point hit;
 	void *shape;
 	t_color color;
 }					t_intersection;
@@ -255,6 +256,7 @@ t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *shape);
 t_bool		pl_intersect(t_intersection *intersection, t_ray ray, void *shape);
 t_bool 		tr_intersect(t_intersection *intersection, t_ray inside, void *shape);
 t_bool 		sq_intersect(t_intersection *intersection, t_ray inside, void *shape);
+t_bool 		cy_intersect(t_intersection *intersection, t_ray inside, void *shape);
 
 //color.c
 t_color		same_color(int col);
