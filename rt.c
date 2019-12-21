@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 18:14:59 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/21 23:05:34 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ t_bool			ft_hit(t_ray ray, void *shape)
 	return (FALSE);
 }
 
-
 t_color ray_cast(t_intersection hit)
 {
 	t_ray p;
@@ -102,48 +101,13 @@ t_color ray_cast(t_intersection hit)
 	{
 		if (shape->shape != hit.shape && ft_hit(p, shape->shape))
 		{
-			d = 0.0;
+			d = g_rt.a_light_r;
 			break ;
 		}
 		shape = shape->next;
 	}
 	return(test(hit.color, l->color, d));
 }
-
-// t_color ray_cast(t_intersection hit)
-// {
-// 	t_ray p;
-// 	t_light	*l;
-// 	t_shapes *shape;
-// 	float	d;
-// 	t_bool (*intersect[5])(t_intersection *, t_ray, void *);
-// 	int flag;
-//
-// 	l = g_rt.light;
-// 	init_iftptr(intersect);
-// 	d = 0.0;
-// 	while (l != NULL)
-// 	{
-// 		p.direction = normalized(op_min(l->coor, hit.hit));
-// 		shape = g_rt.shapes;
-// 		flag = 0;
-// 		while (shape != NULL)
-// 		{
-// 			if (shape->shape != hit.shape && intersect[shape->id](&hit, p, shape->shape))
-// 			{
-// 				flag = 1;
-// 				break ;
-// 			}
-// 			shape = shape->next;
-// 		}
-// 		if (flag == 0)
-// 			d += dot(hit.normal, p.direction);
-// 		d = ft_mind(ft_maxd(d, 1), 0);
-// 		hit.color = test(hit.color, l->color, d);
-// 		l = l->next;
-// 	}
-// 	return(hit.color);
-// }
 
 void	put_pixel(t_color c)
 {
@@ -175,6 +139,7 @@ int		ray_trace()
 			hit.t = RAY_T_MAX;
 			hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
 			shape = g_rt.shapes;
+			hit.color = same_color(0);
 			while (shape != NULL)
 			{
 				intersect[shape->id](&hit, hit.ray, shape->shape);
@@ -183,7 +148,7 @@ int		ray_trace()
 			if (hit.t != RAY_T_MAX)
 				put_pixel(ray_cast(hit)); // gets color from closest shape
 			else
-				put_pixel(same_color(0.0)); //puts into image / file
+				put_pixel(same_color(0)); //puts into image / file
 		}
 	}
 	return (0);
