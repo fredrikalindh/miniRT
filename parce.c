@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 13:38:28 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 18:19:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,83 +37,82 @@ int		ft_res(char **split)
 	return (0);
 }
 
-int		ft_amb(char **split)
+int		ft_amb(char **s)
 {
 	int i;
 
 	i = 0;
 	g_rt.err = (g_rt.a_light_r != -1) ? 1 : 0;
-	while (split && split[++i] != NULL)
-		is_digit(split[i]) == 0 ? g_rt.err = 1 : 0;
+	while (s && s[++i] != NULL)
+		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
 	if (i >= 5)
 	{
-		g_rt.a_light_r = ft_atof(split[1]);
-		g_rt.a_light_c = new_color(ft_atoi(split[2]), ft_atoi(split[3]), ft_atoi(split[4]));
+		g_rt.a_light_r = ft_atof(s[1]);
+		g_rt.a_light_c = new_color(ft_atoi(s[2]), ft_atoi(s[3]), ft_atoi(s[4]));
 		if (outside_range(g_rt.a_light_c))
 			g_rt.err = 3;
 	}
 	i = -1;
-	while (split && split[++i] != NULL)
-		free(split[i]);
+	while (s && s[++i] != NULL)
+		free(s[i]);
 	if (i < 4 || g_rt.err != 0)
 	{
-		free(split);
+		free(s);
 		ft_puterr2('A');
 	}
 	return (0);
 }
 
-int		ft_cam(char **split)
+int		ft_cam(char **s)
 {
 	int i;
 	t_camera *new;
 
 	i = 0;
-	while (split && split[++i] != NULL)
-		is_digit(split[i]) == 0 ? g_rt.err = 1 : 0;
+	while (s && s[++i] != NULL)
+		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
 	if (i >= 7)
 	{
 		if (!(new = (t_camera *)malloc(sizeof(t_camera))))
 			return (-1);
 		new->next = g_rt.camera;
-		new->position = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		new->dir = vector_xyz(ft_atof(split[4]), ft_atof(split[5]), ft_atof(split[6]));
+		new->position = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
+		new->dir = normalized(vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6])));
 		if (outside_range2(new->dir))
 			g_rt.err = 5;
-		normalized(new->dir);
 		g_rt.camera = new;
 	}
 	i = -1;
-	while (split && split[++i] != NULL)
-		free(split[i]);
+	while (s && s[++i] != NULL)
+		free(s[i]);
 	if (i < 7 || g_rt.err != 0)
 		ft_puterr2('c');
 	return (0);
 }
 
-int		ft_lig(char **split)
+int		ft_lig(char **s)
 {
 	int i;
 	t_light *new;
 
 	i = 0;
-	while (split && split[++i] != NULL)
-		is_digit(split[i]) == 0 ? g_rt.err = 1 : 0;
+	while (s && s[++i] != NULL)
+		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
 	if (i >= 8)
 	{
 		if (!(new = (t_light *)malloc(sizeof(t_light))))
 			return (-1);
 		new->next = g_rt.light;
-		new->coor = vector_xyz(ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3]));
-		new->bright = ft_atof(split[4]);
-		new->color = new_color(ft_atoi(split[5]), ft_atoi(split[6]), ft_atoi(split[7]));
+		new->coor = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
+		new->bright = ft_atof(s[4]);
+		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
 		if (outside_range(new->color))
 			g_rt.err = 3;
 		g_rt.light = new;
 	}
 	i = -1;
-	while (split && split[++i] != NULL)
-		free(split[i]);
+	while (s && s[++i] != NULL)
+		free(s[i]);
 	if (i < 8 || g_rt.err != 0)	// free shit == split and cam, light and shapes
 		ft_puterr2('l');
 	return (0);

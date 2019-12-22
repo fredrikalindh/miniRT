@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 22:47:46 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 18:01:50 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct		s_cyl
 	t_vector		direction;
 	double			r;
 	double			h;
+	int				first;
 	t_color			color;
 }					t_cyl;
 
@@ -250,7 +251,8 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
 int			ray_trace();
 t_color 	ray_cast(t_intersection hit);
 t_ray		compute_ray(float pixx, float pixy);
-void		init_iftptr(t_bool (*intersect[5])(t_intersection *, t_ray, void *));
+t_bool 		intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f);
+
 // intersect.c
 t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *shape);
 t_bool		pl_intersect(t_intersection *intersection, t_ray ray, void *shape);

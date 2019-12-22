@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 23:06:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 18:01:47 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_bool			pl_intersect(t_intersection *i, t_ray ray, void *shape)
+static t_bool	hit_pl(t_intersection *i, t_ray ray, void *shape)
 {
 	t_plane		*p;
 	double		d;
@@ -34,7 +34,7 @@ t_bool			pl_intersect(t_intersection *i, t_ray ray, void *shape)
 	return (TRUE);
 }
 
-t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
+static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
 {
 	t_triangle	*tr;
 	t_vector	q;
@@ -65,7 +65,7 @@ t_bool			tr_intersect(t_intersection *i, t_ray r, void *shape)
 	return (TRUE);
 }
 
-t_bool			sq_intersect(t_intersection *i, t_ray ray, void *shape)
+static t_bool			hit_sq(t_intersection *i, t_ray ray, void *shape)
 {
 	t_square	*sq;
 	t_vector	q;
@@ -94,7 +94,7 @@ t_bool			sq_intersect(t_intersection *i, t_ray ray, void *shape)
 	return (TRUE);
 }
 
-t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
+static t_bool			hit_sp(t_intersection *i, t_ray ray, void *shape)
 {
 	t_sphere	*sphere;
 	double		a;
@@ -124,7 +124,7 @@ t_bool			sp_intersect(t_intersection *i, t_ray ray, void *shape)
 	return (TRUE);
 }
 
-double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
+static double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
 {
 	double	t1;
 	double	t2;
@@ -135,14 +135,18 @@ double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
 	t2 = (-b + sqrt(d)) / (2 * a);
 	l1 = dot(op_min(op_add(ray.origin, op_mult_f(ray.direction, t1)), cy->position), cy->direction);
 	l2 = dot(op_min(op_add(ray.origin, op_mult_f(ray.direction, t2)), cy->position), cy->direction);
-	if ((t2 < 0 || t2 >= t1) && t1 > 0 && fabs(l1) < cy->h)
+	cy->first = 0;
+	if (t1 > 0.00000001 && (t1 <= t2 || t2 < 0.0000001) && fabs(l1) <= cy->h)
+	{
+		cy->first = 1;
 		return (t1);
-	if (t2 > 0 && fabs(l2) < cy->h)
+	}
+	if (t2 > 0.00000001 && fabs(l2) <= cy->h)
 		return (t2);
 	return (-1);
 }
 
-t_bool			cy_intersect(t_intersection *i, t_ray ray, void *shape)
+static t_bool			hit_cy(t_intersection *i, t_ray ray, void *shape)
 {
 	t_cyl	*cy;
 	t_vector x;
@@ -166,8 +170,37 @@ t_bool			cy_intersect(t_intersection *i, t_ray ray, void *shape)
 		i->t = d;
 		i->color = cy->color;
 		i->hit = op_add(ray.origin, op_mult_f(ray.direction, d));
-		i->normal = normalized(op_min(i->hit, cy->position));
+		i->normal = (cy->first == 1) ? normalized(op_min(i->hit, cy->position)): normalized(op_min(cy->position, i->hit));
 		return (TRUE);
 	}
 	return (FALSE);
+}
+
+t_bool intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f)
+{
+	t_intersection fake;
+
+	fake.t = hit->t;
+	if (shape->id == 0 && f == 0)
+		return(hit_sp(hit, ray, shape->shape));
+	else if (shape->id == 1 && f == 0)
+		return(hit_pl(hit, ray, shape->shape));
+	else if (shape->id == 2 && f == 0)
+		return(hit_cy(hit, ray, shape->shape));
+	else if (shape->id == 3 && f == 0)
+		return(hit_tr(hit, ray, shape->shape));
+	else if (shape->id == 4 && f == 0)
+		return(hit_sq(hit, ray, shape->shape));
+	else if (shape->id == 0)
+		return(hit_sp(&fake, ray, shape->shape));
+	else if (shape->id == 1)
+		return(hit_pl(&fake, ray, shape->shape));
+	else if (shape->id == 2)
+		return(hit_cy(&fake, ray, shape->shape));
+	else if (shape->id == 3)
+		return(hit_tr(&fake, ray, shape->shape));
+	else if (shape->id == 4)
+		return(hit_sq(&fake, ray, shape->shape));
+	else
+		return (FALSE);
 }

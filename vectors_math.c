@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/04 13:53:03 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 18:30:11 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ double	length(t_vector v)
 double	normalize(t_vector *v)
 {
 	double l;
+	double l2;
 
-	l = length2(*v);
-	if (l > 0)
+	l2 = length(*v);
+	if (l2 > 0)
 	{
-		l = 1 / sqrt(l);
+		l = 1 / l2;
 		v->x *= l;
 		v->y *= l;
 		v->z *= l;
 	}
-	return (l);
+	return (l2);
 }
 
 t_vector	normalized(t_vector v)
