@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/22 18:32:37 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 22:15:10 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	y = (1 - 2 * pixy) * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
 	// x = (2 * pixx - 1) * r; // * g_rt.fov
 	// y = (1 - 2 * pixy) * ; // * g_rt.fov
-	// dprintf(fd, "%f %f\n", x, y);
 	ray.direction = normalized(op_add(g_rt.camera->dir, op_add(op_mult_f(right, x), op_mult_f(up, y))));
 	ray.origin = g_rt.camera->position; //?
 	return (ray);

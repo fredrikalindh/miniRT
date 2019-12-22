@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/22 18:01:47 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 23:17:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ static t_bool	hit_pl(t_intersection *i, t_ray ray, void *shape)
 	double		d;
 	double		t;
 
-	(void)ray;
 	p = (t_plane *)shape;
-	d = dot(i->ray.direction, p->normal);
+	d = dot(ray.direction, p->normal);
 	if (d == 0)
 		return (FALSE);
-	t = dot(op_min(p->position, i->ray.origin), p->normal) / d;
-	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
+	t = dot(op_min(p->position, ray.origin), p->normal) / d;
+	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t || t == 0.0)
 		return (FALSE);
 	i->t = t;
 	i->shape = p;
 	i->color = p->color;
-	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
+	i->hit = op_add(ray.origin, op_mult_f(ray.direction, t));
 	i->normal = normalized(p->normal);
+	i->normal = (dot(p->normal, ray.direction) < 0) ? p->normal : op_mult_f(p->normal, -1.0);
 	return (TRUE);
 }
 
@@ -55,13 +55,15 @@ static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
 		return (FALSE);
 	t = dot(tr->e2, q);
 	(s.x != 0) ? t /= s.x : 0;
-	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
+	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t || t == 0.0)
 		return (FALSE);
 	i->t = t;
 	i->shape = tr;
 	i->color = tr->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
 	i->normal = normalized(cross(tr->e1, tr->e2));
+	if (dot(i->normal, i->ray.direction) > 0)
+		i->normal = op_mult_f(i->normal, -1.0);
 	return (TRUE);
 }
 
@@ -79,7 +81,7 @@ static t_bool			hit_sq(t_intersection *i, t_ray ray, void *shape)
 	if (d == 0)
 		return (FALSE);
 	t = dot(op_min(sq->center, i->ray.origin), sq->normal) / d;
-	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t)
+	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t || t == 0.0)
 		return (FALSE);
 	q = op_min(op_add(i->ray.origin, op_mult_f(i->ray.direction, t)), sq->center);
 	side = cross(sq->normal, vector_xyz(0, 1, 0));
@@ -90,7 +92,7 @@ static t_bool			hit_sq(t_intersection *i, t_ray ray, void *shape)
 	i->shape = sq;
 	i->color = sq->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
-	i->normal = normalized(sq->normal);
+	i->normal = (dot(sq->normal, i->ray.direction) < 0) ? sq->normal : op_mult_f(sq->normal, -1.0);
 	return (TRUE);
 }
 
@@ -110,9 +112,9 @@ static t_bool			hit_sp(t_intersection *i, t_ray ray, void *shape)
 	if ((sqr(b) - 4 * a * c) < 0.0)
 		return (FALSE);
 	t = (-b - sqrt(sqr(b) - 4 * a * c)) / (2 * a);
-	if (!(t > RAY_T_MIN && t < RAY_T_MAX) || t > i->t)
+	if (!(t > RAY_T_MIN && t < RAY_T_MAX) || t > i->t || t == 0.0)
 		t = (-b + sqrt(sqr(b) - 4 * a * c)) / (2 * a);
-	if (t > RAY_T_MIN && t < RAY_T_MAX && t < i->t)
+	if (t > RAY_T_MIN && t < RAY_T_MAX && t < i->t && t != 0.0)
 		i->t = t;
 	else
 		return (FALSE);
@@ -136,14 +138,25 @@ static double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
 	l1 = dot(op_min(op_add(ray.origin, op_mult_f(ray.direction, t1)), cy->position), cy->direction);
 	l2 = dot(op_min(op_add(ray.origin, op_mult_f(ray.direction, t2)), cy->position), cy->direction);
 	cy->first = 0;
-	if (t1 > 0.00000001 && (t1 <= t2 || t2 < 0.0000001) && fabs(l1) <= cy->h)
+	if (t1 > 0.000001 && (t1 <= t2 || t2 < 0.000001) && fabs(l1) <= cy->h)
 	{
 		cy->first = 1;
 		return (t1);
 	}
-	if (t2 > 0.00000001 && fabs(l2) <= cy->h)
+	if (t2 > 0.0000001 && fabs(l2) <= cy->h)
 		return (t2);
 	return (-1);
+}
+
+static t_vector cyl_normal(t_cyl *c, t_point hit)
+{
+	t_vector n;
+
+	if (c->first == 1)
+		n = op_min(hit, op_mult_f(c->direction, dot(op_add(c->position, c->direction), op_min(hit, c->position))));
+	else
+		n = op_min(op_mult_f(c->direction, dot(op_add(c->position, c->direction), op_min(hit, c->position))), hit);
+	return (n);
 }
 
 static t_bool			hit_cy(t_intersection *i, t_ray ray, void *shape)
@@ -152,7 +165,6 @@ static t_bool			hit_cy(t_intersection *i, t_ray ray, void *shape)
 	t_vector x;
 	double	a;
 	double	b;
-	double	c;
 	double	d;
 
 	cy = (t_cyl *)shape;
@@ -160,9 +172,9 @@ static t_bool			hit_cy(t_intersection *i, t_ray ray, void *shape)
 	a = dot(ray.direction, cy->direction);
 	a = dot(ray.direction, ray.direction) - a * a;
 	b = 2 * (dot(ray.direction, x) - dot(ray.direction, cy->direction) * dot(x, cy->direction));
-	c = dot(x, cy->direction);
-	c = dot(x, x) - c * c - cy->r * cy->r;
-	d = b * b - 4 * a * c;
+	d = dot(x, cy->direction);
+	d = dot(x, x) - d * d - cy->r * cy->r;
+	d = b * b - 4 * a * d;
 	d = (fabs(d) < 0.00001) ? 0 : get_t(a, b, d, cy, ray);
 	if (d > 0 && d < i->t)
 	{
@@ -170,7 +182,7 @@ static t_bool			hit_cy(t_intersection *i, t_ray ray, void *shape)
 		i->t = d;
 		i->color = cy->color;
 		i->hit = op_add(ray.origin, op_mult_f(ray.direction, d));
-		i->normal = (cy->first == 1) ? normalized(op_min(i->hit, cy->position)): normalized(op_min(cy->position, i->hit));
+		i->normal = cyl_normal(cy, i->hit);
 		return (TRUE);
 	}
 	return (FALSE);
@@ -181,6 +193,7 @@ t_bool intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f)
 	t_intersection fake;
 
 	fake.t = hit->t;
+	fake.ray = ray;
 	if (shape->id == 0 && f == 0)
 		return(hit_sp(hit, ray, shape->shape));
 	else if (shape->id == 1 && f == 0)

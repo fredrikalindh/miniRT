@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/21 13:38:56 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/22 19:44:51 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int		ft_pl(char **s)
 		shell->next = g_rt.shapes;
 		new->position = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->normal = vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6]));
-		if (outside_range2(new->normal))
-			g_rt.err = 5;
+		outside_range2(new->normal) ? g_rt.err = 5 : normalize(&new->normal);
 		new->color = new_color(ft_atoi(s[7]), ft_atoi(s[8]), ft_atoi(s[9]));
 		if (outside_range(new->color))
 			g_rt.err = 3;
