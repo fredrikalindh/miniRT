@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/10 21:26:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 16:11:17 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	free_globals()
 {
 	void *prev;
+	t_camera *start;
 
-	while(g_rt.camera != NULL)
+	start = g_rt.camera;
+	while(g_rt.camera != NULL && g_rt.camera->next != start)
 	{
 		prev = (void *)g_rt.camera;
 		g_rt.camera = g_rt.camera->next;

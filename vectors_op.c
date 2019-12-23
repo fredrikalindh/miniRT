@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:47:35 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/12 17:34:56 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 16:19:51 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ t_vector op_add(t_vector v, t_vector op)
 	v.z += op.z;
 
 	return (v);
+}
+
+void op_addp(t_vector *v, t_vector op)
+{
+	v->x += op.x;
+	v->y += op.y;
+	v->z += op.z;
 }
 
 t_vector op_min(t_vector v, t_vector op)

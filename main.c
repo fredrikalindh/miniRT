@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/12 17:44:48 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 16:44:04 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		init_info(int fd, int argc)
 int		init_scene(int argc, char *argv[])
 {
 	int		fd;
+	t_camera *p;
 
 	if (argc < 2 || check_rt(argv[1]))
 		ft_puterr("scene description file is missing");
@@ -83,6 +84,10 @@ int		init_scene(int argc, char *argv[])
 			ft_puterr("need an eye to see!");
 		if (close(fd) == -1)
 			ft_puterr("failed to close file");
+		p = g_rt.camera;
+		while (p && p->next != NULL)
+			p = p->next;
+		p->next = g_rt.camera;
 		return (0);
 	}
 	exit(-1);
@@ -100,8 +105,26 @@ int		exit_program(void *param)
 
 int deal_key(int key, void *param)
 {
-	if (key == ESC || key == CTRL_C || key == 259) // exit when esc key or ctrl+c
+	t_param *p;
+
+	p = (t_param *)param;
+	if (key == ESC || key == 256 || key == 259) // exit when esc key or ctrl+c
 		exit_program(param);
+	if (key == 8)
+	{
+		g_rt.camera = g_rt.camera->next;
+		g_rt.image = g_rt.or_image;
+		ray_trace();
+		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
+	}
+	if ((key <= 126 && key >= 123) || key == 13 || (key >= 0 && key <= 2))
+	{
+		move(&g_rt.camera->position, &g_rt.camera->dir, key);
+		g_rt.image = g_rt.or_image;
+		ray_trace();
+		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
+	}
+	// printf("%d\n", key);
 	return (0);
 }
 
@@ -151,7 +174,7 @@ int main(int ac, char *av[])
 		return (-1);
 	if (g_rt.save == 1)
 	{
-		if (!(g_rt.image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 21)))
+		if (!(g_rt.or_image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 21)))
 			return (-1);
 		print = g_rt.image;
 		ray_trace();
@@ -163,8 +186,9 @@ int main(int ac, char *av[])
 	p.size_line = g_rt.res_x * 32;
 	p.endian = 1;
 	p.img_ptr = mlx_new_image(p.mlx_ptr, g_rt.res_x, g_rt.res_y);
-	g_rt.image = mlx_get_data_addr(p.img_ptr, &p.bpp, &p.size_line, &p.endian); // BITS PER PIZEL & SIZE_LINE & ENDIAN
+	g_rt.or_image = mlx_get_data_addr(p.img_ptr, &p.bpp, &p.size_line, &p.endian); // BITS PER PIZEL & SIZE_LINE & ENDIAN
 	write(1, "\033[1;36mRendering image...\n\033[0m", 30);
+	g_rt.image = g_rt.or_image;
 	ray_trace();
 	write(1, "\033[1;36mDone!\n\033[0m", 17);
 	p.win_ptr= mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/22 18:01:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 16:26:22 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ typedef struct		s_cyl
 	t_vector		direction;
 	double			r;
 	double			h;
-	int				first;
+	double			d;
+	int				first:2;
 	t_color			color;
 }					t_cyl;
 
@@ -190,6 +191,7 @@ typedef struct		s_rt
 	unsigned int	save:1;
 	unsigned int	err:8;
 	char			*image;
+	char			*or_image;
 	int				fd:4;
 	int				line;
 
@@ -200,6 +202,7 @@ typedef struct		s_rt
 	double		a_light_r;
 	t_color		a_light_c;
 	t_camera	*camera;
+	t_camera	*camera_list;
 	t_light		*light;
 	t_shapes	*shapes;
 }					t_rt;
@@ -225,6 +228,7 @@ t_vector	normalized(t_vector v);
 
 // op_vectors
 t_vector	op_add(t_vector v, t_vector op);
+void		op_addp(t_vector *v, t_vector op);
 t_vector	op_min(t_vector v, t_vector op);
 void		op_minv(t_vector *v, t_vector op);
 void		op_mult(t_vector *v, t_vector op);
@@ -266,6 +270,10 @@ void		apply_gamma(t_color *c, double exposure, double gamma);
 void		clamp(t_color *c);
 t_color		color_add(t_color c1, t_color c2);
 t_color		color_mult(t_color c1, double f);
+
+
+void 		move(t_vector *pos, t_vector *dir, int key);
+
 
 t_rt	g_rt;
 
