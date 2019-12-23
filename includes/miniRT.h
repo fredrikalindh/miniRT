@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 16:26:22 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 18:12:29 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ typedef struct		s_ray
 {
 	t_point		origin; // ???
 	t_vector	direction;
-	//enum type{prim, shad, reflx, refract}id;
-	//int		nr:4;
 }					t_ray;
 
 typedef struct		s_color // -> double ??
@@ -186,6 +184,13 @@ typedef struct		s_intersection
 // 	double *data;
 // }					t_image;
 
+
+typedef struct		s_trans
+{
+	t_point		*origin; // ???
+	t_vector	*direction;
+}					t_trans;
+
 typedef struct		s_rt
 {
 	unsigned int	save:1;
@@ -194,7 +199,7 @@ typedef struct		s_rt
 	char			*or_image;
 	int				fd:4;
 	int				line;
-
+	t_trans			to_change;
 	int			res_x;
 	int			res_y;
 	// int			fov;

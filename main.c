@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/23 16:44:04 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 18:21:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,65 @@ int		exit_program(void *param)
 	exit(0);
 }
 
+void	set_object()
+{
+	static t_shapes *s = NULL;
+
+	if (s == NULL)
+		s = g_rt.shapes;
+	if (s->id == 0)
+		g_rt.to_change.origin = &((t_sphere *)s->shape)->center;
+	else if (s->id == 1)
+	{
+		g_rt.to_change.origin = &((t_plane *)s->shape)->position;
+		g_rt.to_change.direction = &((t_plane *)s->shape)->normal;
+	}
+	else if (s->id == 2)
+	{
+		g_rt.to_change.origin = &((t_cyl *)s->shape)->position;
+		g_rt.to_change.direction = &((t_cyl *)s->shape)->direction;
+	}
+	else if (s->id == 5)
+	{
+		g_rt.to_change.origin = &((t_square *)s->shape)->center;
+		g_rt.to_change.direction = &((t_square *)s->shape)->normal;
+	}
+	s = s->next;
+}
+
+void	set_lights()
+{
+	static t_light *l = NULL;
+
+	if (l == NULL)
+		l = g_rt.light;
+	g_rt.to_change.origin = &l->coor;
+	l = l->next;
+}
+
 int deal_key(int key, void *param)
 {
 	t_param *p;
 
 	p = (t_param *)param;
-	if (key == ESC || key == 256 || key == 259) // exit when esc key or ctrl+c
+	if (key == ESC) // exit when esc key c
 		exit_program(param);
 	if (key == 8)
 	{
 		g_rt.camera = g_rt.camera->next;
 		g_rt.image = g_rt.or_image;
+		g_rt.to_change.origin = &g_rt.camera->position;
+		g_rt.to_change.direction = &g_rt.camera->dir;
 		ray_trace();
 		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 	}
-	if ((key <= 126 && key >= 123) || key == 13 || (key >= 0 && key <= 2))
+	if (key == 37)
+		set_lights();
+	if (key == 31)
+		set_object();
+	if ((key <= 126 && key >= 123) || (key >= 12 && key <= 14) || (key >= 0 && key <= 2))
 	{
-		move(&g_rt.camera->position, &g_rt.camera->dir, key);
+		move(g_rt.to_change.origin, g_rt.to_change.direction, key);
 		g_rt.image = g_rt.or_image;
 		ray_trace();
 		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
@@ -189,6 +231,8 @@ int main(int ac, char *av[])
 	g_rt.or_image = mlx_get_data_addr(p.img_ptr, &p.bpp, &p.size_line, &p.endian); // BITS PER PIZEL & SIZE_LINE & ENDIAN
 	write(1, "\033[1;36mRendering image...\n\033[0m", 30);
 	g_rt.image = g_rt.or_image;
+	g_rt.to_change.origin = &g_rt.camera->position;
+	g_rt.to_change.direction = &g_rt.camera->dir;
 	ray_trace();
 	write(1, "\033[1;36mDone!\n\033[0m", 17);
 	p.win_ptr= mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
