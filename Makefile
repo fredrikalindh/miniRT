@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2019/12/23 15:14:12 by frlindh          ###   ########.fr        #
+#    Updated: 2019/12/24 11:45:50 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,10 @@ IDIR			=	-I ./includes
 
 # SRCS *********************************************************************** #
 SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
-					intersect.c vectors_math.c vectors_op.c trans.c \
+					intersect.c vectors_math.c vectors_op.c trans.c ranges.c \
 					ft_atof.c \
 					ft_atoi.c \
 					ft_minmax.c \
-					ft_printf.c \
 					ft_puterr.c \
 					ft_puterr2.c \
 					ft_putnbr_fd.c \
@@ -34,13 +33,13 @@ SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					ft_strlen.c \
 					ft_strnlen.c \
 					get_next_line.c \
-					skip_atoi.c \
-					to_c.c \
-					to_n.c \
-					to_nbr.c \
-					to_s.c	\
-					is_digit.c \
-					ranges.c
+					is_digit.c 
+					# ft_printf.c \
+					# skip_atoi.c \
+					# to_c.c \
+					# to_n.c \
+					# to_nbr.c \
+					# to_s.c
 
 # OBJS *********************************************************************** #
 OBJS			=	$(patsubst %.c, %.o, $(SRCS))

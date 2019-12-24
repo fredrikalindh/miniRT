@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 21:41:21 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/24 21:14:35 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,26 @@
 # define CYLINDER	"cy"
 
 # define ESC 53
-# define CTRL_C 8
+# define C 8
+# define L 37
+# define O 31
 # define X_BUTT 17
+# define Q 12
+# define W 13
+# define E 14
+# define A 0
+# define S 1
+# define D 2
+# define UP 126
+# define DOWN 125
+# define RIGHT 124
+# define LEFT 123
+# define DOT 43
+# define CMA 47
+# define PLUS 27
+# define MIN 44
+
+
 # define RAY_T_MIN 0.0001
 # define RAY_T_MAX 1.0e30
 # define EPSILON 0.000001
@@ -85,45 +103,45 @@ typedef struct		s_color // -> double ??
 
 typedef struct		s_sphere
 {
+	t_color			color;
 	t_point			center;
 	double			radius;
-	t_color			color;
 }					t_sphere;
 
 typedef struct		s_plane
 {
+	t_color			color;
 	t_point			position;
 	t_vector		normal;
-	t_color			color;
 }					t_plane;
 
 typedef struct		s_cyl
 {
+	t_color			color;
 	t_point			position;
 	t_vector		direction;
 	double			r;
 	double			h;
 	double			d;
 	int				first:2;
-	t_color			color;
 }					t_cyl;
 
 typedef struct		s_triangle
 {
+	t_color				color;
 	t_point				c1;
 	t_point				c2;
 	t_point				c3;
 	t_point				e1;
 	t_point				e2;
-	t_color				color;
 }					t_triangle;
 
 typedef struct		s_square
 {
+	t_color			color;
 	t_point			center;
 	t_vector		normal;
 	double			side;
-	t_color			color;
 }					t_square;
 
 // typedef struct		s_shapes // ??
@@ -189,6 +207,8 @@ typedef struct		s_trans
 {
 	t_point		*origin; // ???
 	t_vector	*direction;
+	double		*r;
+	double		*h;
 	// t_shapes	*shape;
 }					t_trans;
 
@@ -279,6 +299,7 @@ t_color		color_mult(t_color c1, double f);
 
 
 void 		move(t_vector *pos, t_vector *dir, int key);
+void		trans(int key);
 
 
 t_rt	g_rt;

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/19 14:23:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/24 11:44:40 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdarg.h>
 
-# include "ft_printf.h"
+// # include "ft_printf.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024

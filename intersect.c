@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 01:28:52 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/24 17:59:55 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_bool	hit_pl(t_intersection *i, t_ray ray, void *shape)
 	i->hit = op_add(ray.origin, op_mult_f(ray.direction, t));
 	i->normal = normalized(p->normal);
 	i->normal = (dot(p->normal, ray.direction) < 0) ? p->normal : op_mult_f(p->normal, -1.0);
-	return (TRUE);
+	return (2);
 }
 
 static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
@@ -64,7 +64,7 @@ static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
 	i->normal = normalized(cross(tr->e1, tr->e2));
 	if (dot(i->normal, i->ray.direction) > 0)
 		i->normal = op_mult_f(i->normal, -1.0);
-	return (TRUE);
+	return (4);
 }
 
 static t_bool			hit_sq(t_intersection *i, t_ray ray, void *shape)
@@ -93,7 +93,7 @@ static t_bool			hit_sq(t_intersection *i, t_ray ray, void *shape)
 	i->color = sq->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
 	i->normal = (dot(sq->normal, i->ray.direction) < 0) ? sq->normal : op_mult_f(sq->normal, -1.0);
-	return (TRUE);
+	return (5);
 }
 
 static t_bool			hit_sp(t_intersection *i, t_ray ray, void *shape)
@@ -123,7 +123,7 @@ static t_bool			hit_sp(t_intersection *i, t_ray ray, void *shape)
 	i->color = sphere->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
 	i->normal = normalized(op_min(i->hit, sphere->center));
-	return (TRUE);
+	return (1);
 }
 
 static double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
@@ -187,8 +187,7 @@ static t_bool			hit_cy(t_intersection *i, t_ray ray, void *shape)
 		i->hit = op_add(ray.origin, op_mult_f(ray.direction, d));
 		cy->first = (dot(op_add(cy->position, i->hit), ray.direction) < 0) ? 0 : 1;
 		i->normal = cyl_normal(cy, i->hit);
-		// i->normal = normalized(op_min(i->hit, cy->position));
-		return (TRUE);
+		return (3);
 	}
 	return (FALSE);
 }
