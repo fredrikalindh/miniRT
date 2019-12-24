@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/23 18:21:23 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/23 23:04:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,18 @@ int		exit_program(void *param)
 	exit(0);
 }
 
-void	set_object()
+void	set_object(int i, int key)
 {
 	static t_shapes *s = NULL;
+	static double		*size = NULL;
 
 	if (s == NULL)
 		s = g_rt.shapes;
 	if (s->id == 0)
+	{
 		g_rt.to_change.origin = &((t_sphere *)s->shape)->center;
+		size = &((t_sphere *)s->shape)->radius;
+	}
 	else if (s->id == 1)
 	{
 		g_rt.to_change.origin = &((t_plane *)s->shape)->position;
@@ -120,13 +124,18 @@ void	set_object()
 	{
 		g_rt.to_change.origin = &((t_cyl *)s->shape)->position;
 		g_rt.to_change.direction = &((t_cyl *)s->shape)->direction;
+		size = &((t_cyl *)s->shape)->r;
 	}
-	else if (s->id == 5)
+	else if (s->id == 4)
 	{
 		g_rt.to_change.origin = &((t_square *)s->shape)->center;
 		g_rt.to_change.direction = &((t_square *)s->shape)->normal;
+		size = &((t_square *)s->shape)->side;
 	}
-	s = s->next;
+	if (i == 0)
+		s = s->next;
+	else if (size != NULL && (key == 27 || key == 44))
+		*size = (key == 27) ? *size + 0.5 : *size - 0.5;
 }
 
 void	set_lights()
@@ -142,26 +151,27 @@ void	set_lights()
 int deal_key(int key, void *param)
 {
 	t_param *p;
+	int		flag;
 
 	p = (t_param *)param;
 	if (key == ESC) // exit when esc key c
 		exit_program(param);
-	if (key == 8)
+	if (key == 8 && (flag = 1) == 1)
 	{
 		g_rt.camera = g_rt.camera->next;
-		g_rt.image = g_rt.or_image;
 		g_rt.to_change.origin = &g_rt.camera->position;
 		g_rt.to_change.direction = &g_rt.camera->dir;
-		ray_trace();
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 	}
 	if (key == 37)
 		set_lights();
 	if (key == 31)
-		set_object();
-	if ((key <= 126 && key >= 123) || (key >= 12 && key <= 14) || (key >= 0 && key <= 2))
-	{
+		set_object(0, 0);
+	if ((key == 27 || key == 44 || key == 4 || key == 11) && (flag = 1) == 1)
+		set_object(1, key);
+	if (((key <= 126 && key >= 123) || (key >= 12 && key <= 14) || (key >= 0 && key <= 2) || key == 43 || key == 47) && (flag = 1) == 1)
 		move(g_rt.to_change.origin, g_rt.to_change.direction, key);
+	if (flag == 1)
+	{
 		g_rt.image = g_rt.or_image;
 		ray_trace();
 		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
@@ -198,32 +208,30 @@ void	create_header()
 	}
 }
 
-void		open_image(char *print)
+void		open_image()
 {
+	char *print;
+
+	if (!(g_rt.or_image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 21)))
+		exit (-1);
+	print = g_rt.image;
+	ray_trace();
 	create_header();
 	if ((g_rt.fd = open("./minirt.bmp", O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) == -1)
 		ft_puterr("failed to create image.bmp");
 	write(g_rt.fd, print, (g_rt.res_x * g_rt.res_y * 4) + 20);
+	exit (1);
 }
 
 int main(int ac, char *av[])
 {
 	t_param p;
-	char *print;
 
 	init_scene(ac, av);
 	if (!(p.mlx_ptr = mlx_init()))
 		return (-1);
 	if (g_rt.save == 1)
-	{
-		if (!(g_rt.or_image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 21)))
-			return (-1);
-		print = g_rt.image;
-		ray_trace();
-		open_image(print);
-		// printf("%d\n", g_rt.i);
-		return (0);
-	}
+		open_image();
 	p.bpp = 32;
 	p.size_line = g_rt.res_x * 32;
 	p.endian = 1;

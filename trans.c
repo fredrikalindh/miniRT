@@ -6,23 +6,35 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 17:24:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/24 11:24:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+void rot(double *a, double *b)
+{
+	double c;
+
+	c = *a;
+	*a = cos(0.1) * *a - sin(0.1) * *b;
+	*b = sin(0.1) * c + cos(0.1) * *b;
+}
 
 void rotate(t_vector *dir, int key)
 {
 	if (key == 126)
-		op_addp(dir, vector_xyz(0,0.1,0));
+		rot(&dir->z, &dir->y);
 	else if (key == 123)
-		op_addp(dir, op_mult_f(cross(g_rt.camera->dir, vector_xyz(0,1,0)), 0.1));
+		rot(&dir->x, &dir->z);
 	else if (key == 124)
-		op_addp(dir, op_mult_f(cross(vector_xyz(0,1,0), g_rt.camera->dir), 0.1));
-	else
-		op_addp(dir, vector_xyz(0,-0.1,0));
+		rot(&dir->z, &dir->x);
+	else if (key == 125)
+		rot(&dir->y, &dir->z);
+	else if (key == 43)
+		rot(&dir->y, &dir->x);
+	else if (key == 47)
+		rot(&dir->x, &dir->y);
 	normalize(dir);
 }
 
