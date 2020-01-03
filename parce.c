@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 16:07:45 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/29 17:31:09 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		ft_res(char **split)
 	g_rt.err = (g_rt.res_x != 0) ? 2 : 0;
 	while (split && split[++i] != NULL)
 		(is_digit(split[i]) == 0) ? g_rt.err = 1 : 0;
-	if (i >= 3)
+	if (i == 3)
 	{
 		g_rt.res_x = ft_min(ft_atoi(split[1]), MAX_X);
 		g_rt.res_y = ft_min(ft_atoi(split[2]), MAX_Y);
@@ -29,7 +29,7 @@ int		ft_res(char **split)
 	while (split && split[++i] != NULL)
 		free(split[i]);
 	(g_rt.res_x < 0 || g_rt.res_y < 0) ? g_rt.err = 4 : 0;
-	if (i < 3 || g_rt.err != 0)
+	if (i != 3 || g_rt.err != 0)
 	{
 		free(split);
 		ft_puterr2('R');
@@ -45,7 +45,7 @@ int		ft_amb(char **s)
 	g_rt.err = (g_rt.a_light_r != -1) ? 1 : 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 5)
+	if (i == 5)
 	{
 		g_rt.a_light_r = ft_atof(s[1]);
 		g_rt.a_light_c = new_color(ft_atoi(s[2]), ft_atoi(s[3]), ft_atoi(s[4]));
@@ -55,7 +55,7 @@ int		ft_amb(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 4 || g_rt.err != 0)
+	if (i != 5 || g_rt.err != 0)
 	{
 		free(s);
 		ft_puterr2('A');
@@ -72,7 +72,7 @@ int		ft_cam(char **s)
 	i = 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 7)
+	if (i == 7)
 	{
 		if (!(new = (t_camera *)malloc(sizeof(t_camera))))
 			return (-1);
@@ -94,8 +94,8 @@ int		ft_cam(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 7 || g_rt.err != 0)
-		ft_puterr2('c');
+	if (i != 7 || g_rt.err != 0)
+		ft_puterr2('C');
 	return (0);
 }
 
@@ -107,7 +107,7 @@ int		ft_lig(char **s)
 	i = 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 8)
+	if (i == 8)
 	{
 		if (!(new = (t_light *)malloc(sizeof(t_light))))
 			return (-1);
@@ -122,7 +122,7 @@ int		ft_lig(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 8 || g_rt.err != 0)	// free shit == split and cam, light and shapes
+	if (i != 8 || g_rt.err != 0)	// free shit == split and cam, light and shapes
 		ft_puterr2('l');
 	return (0);
 }

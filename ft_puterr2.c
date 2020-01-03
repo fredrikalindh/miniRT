@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 16:11:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/29 17:31:02 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	ft_puterr2(char id)
 	write(2, "\033[1;31m", 7);
 	write(2, "Error: ", 7);
 	if (g_rt.err == 0)
-		write(2, "missing arguments for ", 22);
+		write(2, "wrong instructions for ", 23);
+	else if (g_rt.err == 1)
+		write(2, "instruction for ", 16);
 	else if (g_rt.err == 2)
 		write(2, "double ", 7);
 	else
@@ -53,7 +55,7 @@ void	ft_puterr2(char id)
 		write(2, "resolution", 11);
 	else if (id == 'A')
 		write(2, "ambient light", 13);
-	else if (id == 'c')
+	else if (id == 'C')
 		write(2, "camera", 7);
 	else if (id == 'l')
 		write(2, "light", 5);
@@ -65,10 +67,14 @@ void	ft_puterr2(char id)
 		write(2, "triangle", 8);
 	else if (id == 'q')
 		write(2, "square", 6);
+	else if (id == 'p')
+		write(2, "plane", 5);
 	else
 		write(2, "unknown", 7);
 	if (g_rt.err == 3)
 		write(2, " color not within the correct range", 35);
+	else if (g_rt.err == 1)
+		write(2, " contains non-digits", 20);
 	else if (g_rt.err == 5)
 		write(2, " vector not normalized", 22);
 	write(2, " on line: ", 10);

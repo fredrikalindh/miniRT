@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/24 21:14:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/03 16:22:43 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@
 # define CMA 47
 # define PLUS 27
 # define MIN 44
+# define H 4
+# define B 11
+# define TAB 48
 
 
 # define RAY_T_MIN 0.0001
 # define RAY_T_MAX 1.0e30
-# define EPSILON 0.000001
 
 typedef enum {FALSE, TRUE} t_bool;
 
@@ -134,6 +136,8 @@ typedef struct		s_triangle
 	t_point				c3;
 	t_point				e1;
 	t_point				e2;
+	t_point				e3;
+	// t_point				normal;
 }					t_triangle;
 
 typedef struct		s_square
@@ -207,6 +211,7 @@ typedef struct		s_trans
 {
 	t_point		*origin; // ???
 	t_vector	*direction;
+	t_vector	*c3;
 	double		*r;
 	double		*h;
 	// t_shapes	*shape;
@@ -298,8 +303,8 @@ t_color		color_add(t_color c1, t_color c2);
 t_color		color_mult(t_color c1, double f);
 
 
-void 		move(t_vector *pos, t_vector *dir, int key);
-void		trans(int key);
+int 		move(t_vector *pos, t_vector *dir, int key);
+int			trans(int key);
 
 
 t_rt	g_rt;

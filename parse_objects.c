@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/22 19:44:51 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/03 16:23:35 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		ft_pl(char **s)
 	i = 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 10)
+	if (i == 10)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
 			return (-1);
@@ -41,7 +41,7 @@ int		ft_pl(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 10 || g_rt.err != 0) 		// free shit == s and cam, light and shapes
+	if (i != 10 || g_rt.err != 0) 		// free shit == s and cam, light and shapes
 		ft_puterr2('p');
 	return (0);
 }
@@ -55,7 +55,7 @@ int		ft_sp(char **s)
 	i = 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 8)
+	if (i == 8)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
 			return (-1);
@@ -74,7 +74,7 @@ int		ft_sp(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 8 || g_rt.err != 0) 		// free shit == s and cam, light and shapes
+	if (i != 8 || g_rt.err != 0) 		// free shit == s and cam, light and shapes
 		ft_puterr2('h');
 	return (0);
 }
@@ -88,7 +88,7 @@ int		ft_sq(char **s)
 	i = 0;
 	while (s && s[i] != NULL)
 		i++;
-	if (i >= 11)
+	if (i == 11)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
 			return (-1);
@@ -107,8 +107,8 @@ int		ft_sq(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 11) 		// free shit == s and cam, light and shapes
-		ft_puterr("error: incorrect square instruction");
+	if (i != 11) 		// free shit == s and cam, light and shapes
+		ft_puterr2('q');
 	return (0);
 }
 
@@ -121,7 +121,7 @@ int		ft_cy(char **s)
 	i = 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 12)
+	if (i == 12)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
 			return (-1);
@@ -142,7 +142,7 @@ int		ft_cy(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 12 || g_rt.err != 0) 	// free shit == s and cam, light and shapes
+	if (i != 12 || g_rt.err != 0) 	// free shit == s and cam, light and shapes
 		ft_puterr2('c');
 	return (0);
 }
@@ -156,7 +156,7 @@ int		ft_tr(char **s)
 	i = 0;
 	while (s && s[++i] != NULL)
 		is_digit(s[i]) == 0 ? g_rt.err = 1 : 0;
-	if (i >= 13)
+	if (i == 13)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
 			return (-1);
@@ -170,7 +170,8 @@ int		ft_tr(char **s)
 		if (outside_range(new->color))
 			g_rt.err = 3;
 		new->e1 = op_min(new->c2, new->c1);
-		new->e2 = op_min(new->c3, new->c1);
+		new->e2 = op_min(new->c3, new->c2);
+		new->e3 = op_min(new->c1, new->c3);
 		shell->shape = (void *)new;
 		shell->id = tr;
 		g_rt.shapes = (void *)shell;
@@ -178,7 +179,7 @@ int		ft_tr(char **s)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i < 13 || g_rt.err != 0) 		// free shit == s and cam, light and shapes
+	if (i != 13 || g_rt.err != 0) 		// free shit == s and cam, light and shapes
 		ft_puterr2('t');
 	return (0);
 }

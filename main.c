@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2019/12/24 21:17:32 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/12/31 13:46:39 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,32 +107,21 @@ void	set_object(int key)
 {
 	static t_shapes *s = NULL;
 
+	g_rt.to_change.origin = NULL;
 	g_rt.to_change.direction = NULL;
 	g_rt.to_change.r = NULL;
 	g_rt.to_change.h = NULL;
-	if (g_rt.to_change.origin == NULL)
+	if (s == NULL)
 		s = g_rt.shapes;
 	g_rt.to_change.origin = &((t_sphere *)s->shape)->center;
-	if (s->id == 0)
-		g_rt.to_change.r = &((t_sphere *)s->shape)->radius;
-	else if (s->id == 1 )
+	if (s->id == 2 || s->id == 3 || s->id == 5)
 		g_rt.to_change.direction = &((t_plane *)s->shape)->normal;
-	else if (s->id == 2)
-	{
-		g_rt.to_change.direction = &((t_cyl *)s->shape)->direction;
+	if (s->id == 1)
+		g_rt.to_change.r = &((t_sphere *)s->shape)->radius;
+	if (s->id == 3 || s->id == 5)
 		g_rt.to_change.r = &((t_cyl *)s->shape)->r;
+	if (s->id == 3)
 		g_rt.to_change.h = &((t_cyl *)s->shape)->h;
-	}
-	else if (s->id == 3)
-	{
-		g_rt.to_change.origin = &((t_triangle *)s->shape)->c1;
-		g_rt.to_change.direction = &((t_triangle *)s->shape)->c2;
-	}
-	else if (s->id == 4)
-	{
-		g_rt.to_change.direction = &((t_square *)s->shape)->normal;
-		g_rt.to_change.r = &((t_square *)s->shape)->side;
-	}
 	if (key == O)
 		s = s->next;
 }
@@ -144,10 +133,13 @@ void	set_lights()
 	if (l == NULL)
 		l = g_rt.light;
 	g_rt.to_change.origin = &l->coor;
+	g_rt.to_change.direction = NULL;
+	g_rt.to_change.r = &l->bright;
+	g_rt.to_change.h = NULL;
 	l = l->next;
 }
 
-int		deal_mouse(int b,int x,int y,void *p)
+int		deal_mouse(int b, int x, int y, void *p)
 {
 	t_intersection hit;
 	t_shapes *shape;
@@ -155,10 +147,8 @@ int		deal_mouse(int b,int x,int y,void *p)
 	int		id;
 	(void)p;
 
-	// printf("%d %d %d\n", b, x, y);
 	hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
 	shape = g_rt.shapes;
-	hit.shape = NULL;
 	hit.t = RAY_T_MAX;
 	while (shape != NULL)
 	{
@@ -166,11 +156,12 @@ int		deal_mouse(int b,int x,int y,void *p)
 			id = i;
 		shape = shape->next;
 	}
-	if (hit.shape != NULL && b == 1)
+	if (hit.t != RAY_T_MAX && b == 1)
 	{
 		g_rt.to_change.origin = &((t_sphere *)hit.shape)->center;
 		g_rt.to_change.direction = (id == 2 || id == 3 || id == 5) ? &((t_plane *)hit.shape)->normal : 0;
 		g_rt.to_change.r = (id == 1) ? &((t_sphere *)hit.shape)->radius : 0;
+		g_rt.to_change.c3 = (id == 4) ? &((t_triangle *)hit.shape)->c3 : 0;
 		if (id == 3 || id == 5)
 			g_rt.to_change.r = &((t_cyl *)hit.shape)->r;
 		g_rt.to_change.h = (id == 3) ? &((t_cyl *)hit.shape)->h : 0;
@@ -186,20 +177,18 @@ int deal_key(int key, void *param)
 	p = (t_param *)param;
 	if (key == ESC) // exit when esc key c
 		exit_program(param);
-	if (key == C && (flag = 1) == 1)
-	{
+	if (key == TAB && (flag = 1) == 1)
 		g_rt.camera = g_rt.camera->next;
-		g_rt.to_change.origin = &g_rt.camera->position;
+	if ((key == C || key == TAB) && (g_rt.to_change.origin = &g_rt.camera->position) != NULL)
 		g_rt.to_change.direction = &g_rt.camera->dir;
-	}
-	if (key == L)
+	else if (key == L)
 		set_lights();
-	if (key == O)
+	else if (key == O)
 		set_object(key);
-	if ((key == PLUS || key == MIN) && (flag = 1) == 1)
-		trans(key);
-	if (((key <= UP && key >= LEFT) || (key >= Q && key <= E) || (key >= A && key <= D) || key == DOT || key == CMA) && (flag = 1) == 1)
-		move(g_rt.to_change.origin, g_rt.to_change.direction, key);
+	else if (key == PLUS || key == MIN || key == H || key == B)
+		flag = trans(key);
+	else if ((key <= UP && key >= LEFT) || (key >= Q && key <= E) || (key >= A && key <= D) || key == DOT || key == CMA)
+		flag = move(g_rt.to_change.origin, g_rt.to_change.direction, key);
 	if (flag == 1)
 	{
 		g_rt.image = g_rt.or_image;
@@ -272,11 +261,10 @@ int main(int ac, char *av[])
 	g_rt.to_change.origin = &g_rt.camera->position;
 	g_rt.to_change.direction = &g_rt.camera->dir;
 	ray_trace();
-	write(1, "\033[1;36mDone!\n\033[0m", 17);
 	p.win_ptr= mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img_ptr, 0, 0);
 	mlx_key_hook(p.win_ptr, deal_key, (void *)&p);
-	mlx_mouse_hook(p.win_ptr, deal_mouse, (void *)&p);
+	mlx_mouse_hook(p.win_ptr, deal_mouse, (void *)0);
 	mlx_hook(p.win_ptr, X_BUTT, 0, exit_program, (void *)&p); // exit when X button
 	mlx_loop(p.mlx_ptr);
 }
