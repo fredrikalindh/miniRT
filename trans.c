@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 16:38:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 16:58:16 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,19 @@ void rot(double *a, double *b)
 
 int rotate(t_vector *dir, int key)
 {
+	double u;
+
+	u = 1;
 	if (dir == NULL)
 		return (0);
-	if (key == UP)
-		rot(&dir->y, &dir->z);
+	if (key == DOWN)
+		rot(&dir->y, &u);
 	else if (key == LEFT)
 		rot(&dir->x, &dir->z);
 	else if (key == RIGHT)
 		rot(&dir->z, &dir->x);
-	else if (key == DOWN)
-		rot(&dir->z, &dir->y);
+	else if (key == UP)
+		rot(&u, &dir->y);
 	else if (key == DOT)
 		rot(&dir->y, &dir->x);
 	else if (key == CMA)

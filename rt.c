@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/23 15:37:39 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 20:31:40 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	r = (float)g_rt.res_x / g_rt.res_y;
 	// x = (2 * pixx - 1) * r * tanh((double)g_rt.res_y); // * g_rt.fov
 	// y = (1 - 2 * pixy) * tanh((double)g_rt.res_y); // * g_rt.fov
-	x = (2 * pixx - 1) * r * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
-	y = (1 - 2 * pixy) * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
+	// x = (2 * pixx - 1) * r * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
+	// y = (1 - 2 * pixy) * tan((3.141592 * 0.5 * 45) / 180.0); // * g_rt.fov
+	x = (2 * pixx - 1) * r * 0.41; // * g_rt.fov
+	y = (1 - 2 * pixy) * 0.41; // * g_rt.fov
 	// x = (2 * pixx - 1) * r; // * g_rt.fov
 	// y = (1 - 2 * pixy) * ; // * g_rt.fov
 	ray.direction = normalized(op_add(g_rt.camera->dir, op_add(op_mult_f(right, x), op_mult_f(up, y))));
@@ -88,14 +90,25 @@ t_color ray_cast(t_intersection hit)
 
 void	put_pixel(t_color c)
 {
-	// if (g_rt.save == 1)
-	// 	g_rt.image++;
-	*g_rt.image++ = (unsigned char)c.b;
-	*g_rt.image++ = (unsigned char)c.g;
-	*g_rt.image++ = (unsigned char)c.r;
-	// if (g_rt.save == 0)
+	unsigned char sum;
+	
+	if (g_rt.save == 1)
 		g_rt.image++;
-	// g_rt.image += 4;
+	if (g_rt.filter == 1)
+	{
+		sum = ft_min((c.b + c.g + c.r), 255);
+		*g_rt.image++ = sum * 0.5;
+		*g_rt.image++ = sum * 0.8;
+		*g_rt.image++ = sum;
+	}
+	else
+	{
+		*g_rt.image++ = (unsigned char)c.b;
+		*g_rt.image++ = (unsigned char)c.g;
+		*g_rt.image++ = (unsigned char)c.r;
+	}
+	if (g_rt.save == 0)
+		g_rt.image++;
 }
 
 int		ray_trace()

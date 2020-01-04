@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2020/01/04 16:08:29 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 20:28:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,16 @@ int		check_rt(char *f)
 
 void	init_list(char *list[LIST_SIZE])
 {
-	list[0] = RESOLUTION;
-	list[1] = AMBIENT;
-	list[2] = CAMERA;
-	list[3] = LIGHT;
-	list[4] = PLANE;
-	list[5] = SPHERE;
-	list[6] = SQUARE;
-	list[7] = TRIANGLE;
-	list[8] = CYLINDER;
+	list[0] = "R";
+	list[1] = "A";
+	list[2] = "c";
+	list[3] = "l";
+	list[4] = "pl";
+	list[5] = "sp";
+	list[6] = "sq";
+	list[7] = "tr";
+	list[8] = "cy";
+	list[9] = "filter";
 }
 
 int		init_info(int fd, int argc)
@@ -57,6 +58,8 @@ int		init_info(int fd, int argc)
 		{
 			while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
 				i++;
+			if (i == 9 && ++i == 10)
+				g_rt.filter = 1;
 			(i < LIST_SIZE) ? fill_scene[i](split) : 0 ; // has to free elements of split in it
 		}
 	}
@@ -199,46 +202,39 @@ int deal_key(int key, void *param)
 	return (0);
 }
 
-void	create_header()
+void	create_header(t_header *i)
 {
-	int size;
-	int div;
-	int i;
-
-	i = 1;
-	div = 1000000000;
-	size = g_rt.res_x * g_rt.res_y * 4;
-	*g_rt.image++ = 'B';
-	*g_rt.image++ = 'A';
-	while (size / div == 0)
-		div /= 10;
-	while (div > 0)
-	{
-		*g_rt.image++ = size / div + '0';
-		size = size % div;
-		div /= 10;
-		i++;
-	}
-	while (g_rt.image && ++i < 20)
-	{
-		g_rt.image += 6;
-		*g_rt.image++ = '2';
-		*g_rt.image++ = '0';
-	}
+	i->type = 0x4d42;
+	i->size = g_rt.res_x * g_rt.res_y * 4 + 54;
+	i->offset = 54;
+	i->dib_header_size = 40;
+	i->width_px = g_rt.res_x;
+	i->height_px = g_rt.res_y;
+	i->num_planes = 1;       // Number of color planes
+	i->bits_per_pixel = 24;
+	i->compression = 3;      // Compression type
+	i->image_size = i->size - 54;
+	i->x_resolution_ppm = 0; // Pixels per meter
+	i->y_resolution_ppm = 0; // Pixels per meter
+	i->num_colors = 0;       // Number of colors
+	i->important_colors = 0; // Important colors
 }
 
 void		open_image()
 {
-	char *print;
+	t_image img;
 
-	if (!(g_rt.or_image = (char *)malloc((sizeof(char) * g_rt.res_x * g_rt.res_y * 4) + 21)))
+	if (!(g_rt.image = (char *)malloc(g_rt.res_x * g_rt.res_y * 4)))
 		exit (-1);
-	print = g_rt.image;
+	img.data = g_rt.image;
 	ray_trace();
-	create_header();
+	create_header(&img.header);
 	if ((g_rt.fd = open("./minirt.bmp", O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) == -1)
 		ft_puterr("failed to create image.bmp");
-	write(g_rt.fd, print, (g_rt.res_x * g_rt.res_y * 4) + 20);
+	write(g_rt.fd, &img.header, 54);
+	write(g_rt.fd, img.data, img.header.image_size);
+	if (close(g_rt.fd) == -1)
+		ft_puterr("failed to close image");
 	exit (1);
 }
 
@@ -247,10 +243,13 @@ int main(int ac, char *av[])
 	t_param p;
 
 	init_scene(ac, av);
+	if (g_rt.save == 1)
+	{
+		open_image();
+		return (0);
+	}
 	if (!(p.mlx_ptr = mlx_init()))
 		return (-1);
-	if (g_rt.save == 1)
-		open_image();
 	p.bpp = 32;
 	p.size_line = g_rt.res_x * 32;
 	p.endian = 1;

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 12:35:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 19:51:32 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 # include "../minilibx/mlx.h"
 # include "ft.h"
+# include "bmp.h"
 
 # include <stdio.h>
 
@@ -30,16 +31,7 @@
 # define MAX_X 2560
 # define MAX_Y 1395
 
-# define LIST_SIZE 9
-# define RESOLUTION	"R"
-# define AMBIENT	"A"
-# define CAMERA		"c"
-# define LIGHT		"l"
-# define PLANE		"pl"
-# define SPHERE		"sp"
-# define SQUARE		"sq"
-# define TRIANGLE	"tr"
-# define CYLINDER	"cy"
+# define LIST_SIZE 10
 
 # define ESC 53
 # define C 8
@@ -148,15 +140,6 @@ typedef struct		s_square
 	double			side;
 }					t_square;
 
-// typedef struct		s_shapes // ??
-// {
-// 	t_plane		*planes;
-// 	t_sphere	*spheres;
-// 	t_square	*squares;
-// 	t_triangle	*triangles;
-// 	t_cyl		*cyls;
-// }					t_shapes;
-
 typedef struct		s_shapes // ?? could have one t per box so i.e. 100x100x100 = one box
 {
 	enum id{sp, pl, cy, tr, sq}	id;
@@ -224,12 +207,11 @@ typedef struct		s_rt
 	char			*image;
 	char			*or_image;
 	int				fd:4;
+	int				filter:2;
 	int				line;
 	t_trans			to_change;
 	int			res_x;
 	int			res_y;
-	// int			fov;
-	// double 		m[9];
 	double		a_light_r;
 	t_color		a_light_c;
 	t_camera	*camera;
