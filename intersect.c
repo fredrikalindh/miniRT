@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/03 17:46:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 15:38:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,39 @@ static t_bool	hit_pl(t_intersection *i, t_ray ray, void *shape)
 	return (2);
 }
 
-static t_bool		hit_tr(t_intersection *i, t_ray ray, void *shape)
+static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
 {
 	t_triangle	*tr;
-	t_vector	n;
-	t_vector	p;
+	t_vector	pvec;
+	t_vector	tvec;
+	t_vector	qvec;
 	double		t;
-	double		d;
+	double		det;
+	double		invdet;
+	double		u;
+	double		v;
 
 	tr = (t_triangle *)shape;
-	n = normalized(cross(tr->e1, tr->e2));
-	d = dot(ray.direction, n);
-	if (d == 0)
+	pvec = cross(r.direction, tr->e2);
+	det = dot(tr->e1, pvec);
+	if (fabs(det) < 0.0001)
 		return (FALSE);
-	t = dot(op_min(tr->c1, ray.origin), n) / d;
-	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t || t == 0.0)
+	invdet = 1 / det;
+	tvec = op_min(r.origin, tr->c1);
+	if ((u = dot(tvec, pvec) * invdet) < 0 || u > 1)
 		return (FALSE);
-	p = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
-	if (dot(tr->e3, op_min(p, tr->c1)) < 0 || dot(tr->e1, op_min(p, tr->c2)) < 0
-		|| dot(tr->e2, op_min(p, tr->c3)) < 0)
+	qvec = cross(tvec, tr->e1);
+	if ((v = dot(r.direction, qvec) * invdet) < 0 || v + u > 1)
+		return (FALSE);
+	t = dot(tr->e2, qvec) * invdet;
+	if (t <= RAY_T_MIN || t >= RAY_T_MAX || t > i->t || fabs(t) < 0.00001)
 		return (FALSE);
 	i->t = t;
 	i->shape = tr;
 	i->color = tr->color;
-	i->hit = p;
-	i->normal = n;
-	if (dot(i->normal, i->ray.direction) < 0)
+	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.direction, t));
+	i->normal = normalized(cross(tr->e1, tr->e2));
+	if (dot(i->normal, i->ray.direction) > 0)
 		i->normal = op_mult_f(i->normal, -1.0);
 	return (4);
 }

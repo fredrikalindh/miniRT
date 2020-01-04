@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/29 17:01:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 16:38:35 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,44 +56,24 @@ int rotate(t_vector *dir, int key)
 	return (1);
 }
 //
-// void	move_tr(int key)
+// int rotate(t_vector *dir, int key)
 // {
-// 	if (key == W)
-// 	{
-// 		op_addp(g_rt.to_change.c3, g_rt.camera->dir);
-// 		op_addp(g_rt.to_change.origin, g_rt.camera->dir);
-// 		op_addp(g_rt.to_change.direction, g_rt.camera->dir);
-// 	}
-// 	else if (key == A)
-// 	{
-// 		op_addp(g_rt.to_change.c3, cross(g_rt.camera->dir, vector_xyz(0,1,0)));
-// 		op_addp(g_rt.to_change.origin, cross(g_rt.camera->dir, vector_xyz(0,1,0)));
-// 		op_addp(g_rt.to_change.direction, cross(g_rt.camera->dir, vector_xyz(0,1,0)));
-// 	}
-// 	else if (key == D)
-// 	{
-// 		op_addp(g_rt.to_change.c3, cross(vector_xyz(0,1,0), g_rt.camera->dir));
-// 		op_addp(g_rt.to_change.origin, cross(vector_xyz(0,1,0), g_rt.camera->dir));
-// 		op_addp(g_rt.to_change.direction, cross(vector_xyz(0,1,0), g_rt.camera->dir));
-// 	}
-// 	else if (key == S)
-// 	{
-// 		op_addp(g_rt.to_change.c3, op_mult_f(g_rt.camera->dir, -1));
-// 		op_addp(g_rt.to_change.origin, op_mult_f(g_rt.camera->dir, -1));
-// 		op_addp(g_rt.to_change.direction, op_mult_f(g_rt.camera->dir, -1));
-// 	}
-// 	else if (key == Q)
-// 	{
-// 		op_addp(g_rt.to_change.c3, vector_xyz(0, -1, 0));
-// 		op_addp(g_rt.to_change.origin, vector_xyz(0, -1, 0));
-// 		op_addp(g_rt.to_change.direction, vector_xyz(0, -1, 0));
-// 	}
-// 	else if (key == E)
-// 	{
-// 		op_addp(g_rt.to_change.c3, vector_xyz(0, 1, 0));
-// 		op_addp(g_rt.to_change.origin, vector_xyz(0, 1, 0));
-// 		op_addp(g_rt.to_change.direction, vector_xyz(0, 1, 0));
-// 	}
+// 	if (dir == NULL)
+// 		return (0);
+// 	if ((key == UP && dir->z < 0) || (key == DOWN && dir->z > 0))
+// 		rot(&dir->y, &dir->z);
+// 	else if (key == LEFT)
+// 		rot(&dir->x, &dir->z);
+// 	else if (key == RIGHT)
+// 		rot(&dir->z, &dir->x);
+// 	else if ((key == DOWN && dir->z < 0) || (key == UP && dir->z > 0))
+// 		rot(&dir->z, &dir->y);
+// 	else if (key == DOT)
+// 		rot(&dir->y, &dir->x);
+// 	else if (key == CMA)
+// 		rot(&dir->x, &dir->y);
+// 	normalize(dir);
+// 	return (1);
 // }
 
 int move(t_vector *pos, t_vector *dir, int key)

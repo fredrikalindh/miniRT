@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/03 16:23:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 15:02:43 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ int		ft_tr(char **s)
 		if (outside_range(new->color))
 			g_rt.err = 3;
 		new->e1 = op_min(new->c2, new->c1);
-		new->e2 = op_min(new->c3, new->c2);
+		new->e2 = op_min(new->c3, new->c1);
 		new->e3 = op_min(new->c1, new->c3);
 		shell->shape = (void *)new;
 		shell->id = tr;

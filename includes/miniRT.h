@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/03 16:22:43 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 12:35:34 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@
 # define LEFT 123
 # define DOT 43
 # define CMA 47
-# define PLUS 27
-# define MIN 44
+# define PLUS 24
+# define MIN 27
 # define H 4
 # define B 11
 # define TAB 48

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 15:19:52 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/03 15:20:00 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/04 15:23:08 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,18 @@ static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
 	t_vector	q;
 	t_vector	s;
 	double		t;
+	int			flag;
 
 	tr = (t_triangle *)shape;
 	r.direction = cross(i->ray.direction, tr->e2);
-	if ((s.x = dot(tr->e1, r.direction)) < 0.00001)
-		return (FALSE);
+	flag = (s.x = dot(tr->e1, r.direction)) < 0.00001) ? -1 : 1;
 	r.origin = op_min(i->ray.origin, tr->c1);
 	s.y = dot(r.origin, r.direction);
-	if (s.y < 0.0 || s.y > s.x)
+	if ((s.y < 0.000001 && flag != -1) || s.y > s.x)
 		return (FALSE);
 	q = cross(r.origin, tr->e1);
 	s.z = dot(i->ray.direction, q);
-	if (s.z < 0.0 || s.y + s.z > s.x)
+	if ((s.z < 0.000001 && flag != -1) || s.y + s.z > s.x)
 		return (FALSE);
 	t = dot(tr->e2, q);
 	(s.x != 0) ? t /= s.x : 0;
