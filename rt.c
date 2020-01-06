@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 14:31:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 16:26:39 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_ray	compute_ray(float pixx, float pixy) // use cam struct
 	y = (1 - 2 * pixy) * 0.41; // * g_rt.fov
 	// x = (2 * pixx - 1) * r; // * g_rt.fov
 	// y = (1 - 2 * pixy) * ; // * g_rt.fov
-	ray.direction = normalized(op_add(g_rt.camera->dir, op_add(op_mult_f(right, x), op_mult_f(up, y))));
-	ray.origin = g_rt.camera->position; //?
+	ray.dir = normalized(op_add(g_rt.camera->dir, op_add(op_mult_f(right, x), op_mult_f(up, y))));
+	ray.origin = g_rt.camera->pos; //?
 	return (ray);
 }
 
@@ -72,9 +72,9 @@ t_color ray_cast(t_intersection hit)
 	lig = test(same_color(0), g_rt.a_light_c, g_rt.a_light_r, 1);
 	while (l != NULL)
 	{
-		p.direction = op_min(l->coor, hit.hit);
-		hit.t = normalize(&p.direction);
-		d = ft_maxd(0.0, dot(hit.normal, p.direction));
+		p.dir = op_min(l->coor, hit.hit);
+		hit.t = normalize(&p.dir);
+		d = ft_maxd(0.0, dot(hit.normal, p.dir));
 		shape = g_rt.shapes;
 		while (shape != NULL)
 		{
@@ -122,7 +122,7 @@ int		ray_trace()
 		x = -1;
 		while (++x < g_rt.res_x)
 		{
-			hit.t = RAY_T_MAX;
+			hit.t = T_MAX;
 			hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
 			shape = g_rt.shapes;
 			hit.color = same_color(0);
@@ -131,7 +131,7 @@ int		ray_trace()
 				intersect(&hit, hit.ray, shape, 0);
 				shape = shape->next;
 			}
-			if (hit.t != RAY_T_MAX)
+			if (hit.t != T_MAX)
 				put_pixel(ray_cast(hit)); // gets color from closest shape
 			else
 				put_pixel(same_color(0)); //puts into image / file

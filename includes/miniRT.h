@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 14:38:38 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 16:39:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@
 # include "../minilibx/mlx.h"
 # include "ft.h"
 
-# include <stdio.h>
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
+# include <stdio.h> // OBS
 
 # define MAX_X 2560
 # define MAX_Y 1395
@@ -35,7 +31,6 @@
 # define ESC 53
 # define C 8
 # define L 37
-# define O 31
 # define X_BUTT 17
 # define Q 12
 # define W 13
@@ -55,11 +50,9 @@
 # define B 11
 # define TAB 48
 
-
-# define RAY_T_MIN 0.0001
-# define RAY_T_MAX 1.0e30
-
-typedef enum {FALSE, TRUE} t_bool;
+# define T_MIN 0.0001
+# define T_MAX 1.0e30
+# define EPSILON 0.00001
 
 typedef	struct		s_param // insert inside g_rt?
 {
@@ -84,7 +77,7 @@ typedef t_vector	t_point;
 typedef struct		s_ray
 {
 	t_point		origin; // ???
-	t_vector	direction;
+	t_vector	dir;
 }					t_ray;
 
 typedef struct		s_color // -> double ??
@@ -104,15 +97,15 @@ typedef struct		s_sphere
 typedef struct		s_plane
 {
 	t_color			color;
-	t_point			position;
+	t_point			pos;
 	t_vector		normal;
 }					t_plane;
 
 typedef struct		s_cyl
 {
 	t_color			color;
-	t_point			position;
-	t_vector		direction;
+	t_point			pos;
+	t_vector		dir;
 	double			r;
 	double			h;
 	double			d;
@@ -139,26 +132,16 @@ typedef struct		s_square
 	double			side;
 }					t_square;
 
-typedef struct		s_shapes // ?? could have one t per box so i.e. 100x100x100 = one box
+typedef struct		s_shapes
 {
 	enum id{sp, pl, cy, tr, sq}	id;
 	void					*shape;
 	void					*next;
 }					t_shapes;
 
-// typedef struct		s_camera
-// {
-// 	t_point origin;
-// 	t_vector forward;
-// 	t_vector up;
-// 	t_vector height;
-// 	double h;
-// 	double w;
-// }					t_camera;
-
 typedef struct		s_camera
 {
-	t_point			position;
+	t_point			pos;
 	t_vector		dir;
 	struct s_camera	*next;
 }					t_camera;
@@ -181,18 +164,10 @@ typedef struct		s_intersection
 	t_color color;
 }					t_intersection;
 
-// typedef struct		s_image
-// {
-// 	int width;
-// 	int height;
-// 	double *data;
-// }					t_image;
-
-
 typedef struct		s_trans
 {
 	t_point		*origin; // ???
-	t_vector	*direction;
+	t_vector	*dir;
 	t_vector	*c3;
 	double		*r;
 	double		*h;
@@ -200,8 +175,8 @@ typedef struct		s_trans
 }					t_trans;
 
 typedef struct s_image {
-	unsigned char		*fileh;
-	unsigned char		*infoh;
+	unsigned char		*f;
+	unsigned char		*i;
 	unsigned char		*bmppad;
 	char*				data;
 }	t_image;
@@ -217,22 +192,21 @@ typedef struct		s_rt
 	int				filter:2;
 	int				line;
 	t_trans			to_change;
-	int			res_x;
-	int			res_y;
-	double		a_light_r;
-	t_color		a_light_c;
-	t_camera	*camera;
-	t_camera	*camera_list;
-	t_light		*light;
-	t_shapes	*shapes;
+	int				res_x;
+	int				res_y;
+	double			a_light_r;
+	t_color			a_light_c;
+	t_camera		*camera;
+	t_light			*light;
+	t_shapes		*shapes;
 }					t_rt;
 
 int			exit_program(void *param);
 void		ft_puterr(char *str);
 void		ft_puterr2(char c);
 void		free_globals();
-t_bool		outside_range(t_color c);
-t_bool		outside_range2(t_vector v);
+int			outside_range(t_color c);
+int			outside_range2(t_vector v);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 t_vector	vector_f(double f);
@@ -275,7 +249,8 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
 int			ray_trace();
 t_color 	ray_cast(t_intersection hit);
 t_ray		compute_ray(float pixx, float pixy);
-t_bool 		intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f);
+int			hit_cy(t_intersection *i, t_ray ray, void *shape);
+int 		intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f);
 
 //color.c
 t_color		same_color(int col);

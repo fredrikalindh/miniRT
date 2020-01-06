@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 15:02:43 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 16:01:11 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_pl(char **s)
 		if (!(new = (t_plane *)malloc(sizeof(t_plane))))
 			return (-1);
 		shell->next = g_rt.shapes;
-		new->position = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
+		new->pos = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->normal = vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6]));
 		outside_range2(new->normal) ? g_rt.err = 5 : normalize(&new->normal);
 		new->color = new_color(ft_atoi(s[7]), ft_atoi(s[8]), ft_atoi(s[9]));
@@ -128,8 +128,8 @@ int		ft_cy(char **s)
 		if (!(new = (t_cyl *)malloc(sizeof(t_cyl))))
 			return (-1);
 		shell->next = g_rt.shapes;
-		new->position = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
-		new->direction = normalized(vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6])));
+		new->pos = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
+		new->dir = normalized(vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6])));
 		new->r = ft_atof(s[7]) / 2.0;
 		new->h = ft_atof(s[8]) / 2.0;
 		new->color = new_color(ft_atoi(s[9]), ft_atoi(s[10]), ft_atoi(s[11]));
