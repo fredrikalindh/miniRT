@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 19:01:20 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 20:20:16 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 00:35:16 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 
 typedef struct s_header {
 	unsigned int	type:16;             // Magic identifier: 0x4d42
-	unsigned int	size:32;             // File size in bytes
+	unsigned char	size1;             // File size in bytes
+	unsigned char	size2;             // File size in bytes
+	unsigned char	size3;             // File size in bytes
+	unsigned char	size4;             // File size in bytes
 	unsigned int	reserved1:16;        // Not used
 	unsigned int	reserved2:16;        // Not used
 	unsigned int	offset:32;       // Offset to image data in bytes from beginning of file (54 bytes)

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 20:31:40 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/05 23:44:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ t_color ray_cast(t_intersection hit)
 void	put_pixel(t_color c)
 {
 	unsigned char sum;
-	
-	if (g_rt.save == 1)
-		g_rt.image++;
+
+	// if (g_rt.save == 1)
+	// 	g_rt.image++;
 	if (g_rt.filter == 1)
 	{
 		sum = ft_min((c.b + c.g + c.r), 255);
@@ -107,7 +107,7 @@ void	put_pixel(t_color c)
 		*g_rt.image++ = (unsigned char)c.g;
 		*g_rt.image++ = (unsigned char)c.r;
 	}
-	if (g_rt.save == 0)
+	// if (g_rt.save == 0)
 		g_rt.image++;
 }
 
