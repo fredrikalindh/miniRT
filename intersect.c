@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 16:33:30 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 16:47:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	hit_tr(t_intersection *i, t_ray r, void *shape)
 	return (4);
 }
 
-static int			hit_sq(t_intersection *i, t_ray r, void *shape)
+static int	hit_sq(t_intersection *i, t_ray r, void *shape)
 {
 	t_square	*sq;
 	t_vector	side;
@@ -92,7 +92,7 @@ static int			hit_sq(t_intersection *i, t_ray r, void *shape)
 	return (5);
 }
 
-static int			hit_sp(t_intersection *i, t_ray ray, void *shape)
+static int	hit_sp(t_intersection *i, t_ray ray, void *shape)
 {
 	t_sphere	*sphere;
 	double		a;
@@ -120,31 +120,31 @@ static int			hit_sp(t_intersection *i, t_ray ray, void *shape)
 	return (1);
 }
 
-int intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f)
+int			intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f)
 {
 	t_intersection fake;
 
 	fake.ray = ray;
 	if ((fake.t = hit->t) != 0 && shape->id == sp && f == 0)
-		return(hit_sp(hit, ray, shape->shape));
+		return (hit_sp(hit, ray, shape->shape));
 	else if (shape->id == pl && f == 0)
-		return(hit_pl(hit, ray, shape->shape));
+		return (hit_pl(hit, ray, shape->shape));
 	else if (shape->id == cy && f == 0)
-		return(hit_cy(hit, ray, shape->shape));
+		return (hit_cy(hit, ray, shape->shape));
 	else if (shape->id == tr && f == 0)
-		return(hit_tr(hit, ray, shape->shape));
+		return (hit_tr(hit, ray, shape->shape));
 	else if (shape->id == sq && f == 0)
-		return(hit_sq(hit, ray, shape->shape));
+		return (hit_sq(hit, ray, shape->shape));
 	else if (shape->id == 0)
-		return(hit_sp(&fake, ray, shape->shape));
+		return (hit_sp(&fake, ray, shape->shape));
 	else if (shape->id == 1)
-		return(hit_pl(&fake, ray, shape->shape));
+		return (hit_pl(&fake, ray, shape->shape));
 	else if (shape->id == 2)
-		return(hit_cy(&fake, ray, shape->shape));
+		return (hit_cy(&fake, ray, shape->shape));
 	else if (shape->id == 3)
-		return(hit_tr(&fake, ray, shape->shape));
+		return (hit_tr(&fake, ray, shape->shape));
 	else if (shape->id == 4)
-		return(hit_sq(&fake, ray, shape->shape));
+		return (hit_sq(&fake, ray, shape->shape));
 	else
 		return (0);
 }

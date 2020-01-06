@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 16:39:23 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 20:36:04 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef	struct		s_param // insert inside g_rt?
 	void	*img_ptr;
 	char	*data;
 	int		bpp;
-	int		size_line;
+	int		sl;
 	int		endian;
 }					t_param;
 
@@ -191,7 +191,7 @@ typedef struct		s_rt
 	int				fd:4;
 	int				filter:2;
 	int				line;
-	t_trans			to_change;
+	t_trans			select;
 	int				res_x;
 	int				res_y;
 	double			a_light_r;
@@ -209,11 +209,10 @@ int			outside_range(t_color c);
 int			outside_range2(t_vector v);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
-t_vector	vector_f(double f);
+// t_vector	vector_f(double f);
 // vector_math
 double		sqr(double f);
 double		dot(t_vector v1, t_vector v2);
-t_vector	cross(t_vector v1, t_vector v2);
 t_vector	cross(t_vector v1, t_vector v2);
 double		length2(t_vector v);
 double		length(t_vector v);
@@ -225,26 +224,20 @@ t_vector	op_add(t_vector v, t_vector op);
 void		op_addp(t_vector *v, t_vector op);
 t_vector	op_min(t_vector v, t_vector op);
 void		op_minv(t_vector *v, t_vector op);
-void		op_mult(t_vector *v, t_vector op);
 t_vector	op_mult_f(t_vector v, double f);
 
-void		clamp(t_color *c);
-void		apply_gamma(t_color *c, double exposure, double gamma);
-int			ret_color(t_color c);
-t_color		new_color(int r, int g, int b);
-
 // parce_objects.c
-int			ft_pl(char **split);
-int			ft_sp(char **split);
-int			ft_sq(char **split);
-int			ft_cy(char **split);
-int			ft_tr(char **split);
+int			ft_pl(char **split, int i);
+int			ft_sp(char **split, int i);
+int			ft_sq(char **split, int i);
+int			ft_cy(char **split, int i);
+int			ft_tr(char **split, int i);
 // parce.c
-int			ft_res(char **split);
-int			ft_amb(char **split);
-int			ft_cam(char **split);
-int			ft_lig(char **split);
-void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**));
+int			ft_res(char **split, int i);
+int			ft_amb(char **split, int i);
+int			ft_cam(char **split, int i);
+int			ft_lig(char **split, int i);
+void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int));
 // rt.c
 int			ray_trace();
 t_color 	ray_cast(t_intersection hit);
@@ -253,18 +246,22 @@ int			hit_cy(t_intersection *i, t_ray ray, void *shape);
 int 		intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f);
 
 //color.c
+t_color		light_color(t_color l1, t_color l2, double d, double len);
+t_color		total_color(t_color l, t_color c);
+t_color		new_color(int r, int g, int b);
 t_color		same_color(int col);
-void		apply_gamma(t_color *c, double exposure, double gamma);
-void		clamp(t_color *c);
-t_color		color_add(t_color c1, t_color c2);
-t_color		color_mult(t_color c1, double f);
+// t_color		color_add(t_color c1, t_color c2);
+// t_color		color_mult(t_color c1, double f);
 
-
+void		rot(double *a, double *b);
 int 		move(t_vector *pos, t_vector *dir, int key);
 int			trans(int key);
 
 void		open_image(int w, int h, int i);
 int			init_scene(int argc, char *argv[]);
+
+int		deal_mouse(int b, int x, int y, void *p);
+int		deal_key(int key, void *param);
 
 t_rt	g_rt;
 

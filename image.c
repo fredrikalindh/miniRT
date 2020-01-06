@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:37:52 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 16:42:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 19:28:59 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,5 @@ void		open_image(int w, int h, int i)
 		ft_puterr("failed to close image");
 	free(g.data);
 	write(1, "\033[1;36mdone!\n\033[0m", 17);
+	exit(1);
 }

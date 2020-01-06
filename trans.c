@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 15:28:10 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 20:18:45 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static void	rot(double *a, double *b)
+void		rot(double *a, double *b)
 {
 	double	c;
 
@@ -48,30 +48,32 @@ int			move(t_vector *pos, t_vector *dir, int key)
 	else if (key == W)
 		op_addp(pos, g_rt.camera->dir);
 	else if (key == A)
-		op_addp(pos, cross(g_rt.camera->dir, vector_xyz(0,1,0)));
+		op_addp(pos, cross(g_rt.camera->dir, vector_xyz(0, 1, 0)));
 	else if (key == D)
-		op_addp(pos, cross(vector_xyz(0,1,0), g_rt.camera->dir));
+		op_addp(pos, cross(vector_xyz(0, 1, 0), g_rt.camera->dir));
 	else if (key == S)
 		op_addp(pos, op_mult_f(g_rt.camera->dir, -1));
 	else if (key == Q)
-		op_addp(pos, vector_xyz(0,-1,0));
+		op_addp(pos, vector_xyz(0, -1, 0));
 	else if (key == E)
-		op_addp(pos, vector_xyz(0,1,0));
+		op_addp(pos, vector_xyz(0, 1, 0));
 	else
-		return(rotate(dir, key));
+		return (rotate(dir, key));
 	return (1);
 }
 
 int			trans(int key)
 {
-	if (g_rt.to_change.r != NULL && (key == PLUS || key == MIN))
+	if (g_rt.select.r != NULL && (key == PLUS || key == MIN))
 	{
-		*g_rt.to_change.r = (key == PLUS) ? *g_rt.to_change.r + 0.5 : *g_rt.to_change.r - 0.5;
+		*g_rt.select.r = (key == PLUS) ?
+		*g_rt.select.r + 0.5 : *g_rt.select.r - 0.5;
 		return (1);
 	}
-	if (g_rt.to_change.h != NULL && (key == H || key == B))
+	if (g_rt.select.h != NULL && (key == H || key == B))
 	{
-		*g_rt.to_change.h = (key == H) ? *g_rt.to_change.h + 0.5 : *g_rt.to_change.h - 0.5;
+		*g_rt.select.h = (key == H) ?
+		*g_rt.select.h + 0.5 : *g_rt.select.h - 0.5;
 		return (1);
 	}
 	return (0);

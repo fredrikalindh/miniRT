@@ -6,19 +6,19 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 14:16:22 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 19:26:14 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void			free_globals()
+void		free_globals(void)
 {
 	void		*prev;
 	t_camera	*start;
 
 	start = g_rt.camera;
-	while(g_rt.camera != NULL && g_rt.camera->next != start)
+	while (g_rt.camera != NULL && g_rt.camera->next != start)
 	{
 		prev = (void *)g_rt.camera;
 		g_rt.camera = g_rt.camera->next;
@@ -41,7 +41,7 @@ void			free_globals()
 
 int			exit_program(void *param)
 {
-	t_param	*p;
+	t_param		*p;
 
 	free_globals();
 	p = (t_param *)param;
@@ -97,5 +97,5 @@ void		ft_puterr2(char id)
 	ft_putnbr_fd(g_rt.line, 2);
 	write(2, "\n\033[0m", 5);
 	free_globals();
-	exit (-1);
+	exit(-1);
 }

@@ -6,48 +6,40 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/28 14:40:52 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 20:34:03 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_vector	vector_blank()
+double		normalize(t_vector *v)
 {
-	t_vector v;
+	double		l;
+	double		l2;
 
-	v.x = 0.0;
-	v.y = 1.0;
-	v.z = 0.0;
-	return (v);
+	l2 = length(*v);
+	if (l2 > 0)
+	{
+		l = 1 / l2;
+		v->x *= l;
+		v->y *= l;
+		v->z *= l;
+	}
+	return (l2);
 }
 
-t_vector	vector_cpy(t_vector old)
+t_vector	normalized(t_vector v)
 {
-	t_vector v;
-
-	v.x = old.x;
-	v.y = old.y;
-	v.z = old.z;
+	normalize(&v);
 	return (v);
 }
 
 t_vector	vector_xyz(double x, double y, double z)
 {
-	t_vector v;
+	t_vector	v;
 
 	v.x = x;
 	v.y = y;
 	v.z = z;
-	return (v);
-}
-
-t_vector	vector_f(double f)
-{
-	t_vector v;
-
-	v.x = f;
-	v.y = f;
-	v.z = f;
 	return (v);
 }
