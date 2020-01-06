@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2020/01/06 13:07:24 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 12:48:48 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,10 +285,20 @@ void	create_header(unsigned char *fileh, unsigned char *infoh, int w, int h)
 	int fs;
 
 	fs = 54 + 3 * w * h;
+	// fileh[ 0] = 'B';
+	// fileh[ 1] = 'M';
 	fileh[ 2] = (unsigned char)(fs    );
 	fileh[ 3] = (unsigned char)(fs>> 8);
 	fileh[ 4] = (unsigned char)(fs>>16);
 	fileh[ 5] = (unsigned char)(fs>>24);
+	// fileh[6] = 0;
+	// fileh[7] = 0;
+	// fileh[8] = 0;
+	// fileh[9] = 0;
+	// fileh[10] = 54;
+	// fileh[11] = 0;
+	// fileh[12] = 0;
+	// fileh[13] = 0;
 
 	infoh[ 4] = (unsigned char)(       w    );
 	infoh[ 5] = (unsigned char)(       w>> 8);
@@ -300,32 +310,44 @@ void	create_header(unsigned char *fileh, unsigned char *infoh, int w, int h)
 	infoh[11] = (unsigned char)(       h>>24);
 }
 
-void		open_image(int w, int h, int i)
+void		open_image()
 {
-	t_image img;
+	// t_image img;
+	char *data;
+	// unsigned char bmpfileheader[54];
+	// unsigned char bmpfileheader[14];
+	// unsigned char bmpinfoheader[40];
+	unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
+	unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
+	// unsigned char bmppad[3] = {0,0,0};
+	int w;
+	int h;
 
-	if ((g_rt.fd = open("./minirt.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) == -1)
-		ft_puterr("failed to create miniRT.bmp");
+	w = g_rt.res_x;
+	h = g_rt.res_y;
 	if (!(g_rt.image = (char *)malloc(w * h * 3)))
 		exit (-1);
-	img.data = g_rt.image;
-	img.fileh = (unsigned char[14]){'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
-	img.infoh = (unsigned char[40]){40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
-	img.bmppad = (unsigned char[3]){0,0,0};
-	create_header(img.fileh, img.infoh, w, h);
-	write(g_rt.fd, img.fileh, 14);
-	write(g_rt.fd, img.infoh, 40);
-	write(1, "\033[1;36mCreating image... \033[0m", 29);
+	data = g_rt.image;
+	if ((g_rt.fd = open("./minirt.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) == -1)
+		ft_puterr("failed to create miniRT.bmp");
+	// bmpfileheader = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
+	// bmpinfoheader = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
+	// bmppad = {0,0,0};
+	create_header(bmpfileheader, bmpinfoheader, w, h);
+	write(g_rt.fd, bmpfileheader, 14);
+	write(g_rt.fd, bmpinfoheader, 40);
 	ray_trace();
-	while (++i < h)
+	for(int i = 0; i < h; i++)
 	{
-		write(g_rt.fd, img.data + w * 3 * (h - i - 1), w * 3);
-		write(g_rt.fd, img.bmppad, (4 - (w * 3) % 4) % 4);
+		write(g_rt.fd, data + w * 3 * (h - i - 1), w * 3);
+		// write(g_rt.fd, data, w * 3);
+		// fwrite(img+(w * (h - i - 1) * 3),3,w,f);
+		// data += w * 3;
+		// write(g_rt.fd, bmppad, (4 - (w * 3) % 4) % 4);
 	}
 	if (close(g_rt.fd) == -1)
 		ft_puterr("failed to close image");
-	free(img.data);
-	write(1, "\033[1;36mdone!\n\033[0m", 17);
+	// free(data);
 	exit (1);
 }
 
@@ -336,7 +358,7 @@ int main(int ac, char *av[])
 	init_scene(ac, av);
 	if (g_rt.save == 1)
 	{
-		open_image(g_rt.res_x, g_rt.res_y, -1);
+		open_image();
 		return (0);
 	}
 	if (!(p.mlx_ptr = mlx_init()))
