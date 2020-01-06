@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 19:51:32 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 14:38:38 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 # include "../minilibx/mlx.h"
 # include "ft.h"
-# include "bmp.h"
 
 # include <stdio.h>
 
@@ -200,9 +199,17 @@ typedef struct		s_trans
 	// t_shapes	*shape;
 }					t_trans;
 
+typedef struct s_image {
+	unsigned char		*fileh;
+	unsigned char		*infoh;
+	unsigned char		*bmppad;
+	char*				data;
+}	t_image;
+
 typedef struct		s_rt
 {
 	unsigned int	save:1;
+	char			name[30];
 	unsigned int	err:8;
 	char			*image;
 	char			*or_image;
@@ -220,7 +227,7 @@ typedef struct		s_rt
 	t_shapes	*shapes;
 }					t_rt;
 
-
+int			exit_program(void *param);
 void		ft_puterr(char *str);
 void		ft_puterr2(char c);
 void		free_globals();
@@ -270,13 +277,6 @@ t_color 	ray_cast(t_intersection hit);
 t_ray		compute_ray(float pixx, float pixy);
 t_bool 		intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f);
 
-// intersect.c
-t_bool		sp_intersect(t_intersection *intersection, t_ray ray, void *shape);
-t_bool		pl_intersect(t_intersection *intersection, t_ray ray, void *shape);
-t_bool 		tr_intersect(t_intersection *intersection, t_ray inside, void *shape);
-t_bool 		sq_intersect(t_intersection *intersection, t_ray inside, void *shape);
-t_bool 		cy_intersect(t_intersection *intersection, t_ray inside, void *shape);
-
 //color.c
 t_color		same_color(int col);
 void		apply_gamma(t_color *c, double exposure, double gamma);
@@ -288,6 +288,8 @@ t_color		color_mult(t_color c1, double f);
 int 		move(t_vector *pos, t_vector *dir, int key);
 int			trans(int key);
 
+void		open_image(int w, int h, int i);
+int			init_scene(int argc, char *argv[]);
 
 t_rt	g_rt;
 

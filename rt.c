@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 11:19:56 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 14:31:27 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ void	put_pixel(t_color c)
 {
 	unsigned char sum;
 
-	// if (g_rt.save == 1)
-	// 	*g_rt.image++ = 0;
 	if (g_rt.filter == 1)
 	{
 		sum = ft_min((c.b + c.g + c.r), 255);

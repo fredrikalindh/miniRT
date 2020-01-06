@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 15:38:12 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 14:17:54 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_bool	hit_pl(t_intersection *i, t_ray ray, void *shape)
 	return (2);
 }
 
-static t_bool		hit_tr(t_intersection *i, t_ray r, void *shape)
+static t_bool	hit_tr(t_intersection *i, t_ray r, void *shape)
 {
 	t_triangle	*tr;
 	t_vector	pvec;
@@ -129,12 +129,12 @@ static t_bool			hit_sp(t_intersection *i, t_ray ray, void *shape)
 	return (1);
 }
 
-static double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
+static double	get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
 {
 	double	t1;
 	double	t2;
-	double l1;
-	double l2;
+	double	l1;
+	double	l2;
 
 	t1 = (-b - sqrt(d)) / (2 * a);
 	t2 = (-b + sqrt(d)) / (2 * a);
@@ -155,7 +155,7 @@ static double		get_t(double a, double b, double d, t_cyl *cy, t_ray ray)
 	return (-1);
 }
 
-static t_vector cyl_normal(t_cyl *c, t_point hit)
+static t_vector	cyl_normal(t_cyl *c, t_point hit)
 {
 	t_vector n;
 	t_vector to;

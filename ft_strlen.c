@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 14:41:00 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 14:27:07 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 14:16:51 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_strlen(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str && str[i])

@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2020/01/04 16:50:06 by frlindh          ###   ########.fr        #
+#    Updated: 2020/01/06 14:13:25 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ IDIR			=	-I ./includes
 # SRCS *********************************************************************** #
 SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					intersect.c vectors_math.c vectors_op.c trans.c ranges.c \
+					initrt.c image.c \
 					ft_atof.c \
 					ft_atoi.c \
 					ft_minmax.c \

@@ -6,17 +6,17 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 11:11:41 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/03 15:09:40 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 14:11:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
-double	ft_atof(char *str)
+double		ft_atof(char *str)
 {
-	double f;
-	double div;
-	double neg;
+	double	f;
+	double	div;
+	double	neg;
 
 	f = 0.0;
 	neg = 1.0;

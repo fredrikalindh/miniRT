@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 14:42:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/12/09 13:03:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/06 14:16:47 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strcmp(char *s1, char *s2)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = 0;
 	if (s1 == NULL || s2 == NULL)
