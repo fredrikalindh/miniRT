@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 17:11:32 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 17:37:57 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int			ft_cam(char **s, int i)
 		cross(vector_xyz(0, 0, -1), new->dir):
 		cross(vector_xyz(0, 1, 0), new->dir);
 		if ((new->fov = ft_atoi(s[7])) < 0 ||  new->fov > 180)
-			g_rt.err = 5;
+			g_rt.err = 6;
 		new->next = NULL;
 		circle(new, g_rt.camera);
 	}

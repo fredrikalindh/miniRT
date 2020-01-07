@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 16:47:01 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 17:56:35 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,18 @@ static int	hit_sp(t_intersection *i, t_ray ray, void *shape)
 		return (0);
 	t = (-b - sqrt(sqr(b) - 4 * a * c)) / (2 * a);
 	if (!(t > T_MIN && t < T_MAX) || t > i->t || t == 0.0)
+	{
 		t = (-b + sqrt(sqr(b) - 4 * a * c)) / (2 * a);
+		a = -1;
+	}
 	if (!(t > T_MIN && t < T_MAX && t < i->t && t != 0.0))
 		return (0);
 	i->shape = (void *)sphere;
 	i->t = t;
 	i->color = sphere->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.dir, t));
-	i->normal = normalized(op_min(i->hit, sphere->center));
+	i->normal = a != -1 ? normalized(op_min(i->hit, sphere->center)) :
+	normalized(op_min(sphere->center, i->hit));
 	return (1);
 }
 

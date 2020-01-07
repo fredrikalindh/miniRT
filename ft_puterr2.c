@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 19:26:14 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 17:40:03 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,10 @@ void		ft_puterr2(char id)
 	else if (g_rt.err == 1)
 		write(2, " contains non-digits", 20);
 	else if (g_rt.err == 5)
-		write(2, " vector not normalized", 22);
-	write(2, " on line: ", 10);
+		write(2, ", vector not normalized", 23);
+	else if (g_rt.err == 6)
+		write(2, ", FOV not withing 0-180", 23);
+	write(2, ", on line: ", 11);
 	ft_putnbr_fd(g_rt.line, 2);
 	write(2, "\n\033[0m", 5);
 	free_globals();

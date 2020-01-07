@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 15:20:05 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 17:35:51 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
 	fill_scene[8] = &ft_cy;
 }
 
-static int	init_info(int fd, int argc, int i, int j)
+static void	init_info(int fd, int argc, int i, int j)
 {
 	char		*line;
 	char		**split;
@@ -86,11 +86,12 @@ static int	init_info(int fd, int argc, int i, int j)
 			j = 0;
 			while (split && split[++j] != NULL)
 				is_digit(split[j]) == 0 ? g_rt.err = 1 : 0;
+			if (i == LIST_SIZE && split[0][0] != '#')
+				ft_puterr2(0);
 			(i < LIST_SIZE) ? fill_scene[i](split, j) : 0;
 		}
+		free(split);
 	}
-	free(split);
-	return (1);
 }
 
 int			init_scene(int argc, char *argv[])
