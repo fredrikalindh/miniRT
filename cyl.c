@@ -6,38 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 16:33:10 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 16:42:04 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 19:42:15 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-// static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
-// {
-// 	double		l1;
-// 	double		l2;
-//
-// 	l1 = dot(op_min(op_add(r.origin, op_mult_f(r.dir, t1)), cy->pos), cy->dir);
-// 	l2 = dot(op_min(op_add(r.origin, op_mult_f(r.dir, t2)), cy->pos), cy->dir);
-// 	if (t1 > EPSILON && (t1 <= t2 || t2 < EPSILON) && fabs(l1) <= cy->h)
-// 	{
-// 		cy->first = 1;
-// 		cy->d = l1;
-// 		return (t1);
-// 	}
-// 	if (fabs(l1) > cy->h && fabs(l2) <= cy->h && t2 > EPSILON)
-// 	{
-// 		cy->first = -1;
-// 		return ((t1 + t2) / 2);
-// 	}
-// 	if (t2 > EPSILON && fabs(l2) <= cy->h)
-// 	{
-// 		cy->first = 0;
-// 		cy->d = l2;
-// 		return (t2);
-// 	}
-// 	return (-1);
-// }
 
 static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
 {
@@ -52,22 +25,69 @@ static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
 		cy->d = l1;
 		return (t1);
 	}
+	if (fabs(l1) > cy->h && fabs(l2) <= cy->h)
+	{
+		cy->first = -1;
+		cy->d = l1;
+		return (t2);
+	}
 	if (t2 > EPSILON && fabs(l2) <= cy->h)
 	{
-		cy->first = 0;
+		cy->first = -1;
 		cy->d = l2;
 		return (t2);
 	}
 	return (-1);
 }
 
-static t_vector	cyl_normal(t_cyl *c, t_point hit)
+// static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
+// {
+// 	double		l1;
+// 	double		l2;
+//
+// 	l1 = dot(op_min(op_add(r.origin, op_mult_f(r.dir, t1)), cy->pos), cy->dir);
+// 	l2 = dot(op_min(op_add(r.origin, op_mult_f(r.dir, t2)), cy->pos), cy->dir);
+// 	if (t1 > EPSILON && (t1 <= t2 || t2 < EPSILON) && fabs(l1) <= cy->h)
+// 	{
+// 		cy->first = 1;
+// 		cy->d = l1;
+// 		return (t1);
+// 	}
+// 	if (t2 > EPSILON && fabs(l2) <= cy->h)
+// 	{
+// 		cy->first = 0;
+// 		cy->d = l2;
+// 		return (t2);
+// 	}
+// 	return (-1);
+// }
+
+static int	hit_pl(t_intersection *i, t_ray ray, void *shape)
+{
+	t_plane		*p;
+	double		d;
+	double		t;
+
+	p = (t_plane *)shape;
+	d = dot(ray.dir, p->normal);
+	if (d == 0)
+		return (0);
+	t = dot(op_min(p->pos, ray.origin), p->normal) / d;
+	i->t = t;
+	i->hit = op_add(ray.origin, op_mult_f(ray.dir, t));
+	return (2);
+}
+static t_vector	cyl_normal(t_cyl *c, t_point hit, t_intersection *i)
 {
 	t_vector	to;
+	t_plane		p;
 
 	if (c->first == -1)
 	{
-		return (normalized(op_min(hit, c->pos)));
+		p.normal = (c->d < 0) ? op_mult_f(c->dir, -1) : c->dir;
+		p.pos = op_add(c->pos, op_mult_f(c->dir, c->d));
+		hit_pl(i, i->ray, (void *)&p);
+		return (p.normal);
 	}
 	to = op_add(c->pos, op_mult_f(c->dir, c->d));
 	if (c->first == 1)
@@ -98,8 +118,8 @@ int				hit_cy(t_intersection *i, t_ray ray, void *shape)
 		return (0);
 	i->shape = (void *)cy;
 	i->t = d;
-	i->color = cy->color;
 	i->hit = op_add(ray.origin, op_mult_f(ray.dir, d));
-	i->normal = cyl_normal(cy, i->hit);
+	i->normal = cyl_normal(cy, i->hit, i);
+	i->color = cy->color;
 	return (3);
 }

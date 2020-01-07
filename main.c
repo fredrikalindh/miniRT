@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2020/01/06 19:30:17 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 18:53:46 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int		main(int ac, char *av[])
 	p.sl = g_rt.res_x * 32;
 	p.endian = 1;
 	p.img_ptr = mlx_new_image(p.mlx_ptr, g_rt.res_x, g_rt.res_y);
-	g_rt.or_image = mlx_get_data_addr(p.img_ptr, &p.bpp, &p.sl, &p.endian);
-	g_rt.image = g_rt.or_image;
+	g_rt.image = mlx_get_data_addr(p.img_ptr, &p.bpp, &p.sl, &p.endian);
 	g_rt.select.origin = &g_rt.camera->pos;
 	g_rt.select.dir = &g_rt.camera->dir;
 	write(1, "\033[1;36mRendering image...\n\033[0m", 30);

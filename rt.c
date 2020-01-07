@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 16:46:40 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 19:55:20 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,35 +101,58 @@ t_color		ray_cast(t_intersection hit)
 	return (total_color(hit.color, lig));
 }
 
-void		put_pixel(t_color c)
+void		put_pixel(t_color c, int xy)
 {
 	unsigned char	sum;
 
 	if (g_rt.filter != 0)
 	{
 		sum = ft_min((c.b + c.g + c.r), 255);
-		*g_rt.image++ = sum * (g_rt.filter % 2); // 1 , 0 , 1
-		*g_rt.image++ = sum * (g_rt.filter / 3); // 0 , 0, 1
-		*g_rt.image++ = sum * ((g_rt.filter + 1) % 2); // 0
+		g_rt.image[xy++] = sum * (g_rt.filter % 2); // 1 , 0 , 1
+		g_rt.image[xy++] = sum * (g_rt.filter / 3); // 0 , 0, 1
+		g_rt.image[xy++] = sum * ((g_rt.filter + 1) % 2); // 0
 	}
 	else
 	{
-		*g_rt.image++ = (unsigned char)c.b;
-		*g_rt.image++ = (unsigned char)c.g;
-		*g_rt.image++ = (unsigned char)c.r;
+		g_rt.image[xy++] = (unsigned char)c.b;
+		g_rt.image[xy++] = (unsigned char)c.g;
+		g_rt.image[xy++] = (unsigned char)c.r;
 	}
 	if (g_rt.save == 0)
-		*g_rt.image++ = 0;
+		g_rt.image[xy++] = 0;
 }
+//
+// void		put_pixel(t_color c)
+// {
+// 	unsigned char	sum;
+//
+// 	if (g_rt.filter != 0)
+// 	{
+// 		sum = ft_min((c.b + c.g + c.r), 255);
+// 		*g_rt.image++ = sum * (g_rt.filter % 2); // 1 , 0 , 1
+// 		*g_rt.image++ = sum * (g_rt.filter / 3); // 0 , 0, 1
+// 		*g_rt.image++ = sum * ((g_rt.filter + 1) % 2); // 0
+// 	}
+// 	else
+// 	{
+// 		*g_rt.image++ = (unsigned char)c.b;
+// 		*g_rt.image++ = (unsigned char)c.g;
+// 		*g_rt.image++ = (unsigned char)c.r;
+// 	}
+// 	if (g_rt.save == 0)
+// 		*g_rt.image++ = 0;
+// }
 
 int			ray_trace(void)
 {
 	int				x;
 	int				y;
+	int				mult;
 	t_intersection	hit;
 	t_shapes		*shape;
 
 	y = -1;
+	mult = (g_rt.save == 1) ? 3 : 4;
 	while (++y < g_rt.res_y)
 	{
 		x = -1;
@@ -143,9 +166,9 @@ int			ray_trace(void)
 				shape = shape->next;
 			}
 			if (hit.t != T_MAX)
-				put_pixel(ray_cast(hit));
+				put_pixel(ray_cast(hit), g_rt.res_x * y * mult + x * mult);
 			else
-				put_pixel(same_color(0));
+				put_pixel(same_color(0), g_rt.res_x * y * mult + x * mult);
 		}
 	}
 	return (0);

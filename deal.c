@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 18:46:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 16:59:18 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 19:14:18 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	rerender(t_param *p)
 {
-	g_rt.image = g_rt.or_image;
 	ray_trace();
 	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 }
@@ -48,12 +47,14 @@ void rotcam(int dir)
 	else if (dir == LEFT)
 	{
 		g_rt.camera->dir = normalized(op_add(op_mult_f(g_rt.camera->right, -0.1), g_rt.camera->dir));
-		g_rt.camera->right = cross(up, g_rt.camera->dir);
+		g_rt.camera->right = normalized(cross(up, g_rt.camera->dir));
+		g_rt.camera->right.y = 0;
 	}
 	else
 	{
 		g_rt.camera->dir = normalized(op_add(op_mult_f(g_rt.camera->right, 0.1), g_rt.camera->dir));
-		g_rt.camera->right = cross(up, g_rt.camera->dir);
+		g_rt.camera->right = normalized(cross(up, g_rt.camera->dir));
+		g_rt.camera->right.y = 0;
 	}
 }
 

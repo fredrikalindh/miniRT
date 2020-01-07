@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 15:36:22 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 18:53:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ typedef struct		s_rt
 	char			name[30];
 	unsigned int	err:8;
 	char			*image;
-	char			*or_image;
+	// char			*or_image;
 	int				fd:4;
 	unsigned int	filter:2;
 	int				line;
