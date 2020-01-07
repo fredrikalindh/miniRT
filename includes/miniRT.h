@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 20:36:04 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 14:38:43 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ typedef struct		s_camera
 {
 	t_point			pos;
 	t_vector		dir;
+	t_vector		right;
+	int				fov;
 	struct s_camera	*next;
 }					t_camera;
 
@@ -209,8 +211,6 @@ int			outside_range(t_color c);
 int			outside_range2(t_vector v);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
-// t_vector	vector_f(double f);
-// vector_math
 double		sqr(double f);
 double		dot(t_vector v1, t_vector v2);
 t_vector	cross(t_vector v1, t_vector v2);
@@ -250,8 +250,6 @@ t_color		light_color(t_color l1, t_color l2, double d, double len);
 t_color		total_color(t_color l, t_color c);
 t_color		new_color(int r, int g, int b);
 t_color		same_color(int col);
-// t_color		color_add(t_color c1, t_color c2);
-// t_color		color_mult(t_color c1, double f);
 
 void		rot(double *a, double *b);
 int 		move(t_vector *pos, t_vector *dir, int key);

@@ -6,11 +6,18 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 18:46:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 19:24:14 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 15:02:40 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+static void	rerender(t_param *p)
+{
+	g_rt.image = g_rt.or_image;
+	ray_trace();
+	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
+}
 
 static void	set_lights(void)
 {
@@ -25,7 +32,7 @@ static void	set_lights(void)
 	l = l->next;
 }
 
-static void	move_cam(int x, int y, t_param *p)
+static int	move_cam(int x, int y)
 {
 	int thirdx;
 	int thirdy;
@@ -42,12 +49,7 @@ static void	move_cam(int x, int y, t_param *p)
 		rot(&(g_rt.camera->dir.x), &(g_rt.camera->dir.z));
 	else if (x > (g_rt.res_x - thirdx) && (change = 1) == 1)
 		rot(&(g_rt.camera->dir.z), &(g_rt.camera->dir.x));
-	if (change == 1)
-	{
-		g_rt.image = g_rt.or_image;
-		ray_trace();
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
-	}
+	return (change);
 }
 
 static void	select_object(int x, int y, int i, int id)
@@ -79,13 +81,19 @@ static void	select_object(int x, int y, int i, int id)
 
 int			deal_mouse(int b, int x, int y, void *p)
 {
-	if (b == 2)
-	{
-		move_cam(x, y, (t_param *)p);
-		return (0);
-	}
+	// printf("%d\n", b);
+	if (b == 5)
+		g_rt.camera->fov++;
+	else if (b == 4)
+		g_rt.camera->fov--;
+	else if (b == 2 && move_cam(x, y) == 0)
+		return (1);
 	else
+	{
 		select_object(x, y, 0, 0);
+		return (1);
+	}
+	rerender((t_param *)p);
 	return (0);
 }
 

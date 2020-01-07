@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 20:09:31 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 14:44:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			ft_cam(char **s, int i)
 {
 	t_camera	*new;
 
-	if (i == 7)
+	if (i == 8)
 	{
 		if (!(new = (t_camera *)malloc(sizeof(t_camera))))
 			return (-1);
@@ -78,13 +78,18 @@ int			ft_cam(char **s, int i)
 		normalized(vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6])));
 		if (outside_range2(new->dir))
 			g_rt.err = 5;
+		new->right = (fabs(new->dir.y) > fabs(new->dir.x)) ?
+		cross(vector_xyz(0, 0, -1), new->dir):
+		cross(vector_xyz(0, 1, 0), new->dir);
+		if ((new->fov = ft_atoi(s[7])) < 0 ||  new->fov > 180)
+			g_rt.err = 5;
 		new->next = NULL;
 		circle(new, g_rt.camera);
 	}
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i != 7 || g_rt.err != 0)
+	if (i != 8 || g_rt.err != 0)
 		ft_puterr2('C');
 	return (0);
 }
