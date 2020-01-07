@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 20:18:45 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 17:13:43 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ int			move(t_vector *pos, t_vector *dir, int key)
 		return (0);
 	else if (key == W)
 		op_addp(pos, g_rt.camera->dir);
-	else if (key == A)
-		op_addp(pos, cross(g_rt.camera->dir, vector_xyz(0, 1, 0)));
 	else if (key == D)
-		op_addp(pos, cross(vector_xyz(0, 1, 0), g_rt.camera->dir));
+		op_addp(pos, g_rt.camera->right);
+	else if (key == A)
+		op_addp(pos, op_mult_f(g_rt.camera->right, -1));
 	else if (key == S)
 		op_addp(pos, op_mult_f(g_rt.camera->dir, -1));
-	else if (key == Q)
-		op_addp(pos, vector_xyz(0, -1, 0));
 	else if (key == E)
-		op_addp(pos, vector_xyz(0, 1, 0));
+		op_addp(pos, cross(g_rt.camera->dir, g_rt.camera->right));
+	else if (key == Q)
+		op_addp(pos, cross(g_rt.camera->right, g_rt.camera->dir));
 	else
 		return (rotate(dir, key));
 	return (1);

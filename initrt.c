@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 20:10:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 15:20:05 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	init_list(char *list[LIST_SIZE])
 	list[6] = "sq";
 	list[7] = "tr";
 	list[8] = "cy";
-	list[9] = "filter";
 }
 
 void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
@@ -55,6 +54,7 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
 	g_rt.a_light_r = -1;
 	g_rt.res_x = 0;
 	g_rt.line = 0;
+	g_rt.filter = 0;
 	fill_scene[0] = &ft_res;
 	fill_scene[1] = &ft_amb;
 	fill_scene[2] = &ft_cam;
@@ -83,8 +83,7 @@ static int	init_info(int fd, int argc, int i, int j)
 		{
 			while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
 				i++;
-			if ((j = 0) == 0 && i == 9 && ++i == 10)
-				g_rt.filter = 1;
+			j = 0;
 			while (split && split[++j] != NULL)
 				is_digit(split[j]) == 0 ? g_rt.err = 1 : 0;
 			(i < LIST_SIZE) ? fill_scene[i](split, j) : 0;

@@ -6,11 +6,38 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 16:33:10 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 18:09:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 16:42:04 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+// static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
+// {
+// 	double		l1;
+// 	double		l2;
+//
+// 	l1 = dot(op_min(op_add(r.origin, op_mult_f(r.dir, t1)), cy->pos), cy->dir);
+// 	l2 = dot(op_min(op_add(r.origin, op_mult_f(r.dir, t2)), cy->pos), cy->dir);
+// 	if (t1 > EPSILON && (t1 <= t2 || t2 < EPSILON) && fabs(l1) <= cy->h)
+// 	{
+// 		cy->first = 1;
+// 		cy->d = l1;
+// 		return (t1);
+// 	}
+// 	if (fabs(l1) > cy->h && fabs(l2) <= cy->h && t2 > EPSILON)
+// 	{
+// 		cy->first = -1;
+// 		return ((t1 + t2) / 2);
+// 	}
+// 	if (t2 > EPSILON && fabs(l2) <= cy->h)
+// 	{
+// 		cy->first = 0;
+// 		cy->d = l2;
+// 		return (t2);
+// 	}
+// 	return (-1);
+// }
 
 static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
 {
@@ -38,6 +65,10 @@ static t_vector	cyl_normal(t_cyl *c, t_point hit)
 {
 	t_vector	to;
 
+	if (c->first == -1)
+	{
+		return (normalized(op_min(hit, c->pos)));
+	}
 	to = op_add(c->pos, op_mult_f(c->dir, c->d));
 	if (c->first == 1)
 		return (normalized(op_min(hit, to)));

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 14:38:43 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/07 15:36:22 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define MAX_X 2560
 # define MAX_Y 1395
 
-# define LIST_SIZE 10
+# define LIST_SIZE 9
 
 # define ESC 53
 # define C 8
@@ -191,7 +191,7 @@ typedef struct		s_rt
 	char			*image;
 	char			*or_image;
 	int				fd:4;
-	int				filter:2;
+	unsigned int	filter:2;
 	int				line;
 	t_trans			select;
 	int				res_x;
