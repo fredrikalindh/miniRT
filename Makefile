@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2020/01/07 13:20:07 by frlindh          ###   ########.fr        #
+#    Updated: 2020/01/09 17:17:30 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ $(NAME): $(OBJS) ./includes/*.h
 	$(GCC) $(FLAGS) $(EXTRA) $(OBJS) -o $(NAME)
 
 bonus: $(OBJS_BONUS) ./includes/*.h
-	$(GCC) $(FLAGS) $(EXTRA) $(OBJS_BONUS) -o $(NAME)
+	$(GCC) $(FLAGS) $(EXTRA) $(OBJS_BONUS) -o $(NAME) -lpthread
 
 # $(LIBFT):
 # 	cd my_lib && make && cd ..

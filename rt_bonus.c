@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 13:45:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/09 17:22:48 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,83 +66,85 @@ t_color		ray_cast(t_intersection hit)
 void		put_pixel(t_color c, int xy)
 {
 	unsigned char	sum;
-	int				i;
 
-	i = (g_rt.save == 1) ? xy * 3 : xy * 4;
-	// g_rt.image = g_rt.or_image + i;
-	if (g_rt.filter == 1)
+	if (g_rt.filter != 0)
 	{
 		sum = ft_min((c.b + c.g + c.r), 255);
-		g_rt.image[i++] = sum * (g_rt.filter);
-		g_rt.image[i++] = sum * (g_rt.filter);
-		g_rt.image[i++] = sum * (g_rt.filter);
+		g_rt.image[xy++] = sum * (g_rt.filter % 2); // 1 , 0 , 1
+		g_rt.image[xy++] = sum * (g_rt.filter / 3); // 0 , 0, 1
+		g_rt.image[xy++] = sum * ((g_rt.filter + 1) % 2); // 0
 	}
 	else
 	{
-		printf("?\n");
-		*g_rt.image = (unsigned char)c.b;
-		printf("??\n");
-		*g_rt.image++ = (unsigned char)c.g;
-		*g_rt.image++ = (unsigned char)c.r;
+		g_rt.image[xy++] = (unsigned char)c.b;
+		g_rt.image[xy++] = (unsigned char)c.g;
+		g_rt.image[xy++] = (unsigned char)c.r;
 	}
 	if (g_rt.save == 0)
-		*g_rt.image++ = 0;
-	printf("PP%d\n", xy);
+		g_rt.image[xy++] = 0;
 }
 
-void *trace(void *y)
-{
-	t_intersection	*hit;
-	t_shapes		*shape;
-	int				xy;
-
-	hit = (t_intersection *)y;
-	xy = hit->t;
-	hit->t = T_MAX;
-	shape = g_rt.shapes;
-	while (shape != NULL)
-	{
-		intersect(hit, hit->ray, shape, 0);
-		shape = shape->next;
-	}
-	printf("%d\n", xy);
-	if (hit->t != T_MAX)
-		put_pixel(ray_cast(*hit), xy);
-	else
-		put_pixel(same_color(0), xy);
-	return (NULL);
-}
-
-int			ray_trace(void)
+void		*trace(void *p)
 {
 	int				x;
 	int				y;
-	t_intersection	*hit;
-	pthread_t		threads[2];
+	int				comp;
+	int				mult;
+	t_intersection	hit;
+	t_shapes		*shape;
 
+	comp = *((int *)p);
+	printf("%d\n", comp);
+	mult = (g_rt.save == 1) ? 3 : 4;
 	y = -1;
 	while (++y < g_rt.res_y)
 	{
-		x = -1;
-		while (++x < g_rt.res_x)
+		x = comp;
+		while (x < g_rt.res_x && (hit.t = T_MAX) == T_MAX)
 		{
-			hit->t = x * y;
-			hit->ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
-			if (x % 3 == 0)
-				trace((void *)&hit);
-			else if (x % 3 == 1)
+			hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
+			shape = g_rt.shapes;
+			while (shape != NULL)
 			{
-				printf("%d\n", x);
-				pthread_create(&threads[0], NULL, trace, (void *)&hit);
-				pthread_join(threads[0], NULL);
+				intersect(&hit, hit.ray, shape, 0);
+				shape = shape->next;
 			}
+			if (hit.t != T_MAX)
+				put_pixel(ray_cast(hit), g_rt.res_x * y * mult + x * mult);
 			else
-			{
-				printf("%d\n", x);
-				pthread_create(&threads[1], NULL, trace, (void *)&hit);
-				pthread_join(threads[1], NULL);
-			}
+				put_pixel(same_color(0), g_rt.res_x * y * mult + x * mult);
+			x += 4;
 		}
 	}
-	return (0);
+	return (NULL);
+}
+
+int		ray_trace(void)
+{
+	pthread_t		threads[3];
+	// pthread_t		threads;
+	int *x;
+	int *y;
+	int *v;
+	int *u;
+
+	x = (int *)malloc(sizeof(int));
+	y = (int *)malloc(sizeof(int));
+	v = (int *)malloc(sizeof(int));
+	u = (int *)malloc(sizeof(int));
+	*x = 0;
+	*y = 1;
+	*v = 2;
+	*u = 3;
+
+
+	// one = pthread_create(&threads, NULL, trace, (void *)y);
+	trace((void *)x);
+	pthread_create(&threads[0], NULL, trace, (void *)y);
+	pthread_create(&threads[1], NULL, trace, (void *)v);
+	pthread_create(&threads[2], NULL, trace, (void *)u);
+	pthread_join(threads[0], NULL);
+	pthread_join(threads[1], NULL);
+	pthread_join(threads[2], NULL);
+	return (1);
 }

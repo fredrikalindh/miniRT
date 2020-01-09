@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 18:53:41 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/09 13:32:49 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ typedef struct		s_ray
 
 typedef struct		s_color // -> double ??
 {
-	unsigned int r; // :16
-	unsigned int g; // :16
-	unsigned int b; // :16
+	int r; // :16
+	int g; // :16
+	int b; // :16
 }					t_color;
 
 typedef struct		s_sphere

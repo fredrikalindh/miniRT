@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:37:52 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 19:28:59 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/09 16:43:26 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void		open_image(int w, int h, int i)
 		ft_puterr("failed to create miniRT.bmp");
 	if (!(g_rt.image = (char *)malloc(w * h * 3)))
 		exit(-1);
+	write(1, "\033[1;36mCreating image... \033[0m", 29);
+	ray_trace();
 	g.data = g_rt.image;
 	g.f = (unsigned char[14]){'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0};
 	g.i = (unsigned char[40]){40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 24, 0};
@@ -46,8 +48,6 @@ void		open_image(int w, int h, int i)
 	header(g.f, g.i, w, h);
 	write(g_rt.fd, g.f, 14);
 	write(g_rt.fd, g.i, 40);
-	write(1, "\033[1;36mCreating image... \033[0m", 29);
-	ray_trace();
 	while (++i < h)
 	{
 		write(g_rt.fd, g.data + w * 3 * (h - i - 1), w * 3);

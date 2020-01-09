@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2020/01/07 18:53:46 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/09 16:45:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		main(int ac, char *av[])
 	if (g_rt.save == 1)
 		open_image(g_rt.res_x, g_rt.res_y, -1);
 	if (!(p.mlx_ptr = mlx_init()))
-		return (-1);
+		return (-1); //change to error
 	p.bpp = 32;
 	p.sl = g_rt.res_x * 32;
 	p.endian = 1;

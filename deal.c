@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 18:46:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 19:14:18 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/09 17:42:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,25 @@ void rotcam(int dir)
 
 	up = cross(g_rt.camera->dir, g_rt.camera->right);
 	if (dir == UP)
-	{
-		g_rt.camera->dir = normalized(op_add(op_mult_f(up, 0.1), g_rt.camera->dir));
-	}
+		g_rt.camera->dir = op_add(op_mult_f(up, 0.1), g_rt.camera->dir);
 	else if (dir == DOWN)
-	{
-		g_rt.camera->dir = normalized(op_add(op_mult_f(up, -0.1), g_rt.camera->dir));
-	}
+		g_rt.camera->dir = op_add(op_mult_f(up, -0.1), g_rt.camera->dir);
 	else if (dir == LEFT)
 	{
-		g_rt.camera->dir = normalized(op_add(op_mult_f(g_rt.camera->right, -0.1), g_rt.camera->dir));
-		g_rt.camera->right = normalized(cross(up, g_rt.camera->dir));
-		g_rt.camera->right.y = 0;
+		g_rt.camera->dir.x = g_rt.camera->dir.x - 0.1 * g_rt.camera->dir.z;
+		g_rt.camera->dir.z = 0.1 * g_rt.camera->dir.x + g_rt.camera->dir.z;
 	}
 	else
 	{
-		g_rt.camera->dir = normalized(op_add(op_mult_f(g_rt.camera->right, 0.1), g_rt.camera->dir));
+		g_rt.camera->dir.z = g_rt.camera->dir.z - 0.1 * g_rt.camera->dir.x;
+		g_rt.camera->dir.x = 0.1 * g_rt.camera->dir.z + g_rt.camera->dir.x;
+	}
+	normalize(&g_rt.camera->dir);
+	if (dir == LEFT || dir == RIGHT)
+	{
 		g_rt.camera->right = normalized(cross(up, g_rt.camera->dir));
 		g_rt.camera->right.y = 0;
+		normalize(&g_rt.camera->right);
 	}
 }
 

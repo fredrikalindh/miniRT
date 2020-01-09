@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 17:35:51 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/09 12:20:28 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static int	check_rt(char *f)
+static int	check_rt(char *f) // could secure if filename is long by having separate indexes
 {
 	int			i;
 
@@ -88,7 +88,7 @@ static void	init_info(int fd, int argc, int i, int j)
 				is_digit(split[j]) == 0 ? g_rt.err = 1 : 0;
 			if (i == LIST_SIZE && split[0][0] != '#')
 				ft_puterr2(0);
-			(i < LIST_SIZE) ? fill_scene[i](split, j) : 0;
+			(i < LIST_SIZE) ? fill_scene[i](split, j) : 0; // free split elem ft :
 		}
 		free(split);
 	}
@@ -120,5 +120,5 @@ int			init_scene(int argc, char *argv[])
 		p->next = g_rt.camera;
 		return (0);
 	}
-	exit(-1);
+	return (1);
 }
