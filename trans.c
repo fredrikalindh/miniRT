@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 17:13:43 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 16:41:47 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,14 @@ int			trans(int key)
 	{
 		*g_rt.select.r = (key == PLUS) ?
 		*g_rt.select.r + 0.5 : *g_rt.select.r - 0.5;
+		*g_rt.select.r < 0 ? *g_rt.select.r = 0 : 0;
 		return (1);
 	}
 	if (g_rt.select.h != NULL && (key == H || key == B))
 	{
 		*g_rt.select.h = (key == H) ?
 		*g_rt.select.h + 0.5 : *g_rt.select.h - 0.5;
+		*g_rt.select.h < 0 ? *g_rt.select.h = 0 : 0;
 		return (1);
 	}
 	return (0);

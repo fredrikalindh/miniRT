@@ -6,11 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 13:57:13 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:40:16 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <pthread.h>
+#define THREADS 16
 
 t_ray		compute_ray(float pixx, float pixy)
 {
@@ -66,7 +68,6 @@ void		put_pixel(t_color c, int xy)
 {
 	unsigned char	sum;
 
-	// printf("[%d] %d %d\n", c.r, c.g, c.b);
 	if (g_rt.filter != 0)
 	{
 		sum = ft_min((c.b + c.g + c.r), 255);
@@ -84,44 +85,30 @@ void		put_pixel(t_color c, int xy)
 		g_rt.image[xy++] = 0;
 }
 
-
-typedef struct s_bonus {
-	int			x;
-	int			max_x;
-	int			max_y;
-	t_shapes	*shape;
-	int			mult;
-} t_bonus;
-
 void		*trace(void *p)
 {
 	int				x;
 	int				y;
-	t_bonus			*b;
+	int				mult;
 	t_intersection	hit;
 	t_shapes		*shape;
 
-	b = (t_bonus *)p;
-	// printf("%d\n", b->x);
 	y = -1;
-	while (++y < b->max_y)
+	mult = (g_rt.save == 1) ? 3 : 4;
+	while (++y < g_rt.res_y & (x = *((int *)p)) >= 0)
 	{
-		x = b->x;
-		while (x < b->max_x)
+
+		while (x < g_rt.res_x && (hit.t = T_MAX) == T_MAX)
 		{
-			hit.t = T_MAX;
-			hit.ray = compute_ray((float)x / b->max_x, (float)y / b->max_y);
-			shape = b->shape;
-			while (shape != NULL)
-			{
-				intersect(&hit, hit.ray, shape, 0);
+			hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
+			shape = g_rt.shapes;
+			while (shape != NULL && intersect(&hit, hit.ray, shape, 0) >= 0)
 				shape = shape->next;
-			}
 			if (hit.t != T_MAX)
-				put_pixel(ray_cast(hit), b->max_x * y * b->mult + x * b->mult);
+				put_pixel(ray_cast(hit), g_rt.res_x * y * mult + x * mult);
 			else
-				put_pixel(same_color(0), b->max_x * y * b->mult + x * b->mult);
-			x = x + 5;
+				put_pixel(same_color(0), g_rt.res_x * y * mult + x * mult);
+			x = x + THREADS;
 		}
 	}
 	return (NULL);
@@ -129,58 +116,18 @@ void		*trace(void *p)
 
 int		ray_trace(void)
 {
-	pthread_t		threads[4];
-	t_bonus		*x[5];
+	pthread_t	threads[THREADS];
+	int			x[THREADS];
 	int			i;
 
 	i = -1;
-	while (++i < 5)
-	{
-		x[i] = (t_bonus *)malloc(sizeof(t_bonus));
-		x[i]->x = i;
-		x[i]->max_x = g_rt.res_x;
-		x[i]->max_y = g_rt.res_y;
-		x[i]->mult = 4 - g_rt.save;
-		x[i]->shape = g_rt.shapes;
-	}
-	trace((void *)x[4]);
+	while (++i < THREADS)
+		x[i] = i;
 	i = -1;
-	while (++i < 4)
-		pthread_create(&threads[i], NULL, trace, (void *)x[i]);
-	pthread_join(threads[0], NULL);
-	pthread_join(threads[1], NULL);
-	pthread_join(threads[2], NULL);
-	pthread_join(threads[3], NULL);
+	while (++i < THREADS)
+		pthread_create(&threads[i], NULL, trace, (void *)&x[i]);
+	i = -1;
+	while (++i < THREADS)
+		pthread_join(threads[i], NULL);
 	return (1);
 }
-//
-// int		ray_trace(void)
-// {
-// 	pthread_t		threads[3];
-//
-// 	// pthread_t		threads;
-// 	int *x;
-// 	int *y;
-// 	int *v;
-// 	int *u;
-//
-// 	x = (int *)malloc(sizeof(int));
-// 	y = (int *)malloc(sizeof(int));
-// 	v = (int *)malloc(sizeof(int));
-// 	u = (int *)malloc(sizeof(int));
-// 	*x = 0;
-// 	*y = 1;
-// 	*v = 2;
-// 	*u = 3;
-//
-//
-// 	// one = pthread_create(&threads, NULL, trace, (void *)y);
-// 	trace((void *)x);
-// 	pthread_create(&threads[0], NULL, trace, (void *)y);
-// 	pthread_create(&threads[1], NULL, trace, (void *)v);
-// 	pthread_create(&threads[2], NULL, trace, (void *)u);
-// 	pthread_join(threads[0], NULL);
-// 	pthread_join(threads[1], NULL);
-// 	pthread_join(threads[2], NULL);
-// 	return (1);
-// }

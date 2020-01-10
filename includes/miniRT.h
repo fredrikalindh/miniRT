@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 13:53:07 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:40:08 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 
 # include "../minilibx/mlx.h"
 # include "ft.h"
-
-#include <pthread.h>
-# include <stdio.h> // OBS
 
 # define MAX_X 2560
 # define MAX_Y 1395
