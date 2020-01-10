@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/09 12:20:28 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:47:04 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ static void	init_list(char *list[LIST_SIZE])
 	list[6] = "sq";
 	list[7] = "tr";
 	list[8] = "cy";
+	list[9] = "cy";
 }
 
 void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
 {
 	g_rt.camera = NULL;
 	g_rt.light = NULL;
+	g_rt.d_light = NULL;
 	g_rt.shapes = NULL;
 	g_rt.a_light_r = -1;
 	g_rt.res_x = 0;
@@ -64,6 +66,7 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
 	fill_scene[6] = &ft_sq;
 	fill_scene[7] = &ft_tr;
 	fill_scene[8] = &ft_cy;
+	fill_scene[9] = &ft_dlig;
 }
 
 static void	init_info(int fd, int argc, int i, int j)

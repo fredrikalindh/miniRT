@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 18:40:08 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:48:56 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define MAX_X 2560
 # define MAX_Y 1395
 
-# define LIST_SIZE 9
+# define LIST_SIZE 10
 
 # define ESC 53
 # define C 8
@@ -199,6 +199,7 @@ typedef struct		s_rt
 	t_color			a_light_c;
 	t_camera		*camera;
 	t_light			*light;
+	t_light			*d_light;
 	t_shapes		*shapes;
 }					t_rt;
 
@@ -236,6 +237,7 @@ int			ft_res(char **split, int i);
 int			ft_amb(char **split, int i);
 int			ft_cam(char **split, int i);
 int			ft_lig(char **split, int i);
+int			ft_dlig(char **s, int i);
 void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int));
 // rt.c
 int			ray_trace();

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 19:55:20 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 19:02:58 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,35 @@ t_color		ray_cast(t_intersection hit)
 	while (l != NULL)
 	{
 		p.dir = op_min(l->coor, hit.hit);
+		hit.t = normalize(&p.dir);
+		d = ft_maxd(0.0, dot(hit.normal, p.dir));
+		shape = g_rt.shapes;
+		while (shape != NULL)
+		{
+			if (intersect(&hit, p, shape, 1) && (d = 0.0) == 0.0)
+				break ;
+			shape = shape->next;
+		}
+		lig = light_color(lig, l->color, d * l->bright, hit.t);
+		l = l->next;
+	}
+	return (total_color(hit.color, lig));
+}
+
+t_color		d_ray_cast(t_intersection hit) // just add , start_color, 
+{
+	t_ray			p;
+	t_light			*l;
+	t_shapes		*shape;
+	float			d;
+	t_color			lig;
+
+	l = g_rt.d_light;
+	p.origin = hit.hit;
+	lig = light_color(same_color(0), g_rt.a_light_c, g_rt.a_light_r, 1);
+	while (l != NULL)
+	{
+		p.dir = l->dir;
 		hit.t = normalize(&p.dir);
 		d = ft_maxd(0.0, dot(hit.normal, p.dir));
 		shape = g_rt.shapes;

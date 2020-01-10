@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 18:56:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:52:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,32 @@ t_ray		compute_ray(float pixx, float pixy)
 	t_ray			ray;
 	double			x;
 	double			y;
+	t_vector		right;
 	t_vector		up;
 
-	up = cross(g_rt.camera->dir, g_rt.camera->right);
-	y = (1 - 2 * pixy) * atan(g_rt.camera->fov * 0.0087) ;
-	x = (2 * pixx - 1) * atan(g_rt.camera->fov * 0.0087) *
-	((float)g_rt.res_x / g_rt.res_y);
+	if (fabs(g_rt.camera->dir.y) > 0.8)
+		right = cross(vector_xyz(0, 0, 1), g_rt.camera->dir);
+	else
+		right = cross(vector_xyz(0, 1, 0), g_rt.camera->dir);
+	up = cross(g_rt.camera->dir, right);
+	x = (2 * pixx - 1) * (float)g_rt.res_x / g_rt.res_y * 0.41; // * g_rt.fov
+	y = (1 - 2 * pixy) * 0.41; // * g_rt.fov
 	ray.dir = normalized(op_add(g_rt.camera->dir,
-		op_add(op_mult_f(g_rt.camera->right, x), op_mult_f(up, y))));
+		op_add(op_mult_f(right, x), op_mult_f(up, y))));
 	ray.origin = g_rt.camera->pos;
 	return (ray);
 }
 
-t_color		ray_cast(t_intersection hit)
+t_color		ray_cast(t_intersection hit, t_color lig, t_light *l)
 {
 	t_ray			p;
-	t_light			*l;
+	;
 	t_shapes		*shape;
 	float			d;
 	t_color			lig;
 
 	l = g_rt.light;
 	p.origin = hit.hit;
-	lig = light_color(same_color(0), g_rt.a_light_c, g_rt.a_light_r, 1);
 	while (l != NULL)
 	{
 		p.dir = op_min(l->coor, hit.hit);
@@ -59,6 +62,35 @@ t_color		ray_cast(t_intersection hit)
 	}
 	return (total_color(hit.color, lig));
 }
+//
+// t_color		ray_cast(t_intersection hit)
+// {
+// 	t_ray			p;
+// 	t_light			*l;
+// 	t_shapes		*shape;
+// 	float			d;
+// 	t_color			lig;
+//
+// 	l = g_rt.light;
+// 	p.origin = hit.hit;
+// 	lig = light_color(same_color(0), g_rt.a_light_c, g_rt.a_light_r, 1);
+// 	while (l != NULL)
+// 	{
+// 		p.dir = op_min(l->coor, hit.hit);
+// 		hit.t = normalize(&p.dir);
+// 		d = ft_maxd(0.0, dot(hit.normal, p.dir));
+// 		shape = g_rt.shapes;
+// 		while (shape != NULL)
+// 		{
+// 			if (intersect(&hit, p, shape, 1) && (d = 0.0) == 0.0)
+// 				break ;
+// 			shape = shape->next;
+// 		}
+// 		lig = light_color(lig, l->color, d * l->bright, hit.t);
+// 		l = l->next;
+// 	}
+// 	return (total_color(hit.color, lig));
+// }
 
 void		put_pixel(t_color c, int xy)
 {

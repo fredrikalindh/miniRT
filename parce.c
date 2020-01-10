@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 14:32:13 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:48:41 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,11 @@ int			ft_cam(char **s, int i)
 		new->pos = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->dir =
 		normalized(vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6])));
-		if (outside_range2(new->dir))
-			g_rt.err = 5;
+		(outside_range2(new->dir)) ? g_rt.err = 5 : 0;
 		new->right = (fabs(new->dir.y) > 0.7) ?
 		cross(vector_xyz(0, 0, -1), new->dir):
 		cross(vector_xyz(0, 1, 0), new->dir);
-		if ((new->fov = ft_atoi(s[7])) < 0 ||  new->fov > 180)
-			g_rt.err = 6;
+		((new->fov = ft_atoi(s[7])) < 0 ||  new->fov > 180) ? g_rt.err = 6 : 0;
 		new->next = NULL;
 		circle(new, g_rt.camera);
 	}
@@ -115,5 +113,29 @@ int			ft_lig(char **s, int i)
 		free(s[i]);
 	if (i != 8 || g_rt.err != 0)
 		ft_puterr2('l');
+	return (0);
+}
+
+int			ft_dlig(char **s, int i)
+{
+	t_light		*new;
+
+	if (i == 8)
+	{
+		if (!(new = (t_light *)malloc(sizeof(t_light))))
+			return (-1);
+		new->next = g_rt.d_light;
+		new->coor = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
+		new->bright = ft_atof(s[4]);
+		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
+		if (outside_range(new->color))
+			g_rt.err = 3;
+		g_rt.d_light = new;
+	}
+	i = -1;
+	while (s && s[++i] != NULL)
+		free(s[i]);
+	if (i != 8 || g_rt.err != 0)
+		ft_puterr2('L');
 	return (0);
 }

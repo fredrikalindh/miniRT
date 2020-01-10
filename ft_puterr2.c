@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 17:40:03 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 18:48:24 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static void	put_type(char id)
 		write(2, "camera", 7);
 	else if (id == 'l')
 		write(2, "light", 5);
+	else if (id == 'L')
+		write(2, "directional light", 17);
 	else if (id == 'h')
 		write(2, "sphere", 6);
 	else if (id == 'c')
