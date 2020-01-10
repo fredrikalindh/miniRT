@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/07 17:37:57 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 14:32:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int			ft_cam(char **s, int i)
 		normalized(vector_xyz(ft_atof(s[4]), ft_atof(s[5]), ft_atof(s[6])));
 		if (outside_range2(new->dir))
 			g_rt.err = 5;
-		new->right = (fabs(new->dir.y) < 0) ?
+		new->right = (fabs(new->dir.y) > 0.7) ?
 		cross(vector_xyz(0, 0, -1), new->dir):
 		cross(vector_xyz(0, 1, 0), new->dir);
 		if ((new->fov = ft_atoi(s[7])) < 0 ||  new->fov > 180)

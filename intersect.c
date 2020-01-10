@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/09 18:46:04 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 13:09:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,11 @@ static int	hit_sp(t_intersection *i, t_ray ray, void *shape)
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.dir, t));
 	i->normal = a != -1 ? normalized(op_min(i->hit, sphere->center)) :
 	normalized(op_min(sphere->center, i->hit));
-	i->tex.x = (1 + atan2(i->hit.z, i->hit.x) / 3.1415) * 10;
-	i->tex.y = cos(i->hit.y) / 3.1415 * 5;
+	i->color = sphere->color;
+	// i->tex.x = (1 + atan2(i->hit.z, i->hit.x) / 3.1415) * 10;
+	// i->tex.y = cos(i->hit.y) / 3.1415 * 5;
 	// printf("%f %f\n", i->tex.x, i->tex.y);
-	i->color = ((((int)i->tex.x) % 2 == 0 && ((int)i->tex.y) % 2 != 0) || (((int)i->tex.x) % 2 != 0 && ((int)i->tex.y) % 2 == 0)) ? same_color(255) : sphere->color;
+	// i->color = ((((int)i->tex.x) % 2 == 0 && ((int)i->tex.y) % 2 != 0) || (((int)i->tex.x) % 2 != 0 && ((int)i->tex.y) % 2 == 0)) ? same_color(255) : sphere->color;
 	// i->color = ((i->tex.x >= 0.5 && i->tex.x <= 0.7) || (i->tex.x >= 0.0 && i->tex.x <= 0.2)) ? same_color(255) : sphere->color;
 	// i->color = ((i->tex.x * 20 > 0.5 && i->tex.y * 20 < 0.5) ||
 	// 			(i->tex.x * 10 > 0) ||

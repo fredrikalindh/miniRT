@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 18:46:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/09 17:42:13 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 14:00:17 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void rotcam(int dir)
 	t_vector up;
 
 	up = cross(g_rt.camera->dir, g_rt.camera->right);
-	if (dir == UP)
+	if (dir == UP && g_rt.camera->dir.y < 1)
 		g_rt.camera->dir = op_add(op_mult_f(up, 0.1), g_rt.camera->dir);
-	else if (dir == DOWN)
+	else if (dir == DOWN && g_rt.camera->dir.y > -1)
 		g_rt.camera->dir = op_add(op_mult_f(up, -0.1), g_rt.camera->dir);
 	else if (dir == LEFT)
 	{
