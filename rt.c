@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 19:02:58 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 23:45:40 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_color		ray_cast(t_intersection hit)
 	return (total_color(hit.color, lig));
 }
 
-t_color		d_ray_cast(t_intersection hit) // just add , start_color, 
+t_color		d_ray_cast(t_intersection hit) // just add , start_color,
 {
 	t_ray			p;
 	t_light			*l;
@@ -114,7 +114,7 @@ t_color		d_ray_cast(t_intersection hit) // just add , start_color,
 	lig = light_color(same_color(0), g_rt.a_light_c, g_rt.a_light_r, 1);
 	while (l != NULL)
 	{
-		p.dir = l->dir;
+		p.dir = l->coor;
 		hit.t = normalize(&p.dir);
 		d = ft_maxd(0.0, dot(hit.normal, p.dir));
 		shape = g_rt.shapes;

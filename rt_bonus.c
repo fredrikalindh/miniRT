@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 18:56:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/10 23:47:05 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include <pthread.h>
-#define THREADS 16
+#define THREADS 124
 
 t_ray		compute_ray(float pixx, float pixy)
 {
@@ -93,7 +93,6 @@ void		*trace(void *p)
 	mult = (g_rt.save == 1) ? 3 : 4;
 	while (++y < g_rt.res_y & (x = *((int *)p)) >= 0)
 	{
-
 		while (x < g_rt.res_x && (hit.t = T_MAX) == T_MAX)
 		{
 			hit.ray = compute_ray((float)x / g_rt.res_x, (float)y / g_rt.res_y);
