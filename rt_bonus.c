@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 23:47:05 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/11 21:58:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include <pthread.h>
-#define THREADS 124
+#define THREADS 4
 
 t_ray		compute_ray(float pixx, float pixy)
 {
@@ -54,9 +54,13 @@ t_color		ray_cast(t_intersection hit)
 				break ;
 			shape = shape->next;
 		}
-		lig = light_color(lig, l->color, d * l->bright, hit.t);
+		lig = light_color(lig, l->color, l->bright, hit.t);
 		l = l->next;
 	}
+	// d = dot(hit.normal, vector_xyz(1,0,0));
+	// hit.color.r = d * hit.color.r;
+	// hit.color.g = (0.5 + d) * hit.color.g;
+	// hit.color.b = -d * hit.color.r;
 	return (total_color(hit.color, lig));
 }
 

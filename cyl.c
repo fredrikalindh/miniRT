@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 16:33:10 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/09 15:45:49 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/11 21:56:46 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,14 @@ int				hit_cy(t_intersection *i, t_ray ray, void *shape)
 	i->t = d;
 	i->hit = op_add(ray.origin, op_mult_f(ray.dir, d));
 	i->normal = cyl_normal(cy, i->hit);
-	i->color = cy->color;
+	// i->color = cy->color;
+	// i->uv.x = 0.5 + (atan2(i->normal.z, i->normal.x) * 0.159159);
+	// t_vector temp = normalized(cross(cy->dir, op_min(vector_xyz(1, 1, 0), cy->dir)));
+	t_vector temp = normalized(op_min(i->normal, op_min(vector_xyz(0,1,0), cy->dir)));
+	// op_mult_f(vector_xyz(0, 1, 0), cy->d);
+	i->uv.x = 0.5 + (atan2(temp.z, temp.x) * 0.159159);
+	// i->uv.x = 0.5 + (atan2(dot(i->normal, temp), dot(i->normal, cross(cy->dir, temp)) * 0.159159));
+	i->uv.y = (cy->d < 0) ? cy->d - 1 : cy->d;
+	i->color = (((int)(i->uv.x * cy->r * 6) % 2 == 0 && (int)(i->uv.y) % 2 != 0) || ((int)(i->uv.x * cy->r * 6) % 2 != 0 && (int)(i->uv.y) % 2 == 0)) ? new_color(255 - cy->color.r, 255 - cy->color.g, 255 - cy->color.b) : cy->color;
 	return (3);
 }

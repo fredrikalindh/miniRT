@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 18:48:56 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/11 22:17:10 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 # include "../minilibx/mlx.h"
 # include "ft.h"
+
+#include <stdio.h>
 
 # define MAX_X 2560
 # define MAX_Y 1395
@@ -90,6 +92,7 @@ typedef struct		s_sphere
 	t_color			color;
 	t_point			center;
 	double			radius;
+	int				fd_uv;
 }					t_sphere;
 
 typedef struct		s_plane
@@ -162,7 +165,7 @@ typedef struct		s_intersection
 	t_point hit;
 	void *shape;
 	t_color color;
-	t_vector tex;
+	t_vector uv;
 }					t_intersection;
 
 typedef struct		s_trans
@@ -179,6 +182,8 @@ typedef struct s_image {
 	unsigned char		*f;
 	unsigned char		*i;
 	unsigned char		*bmppad;
+	unsigned int		w;
+	unsigned int		h;
 	char*				data;
 }	t_image;
 
@@ -188,7 +193,6 @@ typedef struct		s_rt
 	char			name[30];
 	unsigned int	err:8;
 	char			*image;
-	// char			*or_image;
 	int				fd:4;
 	unsigned int	filter:2;
 	int				line;
