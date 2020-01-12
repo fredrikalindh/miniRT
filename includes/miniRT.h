@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/11 22:17:10 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/12 20:03:10 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct		s_sphere
 	t_point			center;
 	double			radius;
 	int				fd_uv;
+	int				check;
 }					t_sphere;
 
 typedef struct		s_plane
@@ -242,7 +243,7 @@ int			ft_amb(char **split, int i);
 int			ft_cam(char **split, int i);
 int			ft_lig(char **split, int i);
 int			ft_dlig(char **s, int i);
-void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int));
+// void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int), char *list[LIST_SIZE]);
 // rt.c
 int			ray_trace();
 t_color 	ray_cast(t_intersection hit);

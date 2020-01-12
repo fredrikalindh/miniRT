@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 18:47:04 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/12 19:41:50 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ static void	init_list(char *list[LIST_SIZE])
 	list[9] = "cy";
 }
 
-void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
+static void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int), char *list[LIST_SIZE])
 {
+	init_list(list);
 	g_rt.camera = NULL;
 	g_rt.light = NULL;
 	g_rt.d_light = NULL;
@@ -69,16 +70,14 @@ void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int))
 	fill_scene[9] = &ft_dlig;
 }
 
-static void	init_info(int fd, int argc, int i, int j)
+static void	init_info(int fd, int i, int j)
 {
 	char		*line;
 	char		**split;
 	char		*list[LIST_SIZE];
 	int			(*fill_scene[LIST_SIZE])(char**, int);
 
-	g_rt.save = (argc == 3) ? 1 : 0;
-	init_list(list);
-	init_ftptr(fill_scene);
+	init_ftptr(fill_scene, list);
 	while ((get_next_line(fd, &line)) == 1 && g_rt.line++ >= 0)
 	{
 		split = ft_split(line);
@@ -86,12 +85,15 @@ static void	init_info(int fd, int argc, int i, int j)
 		{
 			while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
 				i++;
-			j = 0;
-			while (split && split[++j] != NULL)
-				is_digit(split[j]) == 0 ? g_rt.err = 1 : 0;
-			if (i == LIST_SIZE && split[0][0] != '#')
-				ft_puterr2(0);
-			(i < LIST_SIZE) ? fill_scene[i](split, j) : 0; // free split elem ft :
+			if ((j = 0) == 0 && split[0][0] != '#')
+			{
+				while (split && split[++j] != NULL)
+					is_digit(split[j]) == 0 ? g_rt.err = 1 : 0;
+				(i < LIST_SIZE) ? fill_scene[i](split, j) : ft_puterr2(0); // free split elem ft :
+			}
+			if ((j = -1) == -1 && split[0][0] == '#')
+				while (split[++j] != NULL)
+					free(split[j]);
 		}
 		free(split);
 	}
@@ -110,7 +112,8 @@ int			init_scene(int argc, char *argv[])
 		ft_puterr("failed to open file");
 	else
 	{
-		init_info(fd, argc, 0, 0);
+		g_rt.save = (argc == 3) ? 1 : 0;
+		init_info(fd, 0, 0);
 		if (g_rt.res_x <= 0 || g_rt.res_y <= 0)
 			ft_puterr("resolution missing");
 		if (g_rt.camera == NULL)

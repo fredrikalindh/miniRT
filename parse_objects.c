@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 20:16:47 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/12 20:03:31 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int		ft_sp(char **s, int i)
 	t_sphere	*new;
 	t_shapes	*shell;
 
-	if (i == 8)
+	printf("%d\n", i);
+	if (i == 8 || (i == 9 && s[8][0] == '-'))
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
 			return (-1);
@@ -57,6 +58,7 @@ int		ft_sp(char **s, int i)
 		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
 		if (outside_range(new->color))
 			g_rt.err = 3;
+		new->check = (i == 9) ? 1 : 0;
 		shell->shape = (void *)new;
 		shell->id = sp;
 		g_rt.shapes = (void *)shell;
@@ -64,7 +66,7 @@ int		ft_sp(char **s, int i)
 	i = -1;
 	while (s && s[++i] != NULL)
 		free(s[i]);
-	if (i != 8 || g_rt.err != 0)
+	if ((i != 8 && new->check != 1) || g_rt.err != 0)
 		ft_puterr2('h');
 	return (0);
 }

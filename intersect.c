@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/11 21:13:25 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/12 20:07:31 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,13 @@ static int	hit_pl(t_intersection *i, t_ray ray, void *shape)
 	i->normal = normalized(p->normal);
 	if (dot(p->normal, ray.dir) > 0)
 		i->normal = op_mult_f(i->normal, -1.0);
+
 	temp = normalized(cross(i->normal, op_min(vector_xyz(1, 1, 0), i->normal)));
 	i->uv.x = dot(op_min(p->pos, i->hit), temp);
 	i->uv.y = dot(op_min(p->pos, i->hit), cross(i->normal, temp));
-	i->uv.x = (i->uv.x < 0) ? (int)(i->uv.x - 1) % 2 : (int)(i->uv.x) % 2;
-	i->uv.y = (i->uv.y < 0) ? (int)(i->uv.y - 1) % 2 : (int)(i->uv.y) % 2;
-	// printf("%f %f\n", i->uv.x, i->uv.y);
+	i->uv.x = (i->uv.x < 0) ? (int)(i->uv.x / 6 - 1) % 2 : (int)(i->uv.x) / 6 % 2;
+	i->uv.y = (i->uv.y < 0) ? (int)(i->uv.y / 6 - 1) % 2 : (int)(i->uv.y) / 6 % 2;
 	i->color = ((i->uv.x == 0 && i->uv.y != 0) || (i->uv.x != 0 && i->uv.y == 0)) ? new_color(255 - p->color.r, 255 - p->color.g, 255 - p->color.b) : p->color;
-	// i->uv.x = cross(i->normal, op_min(p->pos, ray.origin));
-	// i->uv.y = 1 - (acos(i->normal.y) * 0.31832);
 	return (2);
 }
 
@@ -71,12 +69,12 @@ static int	hit_tr(t_intersection *i, t_ray r, void *shape)
 	i->normal = normalized(cross(tr->e1, tr->e2));
 	if (dot(i->normal, i->ray.dir) > 0)
 		i->normal = op_mult_f(i->normal, -1.0);
+
 	t_vector temp = normalized(cross(i->normal, op_min(vector_xyz(1, 1, 0), i->normal)));
 	i->uv.x = dot(op_min(tr->c1, i->hit), temp);
 	i->uv.y = dot(op_min(tr->c1, i->hit), cross(i->normal, temp));
 	i->uv.x = (i->uv.x < 0) ? (int)(i->uv.x - 1) % 2 : (int)(i->uv.x) % 2;
 	i->uv.y = (i->uv.y < 0) ? (int)(i->uv.y - 1) % 2 : (int)(i->uv.y) % 2;
-	// printf("%f %f\n", i->uv.x, i->uv.y);
 	i->color = ((i->uv.x == 0 && i->uv.y != 0) || (i->uv.x != 0 && i->uv.y == 0)) ? new_color(255 - tr->color.r, 255 - tr->color.g, 255 - tr->color.b) : tr->color;
 	return (4);
 }
@@ -177,13 +175,21 @@ static int	hit_sp(t_intersection *i, t_ray r, void *shape)
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.dir, t));
 	i->normal = r.dir.x != -1 ? normalized(op_min(i->hit, sphere->center)) :
 	normalized(op_min(sphere->center, i->hit));
-	// i->color = sphere->color;
-	i->uv.x = 0.5 + (atan2(i->normal.z, i->normal.x) * 0.159159);
-	i->uv.y = 1 - (acos(i->normal.y) * 0.31832);
+	i->color = sphere->color;
+	if (sphere->check == 1)
+	{
+		i->uv.x = 0.5 + (atan2(i->normal.z, i->normal.x) * 0.159159);
+		i->uv.y = 1 - (acos(i->normal.y) * 0.31832);
+		i->color = (((int)(i->uv.x * sphere->radius * 4) % 2 == 0 &&
+		(int)(i->uv.y * sphere->radius * 2) % 2 != 0) ||
+		((int)(i->uv.x * sphere->radius * 4) % 2 != 0 &&
+		(int)(i->uv.y * sphere->radius * 2) % 2 == 0)) ?
+		new_color(255 - sphere->color.r, 255 - sphere->color.g, 255 - sphere->color.b) : sphere->color;
+	}
+
 	// g = open_bmp("./basic/pl.bmp");
 	// i->color = set_color(g, i->uv.x, i->uv.y);
 	// i->color = new_color(255 * (i->uv.x), 255 * (i->uv.x / i->uv.y), 255 * (i->uv.y));
-	i->color = (((int)(i->uv.x * sphere->radius * 4) % 2 == 0 && (int)(i->uv.y * sphere->radius * 2) % 2 != 0) || ((int)(i->uv.x * sphere->radius * 4) % 2 != 0 && (int)(i->uv.y * sphere->radius * 2) % 2 == 0)) ? new_color(255 - sphere->color.r, 255 - sphere->color.g, 255 - sphere->color.b) : sphere->color;
 	return (1);
 }
 
