@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:38:31 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 16:03:29 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,7 @@ int			ft_dlig(char **s, int i, int j);
 int			ray_trace();
 t_color 	ray_cast(t_intersection hit);
 t_ray		compute_ray(float pixx, float pixy);
+void		put_pixel(t_color c, int xy);
 int			hit_cy(t_intersection *i, t_ray ray, void *shape);
 int 		intersect(t_intersection *hit, t_ray ray, t_shapes *shape, int f);
 
