@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2020/01/13 16:03:20 by frlindh          ###   ########.fr        #
+#    Updated: 2020/01/13 16:07:20 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@ NAME			=	minirt
 GCC				=	gcc
 FLAGS			=	-Wall -Wextra -Werror #-g3 -fsanitize=address
 EXTRA			= 	-I ./minilibx -L ./minilibx -lmlx -framework OpenGL -framework AppKit
-# LIBFT			=	./my_lib/libft.a
 IDIR			=	-I ./includes
 
 # SRCS *********************************************************************** #
@@ -58,7 +57,7 @@ OBJS_BONUS		=	$(patsubst %.c, %.o, $(SRCS_BONUS))
 
 .PHONY: all clean fclean re
 
-all: $(NAME) #clean #remove this OBS !!!!!!!!!!!!
+all: $(NAME)
 
 $(NAME): $(OBJS) ./includes/*.h
 	$(GCC) $(FLAGS) $(EXTRA) $(OBJS) -o $(NAME)
@@ -70,7 +69,7 @@ bonus: $(OBJS_BONUS) ./includes/*.h
 	$(GCC) $(FLAGS) $(IDIR) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJS_BONUS)
 
 fclean: clean
 	rm -f $(NAME)

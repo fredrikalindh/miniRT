@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 16:03:29 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 16:41:05 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ typedef struct s_image {
 typedef struct		s_rt
 {
 	unsigned int	save:1;
-	char			name[30];
+	char			name[40];
 	unsigned int	err:8;
 	char			*image;
 	int				fd:4;
@@ -214,6 +214,7 @@ typedef struct		s_rt
 int			exit_program(void *param);
 void		ft_puterr(char *str);
 void		ft_puterr2(char c);
+void		ft_puterr3(char **split);
 void		free_globals();
 int			outside_range(t_color c);
 int			outside_range2(t_vector v);

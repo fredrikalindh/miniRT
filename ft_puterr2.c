@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 18:48:24 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 16:41:51 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,25 @@ static void	put_type(char id)
 		write(2, "unknown", 7);
 }
 
+void		ft_puterr3(char **split)
+{
+	int i;
+
+	i = -1;
+	while (split && split[++i])
+		free(split[i]);
+	free(split);
+	write(2, "\033[1;31mError: ", 14);
+	write(2, "unknown instructions, on line: ", 31);
+	ft_putnbr_fd(g_rt.line, 2);
+	write(2, "\n\033[0m", 5);
+	free_globals();
+	exit(-1);
+}
+
 void		ft_puterr2(char id)
 {
-	write(2, "\033[1;31m", 7);
-	write(2, "Error: ", 7);
+	write(2, "\033[1;31mError: ", 14);
 	if (g_rt.err == 0)
 		write(2, "wrong instructions for ", 23);
 	else if (g_rt.err == 1)

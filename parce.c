@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:43:13 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 16:54:15 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,16 @@ int			ft_lig(char **s, int i, int j)
 	{
 		if (!(new = (t_light *)malloc(sizeof(t_light))))
 			return (-1);
-		new->next = g_rt.light;
+		new->next = (s[0][0] == 'l') ? g_rt.light : g_rt.d_light;
 		new->coor = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->bright = ft_atof(s[4]);
 		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
 		if (outside_range(new->color))
 			g_rt.err = 3;
-		g_rt.light = new;
+		if (s[0][0] == 'l')
+			g_rt.light = new;
+		else
+			g_rt.d_light = new;
 	}
 	while (s && s[++j] != NULL)
 		free(s[j]);

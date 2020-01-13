@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 16:02:13 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 16:02:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 17:04:49 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,35 @@ t_ray		compute_ray(float pixx, float pixy)
 	return (ray);
 }
 
+t_color		get_dl(t_intersection hit)
+{
+	t_ray			p;
+	t_light			*l;
+	t_shapes		*shape;
+	float			d;
+	t_color			lig;
+
+	l = g_rt.d_light;
+	p.origin = hit.hit;
+	lig = same_color(0.0);
+	while (l != NULL)
+	{
+		p.dir = normalized(op_mult_f(l->coor, -1));
+		hit.t = T_MAX;
+		d = ft_maxd(0.0, dot(hit.normal, p.dir));
+		shape = g_rt.shapes;
+		while (shape != NULL)
+		{
+			if (intersect(&hit, p, shape, 1) && (d = 0.0) == 0.0)
+				break ;
+			shape = shape->next;
+		}
+		lig = light_color(lig, l->color, d * l->bright, 1);
+		l = l->next;
+	}
+	return (lig);
+}
+
 t_color		ray_cast(t_intersection hit)
 {
 	t_ray			p;
@@ -39,7 +68,7 @@ t_color		ray_cast(t_intersection hit)
 
 	l = g_rt.light;
 	p.origin = hit.hit;
-	lig = light_color(same_color(0), g_rt.a_light_c, g_rt.a_light_r, 1);
+	lig = light_color(get_dl(hit), g_rt.a_light_c, g_rt.a_light_r, 1);
 	while (l != NULL)
 	{
 		p.dir = op_min(l->coor, hit.hit);
