@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/12 20:03:10 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 15:38:31 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct		s_sphere
 	t_color			color;
 	t_point			center;
 	double			radius;
-	int				fd_uv;
+	// int				fd_uv;
 	int				check;
 }					t_sphere;
 
@@ -101,6 +101,7 @@ typedef struct		s_plane
 	t_color			color;
 	t_point			pos;
 	t_vector		normal;
+	int				check;
 }					t_plane;
 
 typedef struct		s_cyl
@@ -112,6 +113,7 @@ typedef struct		s_cyl
 	double			h;
 	double			d;
 	int				first:2;
+	int				check;
 }					t_cyl;
 
 typedef struct		s_triangle
@@ -123,7 +125,7 @@ typedef struct		s_triangle
 	t_point				e1;
 	t_point				e2;
 	t_point				e3;
-	// t_point				normal;
+	int					check;
 }					t_triangle;
 
 typedef struct		s_square
@@ -132,6 +134,7 @@ typedef struct		s_square
 	t_point			center;
 	t_vector		normal;
 	double			side;
+	int				check;
 }					t_square;
 
 typedef struct		s_shapes
@@ -232,17 +235,17 @@ void		op_minv(t_vector *v, t_vector op);
 t_vector	op_mult_f(t_vector v, double f);
 
 // parce_objects.c
-int			ft_pl(char **split, int i);
-int			ft_sp(char **split, int i);
-int			ft_sq(char **split, int i);
-int			ft_cy(char **split, int i);
-int			ft_tr(char **split, int i);
+int			ft_pl(char **split, int i, int j);
+int			ft_sp(char **split, int i, int j);
+int			ft_sq(char **split, int i, int j);
+int			ft_cy(char **split, int i, int j);
+int			ft_tr(char **split, int i, int j);
 // parce.c
-int			ft_res(char **split, int i);
-int			ft_amb(char **split, int i);
-int			ft_cam(char **split, int i);
-int			ft_lig(char **split, int i);
-int			ft_dlig(char **s, int i);
+int			ft_res(char **split, int i, int j);
+int			ft_amb(char **split, int i, int j);
+int			ft_cam(char **split, int i, int j);
+int			ft_lig(char **split, int i, int j);
+int			ft_dlig(char **s, int i, int j);
 // void		init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int), char *list[LIST_SIZE]);
 // rt.c
 int			ray_trace();
@@ -262,10 +265,13 @@ int 		move(t_vector *pos, t_vector *dir, int key);
 int			trans(int key);
 
 void		open_image(int w, int h, int i);
-int			init_scene(int argc, char *argv[]);
+void		init_scene(int argc, char *argv[]);
 
 int		deal_mouse(int b, int x, int y, void *p);
 int		deal_key(int key, void *param);
+
+t_color		checked(double u, double v, t_color c);
+void		set_lights(void);
 
 t_rt	g_rt;
 

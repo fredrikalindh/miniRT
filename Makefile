@@ -6,7 +6,7 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2020/01/10 18:37:28 by frlindh          ###   ########.fr        #
+#    Updated: 2020/01/13 15:33:29 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ IDIR			=	-I ./includes
 # SRCS *********************************************************************** #
 SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					intersect.c vectors_math.c vectors_op.c trans.c ranges.c \
-					initrt.c image.c cyl.c deal.c \
+					initrt.c image.c cyl.c deal.c checked.c lights.c\
 					ft_atof.c \
 					ft_atoi.c \
 					ft_minmax.c \
@@ -36,7 +36,7 @@ SRCS			=	main.c vectors.c color.c parse_objects.c parce.c rt.c \
 					is_digit.c
 SRCS_BONUS		=	main.c vectors.c color.c parse_objects.c parce.c rt_bonus.c \
 					intersect.c vectors_math.c vectors_op.c trans.c ranges.c \
-					initrt.c image.c cyl.c deal.c \
+					initrt.c image.c cyl.c deal.c checked.c lights.c\
 					ft_atof.c \
 					ft_atoi.c \
 					ft_minmax.c \

@@ -6,34 +6,15 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 18:46:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/10 17:25:08 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 15:37:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static void	rerender(t_param *p)
+void		rotcam(int dir)
 {
-	ray_trace();
-	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
-}
-
-static void	set_lights(void)
-{
-	static t_light	*l = NULL;
-
-	if (l == NULL)
-		l = g_rt.light;
-	g_rt.select.origin = &l->coor;
-	g_rt.select.dir = NULL;
-	g_rt.select.r = &l->bright;
-	g_rt.select.h = NULL;
-	l = l->next;
-}
-
-void rotcam(int dir)
-{
-	t_vector up;
+	t_vector		up;
 
 	up = cross(g_rt.camera->dir, g_rt.camera->right);
 	if (dir == UP && g_rt.camera->dir.y < 1)
@@ -61,9 +42,9 @@ void rotcam(int dir)
 
 static int	move_cam(int x, int y)
 {
-	int thirdx;
-	int thirdy;
-	int change;
+	int				thirdx;
+	int				thirdy;
+	int				change;
 
 	change = 0;
 	thirdx = g_rt.res_x / 3;
@@ -78,25 +59,6 @@ static int	move_cam(int x, int y)
 		rotcam(RIGHT);
 	return (change);
 }
-// static int	move_cam(int x, int y)
-// {
-// 	int thirdx;
-// 	int thirdy;
-// 	int change;
-//
-// 	change = 0;
-// 	thirdx = g_rt.res_x / 3;
-// 	thirdy = g_rt.res_y / 3;
-// 	if (y < thirdy && (change = 1) == 1)
-// 		rot(&(g_rt.camera->dir.z), &(g_rt.camera->dir.y));
-// 	else if (y > (g_rt.res_y - thirdy) && (change = 1) == 1)
-// 		rot(&(g_rt.camera->dir.y), &(g_rt.camera->dir.z));
-// 	if (x < thirdx && (change = 1) == 1)
-// 		rot(&(g_rt.camera->dir.x), &(g_rt.camera->dir.z));
-// 	else if (x > (g_rt.res_x - thirdx) && (change = 1) == 1)
-// 		rot(&(g_rt.camera->dir.z), &(g_rt.camera->dir.x));
-// 	return (change);
-// }
 
 static void	select_object(int x, int y, int i, int id)
 {
@@ -127,7 +89,6 @@ static void	select_object(int x, int y, int i, int id)
 
 int			deal_mouse(int b, int x, int y, void *p)
 {
-	// printf("%d\n", b);
 	if (b == 4 && g_rt.camera->fov < 177)
 		g_rt.camera->fov += 3;
 	else if (b == 5 && g_rt.camera->fov > 3)
@@ -145,13 +106,15 @@ int			deal_mouse(int b, int x, int y, void *p)
 	}
 	else
 		return (1);
-	rerender((t_param *)p);
+	ray_trace();
+	mlx_put_image_to_window(((t_param *)p)->mlx_ptr, ((t_param *)p)->win_ptr,
+	((t_param *)p)->img_ptr, 0, 0);
 	return (0);
 }
 
 int			deal_key(int key, void *p)
 {
-	int			flag;
+	int				flag;
 
 	if (key == ESC)
 		exit_program(p);
@@ -168,7 +131,10 @@ int			deal_key(int key, void *p)
 	else if ((key <= UP && key >= LEFT) || (key >= Q && key <= E) ||
 	(key >= A && key <= D) || key == DOT || key == CMA)
 		flag = move(g_rt.select.origin, g_rt.select.dir, key);
-	if (flag == 1)
-		rerender(p);
+	if (flag == 0)
+		return (1);
+	ray_trace();
+	mlx_put_image_to_window(((t_param *)p)->mlx_ptr, ((t_param *)p)->win_ptr,
+		((t_param *)p)->img_ptr, 0, 0);
 	return (0);
 }

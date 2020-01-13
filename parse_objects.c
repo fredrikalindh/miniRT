@@ -6,18 +6,18 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/12 20:03:31 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 15:59:14 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int		ft_pl(char **s, int i)
+int		ft_pl(char **s, int i, int j)
 {
 	t_plane		*new;
 	t_shapes	*shell;
 
-	if (i == 10)
+	if (i == 10 || (g_rt.err = 1) != 1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_plane *)malloc(sizeof(t_plane))))
@@ -28,55 +28,53 @@ int		ft_pl(char **s, int i)
 		outside_range2(new->normal) ? g_rt.err = 5 : normalize(&new->normal);
 		new->color = new_color(ft_atoi(s[7]), ft_atoi(s[8]), ft_atoi(s[9]));
 		(outside_range(new->color)) ? g_rt.err = 3 : 0;
+		new->check = (s[10] != NULL) ? 1 : 0;
 		shell->shape = (void *)new;
 		shell->id = pl;
 		g_rt.shapes = (void *)shell;
 	}
-	i = -1;
-	while (s && s[++i] != NULL)
-		free(s[i]);
-	if (i != 10 || g_rt.err != 0)
+	while (s && s[++j] != NULL)
+		free(s[j]);
+	if (g_rt.err != 0)
 		ft_puterr2('p');
 	return (0);
 }
 
-int		ft_sp(char **s, int i)
+int		ft_sp(char **s, int i, int j)
 {
 	t_sphere	*new;
 	t_shapes	*shell;
 
-	printf("%d\n", i);
-	if (i == 8 || (i == 9 && s[8][0] == '-'))
+	if (i == 8)
 	{
-		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))))
-			return (-1);
-		if (!(new = (t_sphere *)malloc(sizeof(t_sphere))))
+		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
+		!(new = (t_sphere *)malloc(sizeof(t_sphere))))
 			return (-1);
 		shell->next = g_rt.shapes;
 		new->center = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->radius = ft_atof(s[4]) / 2;
 		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
-		if (outside_range(new->color))
-			g_rt.err = 3;
-		new->check = (i == 9) ? 1 : 0;
+		(outside_range(new->color)) ? g_rt.err = 3 : 0;
+		new->check = (s[8] != NULL) ? 1 : 0;
 		shell->shape = (void *)new;
 		shell->id = sp;
 		g_rt.shapes = (void *)shell;
 	}
-	i = -1;
-	while (s && s[++i] != NULL)
-		free(s[i]);
-	if ((i != 8 && new->check != 1) || g_rt.err != 0)
+	else
+		g_rt.err = 1;
+	while (s && s[++j] != NULL)
+		free(s[j]);
+	if (g_rt.err != 0)
 		ft_puterr2('h');
 	return (0);
 }
 
-int		ft_sq(char **s, int i)
+int		ft_sq(char **s, int i, int j)
 {
 	t_square	*new;
 	t_shapes	*shell;
 
-	if (i == 11)
+	if (i == 11 || (g_rt.err = 1) != 1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_square *)malloc(sizeof(t_square))))
@@ -87,24 +85,24 @@ int		ft_sq(char **s, int i)
 		outside_range2(new->normal) ? g_rt.err = 5 : normalize(&new->normal);
 		new->side = ft_atof(s[7]) / 2;
 		new->color = new_color(ft_atoi(s[8]), ft_atoi(s[9]), ft_atoi(s[10]));
+		new->check = (s[11] != NULL) ? 1 : 0;
 		shell->shape = (void *)new;
 		shell->id = sq;
 		g_rt.shapes = (void *)shell;
 	}
-	i = -1;
-	while (s && s[++i] != NULL)
-		free(s[i]);
-	if (i != 11 || g_rt.err != 0)
+	while (s && s[++j] != NULL)
+		free(s[j]);
+	if (g_rt.err != 0)
 		ft_puterr2('q');
 	return (0);
 }
 
-int		ft_cy(char **s, int i)
+int		ft_cy(char **s, int i, int j)
 {
 	t_cyl		*new;
 	t_shapes	*shell;
 
-	if (i == 12 && (i = -1) == -1)
+	if (i == 12 || (g_rt.err = 1) != 1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_cyl *)malloc(sizeof(t_cyl))))
@@ -117,23 +115,23 @@ int		ft_cy(char **s, int i)
 		new->h = ft_atof(s[8]) / 2.0;
 		new->color = new_color(ft_atoi(s[9]), ft_atoi(s[10]), ft_atoi(s[11]));
 		(outside_range(new->color)) ? g_rt.err = 3 : 0;
+		new->check = (s[12] != NULL) ? 1 : 0;
 		shell->shape = (void *)new;
-		shell->id = cy;
 		g_rt.shapes = (void *)shell;
 	}
-	while (s && s[++i] != NULL)
-		free(s[i]);
-	if (i != 12 || g_rt.err != 0)
+	while (s && s[++j] != NULL)
+		free(s[j]);
+	if (g_rt.err != 0 || (shell->id = cy) != cy)
 		ft_puterr2('c');
 	return (0);
 }
 
-int		ft_tr(char **s, int i)
+int		ft_tr(char **s, int i, int j)
 {
 	t_triangle	*new;
 	t_shapes	*shell;
 
-	if (i == 13 && (i = -1) == -1)
+	if (i == 13 || (g_rt.err = 1) != 1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_triangle *)malloc(sizeof(t_triangle))))
@@ -146,13 +144,13 @@ int		ft_tr(char **s, int i)
 		(outside_range(new->color)) ? g_rt.err = 3 : 0;
 		new->e1 = op_min(new->c2, new->c1);
 		new->e2 = op_min(new->c3, new->c1);
-		new->e3 = op_min(new->c1, new->c3);
+		new->check = (s[13] != NULL) ? 1 : 0;
 		shell->shape = (void *)new;
 		g_rt.shapes = (void *)shell;
 	}
-	while (s && s[++i] != NULL)
-		free(s[i]);
-	if (i != 13 || g_rt.err != 0 || (shell->id = tr) != tr)
+	while (s && s[++j] != NULL)
+		free(s[j]);
+	if (g_rt.err != 0 || (shell->id = tr) != tr)
 		ft_puterr2('t');
 	return (0);
 }

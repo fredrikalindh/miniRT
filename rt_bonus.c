@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/11 21:58:01 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 15:46:37 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ t_ray		compute_ray(float pixx, float pixy)
 	t_vector		up;
 
 	up = cross(g_rt.camera->dir, g_rt.camera->right);
-	y = (1 - 2 * pixy) * atan(g_rt.camera->fov * 0.0087) ;
-	x = (2 * pixx - 1) * atan(g_rt.camera->fov * 0.0087) *
-	((float)g_rt.res_x / g_rt.res_y);
+	y = (1 - 2 * pixy) * tan(g_rt.camera->fov * 0.0087266);
+	x = ((2 * pixx - 1) * ((float)g_rt.res_x / g_rt.res_y)) *
+	tan(g_rt.camera->fov * 0.0087266);
 	ray.dir = normalized(op_add(g_rt.camera->dir,
 		op_add(op_mult_f(g_rt.camera->right, x), op_mult_f(up, y))));
 	ray.origin = g_rt.camera->pos;
@@ -45,7 +45,7 @@ t_color		ray_cast(t_intersection hit)
 	while (l != NULL)
 	{
 		p.dir = op_min(l->coor, hit.hit);
-		hit.t = normalize(&p.dir);
+		hit.t = normalize(&p.dir) + EPSILON;
 		d = ft_maxd(0.0, dot(hit.normal, p.dir));
 		shape = g_rt.shapes;
 		while (shape != NULL)
@@ -54,13 +54,9 @@ t_color		ray_cast(t_intersection hit)
 				break ;
 			shape = shape->next;
 		}
-		lig = light_color(lig, l->color, l->bright, hit.t);
+		lig = light_color(lig, l->color, d * l->bright, hit.t);
 		l = l->next;
 	}
-	// d = dot(hit.normal, vector_xyz(1,0,0));
-	// hit.color.r = d * hit.color.r;
-	// hit.color.g = (0.5 + d) * hit.color.g;
-	// hit.color.b = -d * hit.color.r;
 	return (total_color(hit.color, lig));
 }
 
@@ -71,9 +67,9 @@ void		put_pixel(t_color c, int xy)
 	if (g_rt.filter != 0)
 	{
 		sum = ft_min((c.b + c.g + c.r), 255);
-		g_rt.image[xy++] = sum * (g_rt.filter % 2); // 1 , 0 , 1
-		g_rt.image[xy++] = sum * (g_rt.filter / 3); // 0 , 0, 1
-		g_rt.image[xy++] = sum * ((g_rt.filter + 1) % 2); // 0
+		g_rt.image[xy++] = sum * (g_rt.filter % 2);
+		g_rt.image[xy++] = sum * (g_rt.filter / 3);
+		g_rt.image[xy++] = sum * ((g_rt.filter + 1) % 2);
 	}
 	else
 	{
@@ -89,12 +85,12 @@ void		*trace(void *p)
 {
 	int				x;
 	int				y;
-	int				mult;
+	int				m;
 	t_intersection	hit;
 	t_shapes		*shape;
 
 	y = -1;
-	mult = (g_rt.save == 1) ? 3 : 4;
+	m = (g_rt.save == 1) ? 3 : 4;
 	while (++y < g_rt.res_y & (x = *((int *)p)) >= 0)
 	{
 		while (x < g_rt.res_x && (hit.t = T_MAX) == T_MAX)
@@ -103,21 +99,19 @@ void		*trace(void *p)
 			shape = g_rt.shapes;
 			while (shape != NULL && intersect(&hit, hit.ray, shape, 0) >= 0)
 				shape = shape->next;
-			if (hit.t != T_MAX)
-				put_pixel(ray_cast(hit), g_rt.res_x * y * mult + x * mult);
-			else
-				put_pixel(same_color(0), g_rt.res_x * y * mult + x * mult);
+			(hit.t != T_MAX) ? put_pixel(ray_cast(hit), g_rt.res_x * y * m +
+			x * m) : put_pixel(same_color(0), g_rt.res_x * y * m + x * m);
 			x = x + THREADS;
 		}
 	}
 	return (NULL);
 }
 
-int		ray_trace(void)
+int			ray_trace(void)
 {
-	pthread_t	threads[THREADS];
-	int			x[THREADS];
-	int			i;
+	pthread_t		threads[THREADS];
+	int				x[THREADS];
+	int				i;
 
 	i = -1;
 	while (++i < THREADS)

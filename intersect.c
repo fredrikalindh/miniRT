@@ -6,40 +6,37 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/12 20:07:31 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 15:16:20 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static int	hit_pl(t_intersection *i, t_ray ray, void *shape)
+static int	hit_pl(t_intersection *i, t_ray r, void *shape)
 {
 	t_plane		*p;
 	double		d;
 	double		t;
-	t_vector	temp;
 
 	p = (t_plane *)shape;
-	d = dot(ray.dir, p->normal);
+	d = dot(r.dir, p->normal);
 	if (d == 0)
 		return (0);
-	t = dot(op_min(p->pos, ray.origin), p->normal) / d;
+	t = dot(op_min(p->pos, r.origin), p->normal) / d;
 	if (t <= T_MIN || t >= T_MAX || t > i->t || t == 0.0)
 		return (0);
 	i->t = t;
 	i->shape = p;
 	i->color = p->color;
-	i->hit = op_add(ray.origin, op_mult_f(ray.dir, t));
+	i->hit = op_add(r.origin, op_mult_f(r.dir, t));
 	i->normal = normalized(p->normal);
-	if (dot(p->normal, ray.dir) > 0)
+	if (dot(p->normal, r.dir) > 0)
 		i->normal = op_mult_f(i->normal, -1.0);
-
-	temp = normalized(cross(i->normal, op_min(vector_xyz(1, 1, 0), i->normal)));
-	i->uv.x = dot(op_min(p->pos, i->hit), temp);
-	i->uv.y = dot(op_min(p->pos, i->hit), cross(i->normal, temp));
-	i->uv.x = (i->uv.x < 0) ? (int)(i->uv.x / 6 - 1) % 2 : (int)(i->uv.x) / 6 % 2;
-	i->uv.y = (i->uv.y < 0) ? (int)(i->uv.y / 6 - 1) % 2 : (int)(i->uv.y) / 6 % 2;
-	i->color = ((i->uv.x == 0 && i->uv.y != 0) || (i->uv.x != 0 && i->uv.y == 0)) ? new_color(255 - p->color.r, 255 - p->color.g, 255 - p->color.b) : p->color;
+	r.dir =
+	normalized(cross(i->normal, op_min(vector_xyz(1, 1, 0), i->normal)));
+	i->color = (p->check == 1) ? checked(dot(op_min(p->pos, i->hit), r.dir) / 6,
+		dot(op_min(p->pos, i->hit), cross(i->normal, r.dir)) / 6, p->color)
+		: p->color;
 	return (2);
 }
 
@@ -51,10 +48,9 @@ static int	hit_tr(t_intersection *i, t_ray r, void *shape)
 
 	tr = (t_triangle *)shape;
 	p = cross(i->ray.dir, tr->e2);
-	if (fabs(r.dir.x = dot(tr->e1, p)) < EPSILON)
-		return (0);
-	r.dir.x = 1 / r.dir.x;
-	r.origin = op_min(i->ray.origin, tr->c1);
+	if (fabs(r.dir.x = dot(tr->e1, p)) > EPSILON)
+		r.dir.x = 1 / r.dir.x;
+	r.origin = op_min(r.origin, tr->c1);
 	if ((r.dir.y = dot(r.origin, p) * r.dir.x) < 0 || r.dir.y > 1)
 		return (0);
 	p = cross(r.origin, tr->e1);
@@ -64,18 +60,12 @@ static int	hit_tr(t_intersection *i, t_ray r, void *shape)
 		return (0);
 	i->t = t;
 	i->shape = tr;
-	i->color = tr->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.dir, t));
-	i->normal = normalized(cross(tr->e1, tr->e2));
-	if (dot(i->normal, i->ray.dir) > 0)
-		i->normal = op_mult_f(i->normal, -1.0);
-
-	t_vector temp = normalized(cross(i->normal, op_min(vector_xyz(1, 1, 0), i->normal)));
-	i->uv.x = dot(op_min(tr->c1, i->hit), temp);
-	i->uv.y = dot(op_min(tr->c1, i->hit), cross(i->normal, temp));
-	i->uv.x = (i->uv.x < 0) ? (int)(i->uv.x - 1) % 2 : (int)(i->uv.x) % 2;
-	i->uv.y = (i->uv.y < 0) ? (int)(i->uv.y - 1) % 2 : (int)(i->uv.y) % 2;
-	i->color = ((i->uv.x == 0 && i->uv.y != 0) || (i->uv.x != 0 && i->uv.y == 0)) ? new_color(255 - tr->color.r, 255 - tr->color.g, 255 - tr->color.b) : tr->color;
+	i->normal = (dot(normalized(cross(tr->e1, tr->e2)), i->ray.dir) > 0) ?
+	normalized(cross(tr->e2, tr->e1)) : normalized(cross(tr->e1, tr->e2));
+	p = normalized(cross(i->normal, op_min(vector_xyz(1, 1, 0), i->normal)));
+	i->color = (tr->check == 1) ? checked(dot(op_min(tr->c1, i->hit), p),
+	dot(op_min(tr->c1, i->hit), cross(i->normal, p)), tr->color) : tr->color;
 	return (4);
 }
 
@@ -100,96 +90,40 @@ static int	hit_sq(t_intersection *i, t_ray r, void *shape)
 		return (0);
 	i->t = t;
 	i->shape = sq;
-	i->color = sq->color;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.dir, t));
 	i->normal = (dot(sq->normal, i->ray.dir) < 0) ? sq->normal :
 	op_mult_f(sq->normal, -1.0);
-	i->uv.x = dot(op_min(sq->center, i->hit), side);
-	i->uv.y = dot(op_min(sq->center, i->hit), cross(i->normal, side));
-	i->uv.x = (i->uv.x < 0) ? (int)(i->uv.x - 1) % 2 : (int)(i->uv.x) % 2;
-	i->uv.y = (i->uv.y < 0) ? (int)(i->uv.y - 1) % 2 : (int)(i->uv.y) % 2;
-	// printf("%f %f\n", i->uv.x, i->uv.y);
-	i->color = ((i->uv.x == 0 && i->uv.y != 0) || (i->uv.x != 0 && i->uv.y == 0)) ? new_color(255 - sq->color.r, 255 - sq->color.g, 255 - sq->color.b) : sq->color;
+	i->color = (sq->check == 1) ? checked(dot(op_min(sq->center, i->hit), side),
+dot(op_min(sq->center, i->hit), cross(i->normal, side)), sq->color) : sq->color;
 	return (5);
 }
 
-// t_image	open_bmp(char *name)
-// {
-// 	t_image	g;
-// 	int		fd;
-// 	// unsigned int	start;
-// 	unsigned char	f[54];
-//
-// 	if (!(fd = open(name, O_RDONLY)))
-// 		ft_puterr("failed to open texture file");
-// 	// read(fd, f, 14);
-// 	// start = 54;
-// 	// read(fd, f, 54);
-// 	g.w = (f[4]<<0) | (f[5]<<8) | (f[6]<<16) | (f[7]<<24);
-// 	g.h = (f[8]<<0) | (f[9]<<8) | (f[10]<<16) | (f[11]<<24);
-// 	g.w = 500;
-// 	g.h = 500;
-// 	g.data = (char *)malloc(g.w * g.h * 3 + 54);
-// 	read(fd, g.data, g.w * g.h * 3);
-// 	// printf("[%c %c %c]\n", g.data[0], g.data[1], g.data[2]);
-// 	close(fd);
-// 	return (g);
-// }
-//
-// t_color		set_color(t_image g, double x, double y)
-// {
-// 	int i;
-// 	t_color c;
-//
-// 	i = x * g.w * 3 + y * g.h * 3 + 54;
-// 	// printf("%d\n", g.data[i] + 100);
-// 	c.b = g.data[i++] + 100;
-// 	c.g = g.data[i++] + 100;
-// 	c.r = g.data[i++] + 100;
-// 	return (c);
-// }
-
 static int	hit_sp(t_intersection *i, t_ray r, void *shape)
 {
-	t_sphere	*sphere;
+	t_sphere	*sp;
 	double		d;
 	double		t;
 
-	sphere = (t_sphere *)shape;
-	op_minv(&r.origin, sphere->center);
-	r.dir.x = length2(i->ray.dir);
-	r.dir.y = 2 * dot(i->ray.dir, r.origin);
-	r.dir.z = length2(r.origin) - sqr(sphere->radius);
+	sp = (t_sphere *)shape;
+	op_minv(&r.origin, sp->center);
+	r.dir = vector_xyz(length2(i->ray.dir), 2 * dot(i->ray.dir, r.origin),
+	length2(r.origin) - sqr(sp->radius));
 	if ((d = (sqr(r.dir.y) - 4 * r.dir.x * r.dir.z)) < 0.0)
 		return (0);
 	t = (-r.dir.y - sqrt(d)) / (2 * r.dir.x);
-	if (!(t > T_MIN && t < T_MAX) || t > i->t || t == 0.0)
-	{
-		t = (-r.dir.y + sqrt(d)) / (2 * r.dir.x);
+	if ((!(t > T_MIN && t < T_MAX) || t > i->t || t == 0.0) &&
+	(t = (-r.dir.y + sqrt(d)) / (2 * r.dir.x)) != 0)
 		r.dir.x = -1;
-	}
 	if (!(t > T_MIN && t < T_MAX && t < i->t && t != 0.0))
 		return (0);
-	i->shape = (void *)sphere;
+	i->shape = (void *)sp;
 	i->t = t;
 	i->hit = op_add(i->ray.origin, op_mult_f(i->ray.dir, t));
-	i->normal = r.dir.x != -1 ? normalized(op_min(i->hit, sphere->center)) :
-	normalized(op_min(sphere->center, i->hit));
-	i->color = sphere->color;
-	if (sphere->check == 1)
-	{
-		i->uv.x = 0.5 + (atan2(i->normal.z, i->normal.x) * 0.159159);
-		i->uv.y = 1 - (acos(i->normal.y) * 0.31832);
-		i->color = (((int)(i->uv.x * sphere->radius * 4) % 2 == 0 &&
-		(int)(i->uv.y * sphere->radius * 2) % 2 != 0) ||
-		((int)(i->uv.x * sphere->radius * 4) % 2 != 0 &&
-		(int)(i->uv.y * sphere->radius * 2) % 2 == 0)) ?
-		new_color(255 - sphere->color.r, 255 - sphere->color.g, 255 - sphere->color.b) : sphere->color;
-	}
-
-	// g = open_bmp("./basic/pl.bmp");
-	// i->color = set_color(g, i->uv.x, i->uv.y);
-	// i->color = new_color(255 * (i->uv.x), 255 * (i->uv.x / i->uv.y), 255 * (i->uv.y));
+	i->normal = r.dir.x != -1 ? normalized(op_min(i->hit, sp->center)) :
+	normalized(op_min(sp->center, i->hit));
+	i->color = (sp->check == 1) ? checked((0.5 + (atan2(i->normal.z,
+		i->normal.x) * 0.159159)) * sp->radius * 4, (1 - (acos(i->normal.y) *
+		0.31832)) * sp->radius * 2, sp->color) : sp->color;
 	return (1);
 }
 

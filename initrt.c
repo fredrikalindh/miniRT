@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/12 19:41:50 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 15:51:43 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	init_list(char *list[LIST_SIZE])
 	list[9] = "cy";
 }
 
-static void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int), char *list[LIST_SIZE])
+static void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int, int),
+char *list[LIST_SIZE])
 {
 	init_list(list);
 	g_rt.camera = NULL;
@@ -67,39 +68,39 @@ static void	init_ftptr(int (*fill_scene[LIST_SIZE])(char**, int), char *list[LIS
 	fill_scene[6] = &ft_sq;
 	fill_scene[7] = &ft_tr;
 	fill_scene[8] = &ft_cy;
-	fill_scene[9] = &ft_dlig;
+	// fill_scene[9] = &ft_dlig;
 }
 
 static void	init_info(int fd, int i, int j)
 {
 	char		*line;
-	char		**split;
+	char		**s;
 	char		*list[LIST_SIZE];
-	int			(*fill_scene[LIST_SIZE])(char**, int);
+	int			(*fill_scene[LIST_SIZE])(char**, int, int);
 
 	init_ftptr(fill_scene, list);
 	while ((get_next_line(fd, &line)) == 1 && g_rt.line++ >= 0)
 	{
-		split = ft_split(line);
-		if ((i = 0) == 0 && split && split[0] != NULL && *split[0] != '\0')
+		s = ft_split(line);
+		if ((i = 0) == 0 && s && s[0] != NULL && *s[0] != '\0')
 		{
-			while (i < LIST_SIZE && ft_strcmp(split[0], list[i]) != 0)
+			while (i < LIST_SIZE && ft_strcmp(s[0], list[i]) != 0)
 				i++;
-			if ((j = 0) == 0 && split[0][0] != '#')
+			if ((j = 0) == 0 && s[0][0] != '#')
 			{
-				while (split && split[++j] != NULL)
-					is_digit(split[j]) == 0 ? g_rt.err = 1 : 0;
-				(i < LIST_SIZE) ? fill_scene[i](split, j) : ft_puterr2(0); // free split elem ft :
+				while (s && s[++j] != NULL && ft_strcmp(s[j], "check") != 0)
+					is_digit(s[j]) == 0 ? g_rt.err = 1 : 0;
+				(i < LIST_SIZE) ? fill_scene[i](s, j, -1) : ft_puterr2(0); // free s elem ft :
 			}
-			if ((j = -1) == -1 && split[0][0] == '#')
-				while (split[++j] != NULL)
-					free(split[j]);
+			if ((j = -1) == -1 && s[0][0] == '#')
+				while (s[++j] != NULL)
+					free(s[j]);
 		}
-		free(split);
+		free(s);
 	}
 }
 
-int			init_scene(int argc, char *argv[])
+void		init_scene(int argc, char *argv[])
 {
 	int			fd;
 	t_camera	*p;
@@ -124,7 +125,5 @@ int			init_scene(int argc, char *argv[])
 		while (p && p->next != NULL)
 			p = p->next;
 		p->next = g_rt.camera;
-		return (0);
 	}
-	return (1);
 }
