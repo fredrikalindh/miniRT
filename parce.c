@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 16:54:15 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 17:27:53 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			ft_amb(char **s, int i, int j)
 	{
 		g_rt.a_light_r = ft_atof(s[1]);
 		g_rt.a_light_c = new_color(ft_atoi(s[2]), ft_atoi(s[3]), ft_atoi(s[4]));
-		if (outside_range(g_rt.a_light_c))
+		if (outside_range(g_rt.a_light_c) || outside_range3(g_rt.a_light_r))
 			g_rt.err = 3;
 	}
 	while (s && s[++j] != NULL)
@@ -102,7 +102,7 @@ int			ft_lig(char **s, int i, int j)
 		new->coor = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
 		new->bright = ft_atof(s[4]);
 		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
-		if (outside_range(new->color))
+		if (outside_range(new->color) || outside_range3(new->bright))
 			g_rt.err = 3;
 		if (s[0][0] == 'l')
 			g_rt.light = new;

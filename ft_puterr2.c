@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 16:41:51 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/13 17:33:44 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void		ft_puterr2(char id)
 		write(2, "incorrect ", 10);
 	put_type(id);
 	if (g_rt.err == 3)
-		write(2, " color not within the correct range", 35);
+		write(2, ", not within the correct range", 30);
 	else if (g_rt.err == 1)
 		write(2, " contains non-digits", 20);
 	else if (g_rt.err == 5)
