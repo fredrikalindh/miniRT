@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/14 13:27:59 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/14 13:59:26 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,9 +213,9 @@ void		ft_puterr(char *str);
 void		ft_puterr2(char c);
 void		ft_puterr3(char **split);
 void		free_globals();
-int			outside_range(t_color c);
-int			outside_range2(t_vector v);
-int			outside_range3(double d);
+int			col_range(t_color c);
+int			v_range(t_vector v);
+int			f_range(double d);
 // functions for vector calculations and creation
 t_vector	vector_xyz(double x, double y, double z);
 double		sqr(double f);
