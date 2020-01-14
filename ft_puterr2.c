@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 17:33:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/14 13:14:10 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		ft_puterr3(char **split)
 void		ft_puterr2(char id)
 {
 	write(2, "\033[1;31mError: ", 14);
-	if (g_rt.err == 0)
+	if (g_rt.err == 0 || g_rt.err == -1)
 		write(2, "wrong instructions for ", 23);
 	else if (g_rt.err == 1)
 		write(2, "instruction for ", 16);

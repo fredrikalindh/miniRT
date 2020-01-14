@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 17:28:47 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/14 13:24:58 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ typedef struct		s_intersection
 	t_point hit;
 	void *shape;
 	t_color color;
-	t_vector uv;
 }					t_intersection;
 
 typedef struct		s_trans
@@ -195,7 +194,7 @@ typedef struct		s_rt
 {
 	unsigned int	save:1;
 	char			name[40];
-	unsigned int	err:8;
+	int				err:8;
 	char			*image;
 	int				fd:4;
 	unsigned int	filter:2;

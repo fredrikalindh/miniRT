@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:59:14 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/14 13:22:36 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		ft_pl(char **s, int i, int j)
 	t_plane		*new;
 	t_shapes	*shell;
 
-	if (i == 10 || (g_rt.err = 1) != 1)
+	if (i == 10 || (g_rt.err = -1) != -1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_plane *)malloc(sizeof(t_plane))))
@@ -35,7 +35,7 @@ int		ft_pl(char **s, int i, int j)
 	}
 	while (s && s[++j] != NULL)
 		free(s[j]);
-	if (g_rt.err != 0)
+	if (g_rt.err != 0 || j > 11)
 		ft_puterr2('p');
 	return (0);
 }
@@ -45,7 +45,7 @@ int		ft_sp(char **s, int i, int j)
 	t_sphere	*new;
 	t_shapes	*shell;
 
-	if (i == 8)
+	if (i == 8 || (g_rt.err = -1) != -1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_sphere *)malloc(sizeof(t_sphere))))
@@ -60,11 +60,9 @@ int		ft_sp(char **s, int i, int j)
 		shell->id = sp;
 		g_rt.shapes = (void *)shell;
 	}
-	else
-		g_rt.err = 1;
 	while (s && s[++j] != NULL)
 		free(s[j]);
-	if (g_rt.err != 0)
+	if (g_rt.err != 0 || j > 9)
 		ft_puterr2('h');
 	return (0);
 }
@@ -74,7 +72,7 @@ int		ft_sq(char **s, int i, int j)
 	t_square	*new;
 	t_shapes	*shell;
 
-	if (i == 11 || (g_rt.err = 1) != 1)
+	if (i == 11 || (g_rt.err = -1) != -1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_square *)malloc(sizeof(t_square))))
@@ -92,7 +90,7 @@ int		ft_sq(char **s, int i, int j)
 	}
 	while (s && s[++j] != NULL)
 		free(s[j]);
-	if (g_rt.err != 0)
+	if (g_rt.err != 0 || j > 12)
 		ft_puterr2('q');
 	return (0);
 }
@@ -102,7 +100,7 @@ int		ft_cy(char **s, int i, int j)
 	t_cyl		*new;
 	t_shapes	*shell;
 
-	if (i == 12 || (g_rt.err = 1) != 1)
+	if (i == 12 || (g_rt.err = -1) != -1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_cyl *)malloc(sizeof(t_cyl))))
@@ -121,7 +119,7 @@ int		ft_cy(char **s, int i, int j)
 	}
 	while (s && s[++j] != NULL)
 		free(s[j]);
-	if (g_rt.err != 0 || (shell->id = cy) != cy)
+	if (g_rt.err != 0 || j > 13 || (shell->id = cy) != cy)
 		ft_puterr2('c');
 	return (0);
 }
@@ -131,7 +129,7 @@ int		ft_tr(char **s, int i, int j)
 	t_triangle	*new;
 	t_shapes	*shell;
 
-	if (i == 13 || (g_rt.err = 1) != 1)
+	if (i == 13 || (g_rt.err = -1) != -1)
 	{
 		if (!(shell = (t_shapes *)malloc(sizeof(t_shapes))) ||
 		!(new = (t_triangle *)malloc(sizeof(t_triangle))))
@@ -150,7 +148,7 @@ int		ft_tr(char **s, int i, int j)
 	}
 	while (s && s[++j] != NULL)
 		free(s[j]);
-	if (g_rt.err != 0 || (shell->id = tr) != tr)
+	if (g_rt.err != 0 || j > 14 || (shell->id = tr) != tr)
 		ft_puterr2('t');
 	return (0);
 }
