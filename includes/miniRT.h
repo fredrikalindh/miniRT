@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/14 13:24:58 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/14 13:27:59 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # define T_MAX 1.0e30
 # define EPSILON 0.00001
 
-typedef	struct		s_param // insert inside g_rt?
+typedef	struct		s_param
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -76,11 +76,11 @@ typedef t_vector	t_point;
 
 typedef struct		s_ray
 {
-	t_point		origin; // ???
+	t_point		origin;
 	t_vector	dir;
 }					t_ray;
 
-typedef struct		s_color // -> double ??
+typedef struct		s_color
 {
 	int r; // :16
 	int g; // :16
@@ -92,8 +92,7 @@ typedef struct		s_sphere
 	t_color			color;
 	t_point			center;
 	double			radius;
-	// int				fd_uv;
-	int				check;
+	unsigned int	check:2;
 }					t_sphere;
 
 typedef struct		s_plane
@@ -101,7 +100,7 @@ typedef struct		s_plane
 	t_color			color;
 	t_point			pos;
 	t_vector		normal;
-	int				check;
+	unsigned int	check:2;
 }					t_plane;
 
 typedef struct		s_cyl
@@ -113,7 +112,7 @@ typedef struct		s_cyl
 	double			h;
 	double			d;
 	int				first:2;
-	int				check;
+	unsigned int	check:2;
 }					t_cyl;
 
 typedef struct		s_triangle
@@ -125,7 +124,7 @@ typedef struct		s_triangle
 	t_point				e1;
 	t_point				e2;
 	t_point				e3;
-	int					check;
+	unsigned int		check:2;
 }					t_triangle;
 
 typedef struct		s_square
@@ -134,7 +133,7 @@ typedef struct		s_square
 	t_point			center;
 	t_vector		normal;
 	double			side;
-	int				check;
+	unsigned int	check:2;
 }					t_square;
 
 typedef struct		s_shapes
@@ -173,12 +172,11 @@ typedef struct		s_intersection
 
 typedef struct		s_trans
 {
-	t_point		*origin; // ???
+	t_point		*origin;
 	t_vector	*dir;
 	t_vector	*c3;
 	double		*r;
 	double		*h;
-	// t_shapes	*shape;
 }					t_trans;
 
 typedef struct s_image {
@@ -269,12 +267,12 @@ int			trans(int key);
 void		open_image(int w, int h, int i);
 void		init_scene(int argc, char *argv[]);
 
-int		deal_mouse(int b, int x, int y, void *p);
-int		deal_key(int key, void *param);
+int			deal_mouse(int b, int x, int y, void *p);
+int			deal_key(int key, void *param);
 
 t_color		checked(double u, double v, t_color c);
 void		set_lights(void);
 
-t_rt	g_rt;
+t_rt		g_rt;
 
 #endif
