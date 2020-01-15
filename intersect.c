@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:16:20 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/15 12:52:00 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int	hit_sq(t_intersection *i, t_ray r, void *shape)
 	if (t <= T_MIN || t >= T_MAX || t > i->t || t == 0.0)
 		return (0);
 	r.dir = op_min(op_add(i->ray.origin, op_mult_f(i->ray.dir, t)), sq->center);
-	side = normalized(cross(sq->normal, vector_xyz(1, 0, 0)));
+	side = normalized(cross(sq->normal, vector_xyz(0, 1, 0)));
 	if (fabs(dot(r.dir, side)) > sq->side ||
 		fabs(dot(cross(sq->normal, side), r.dir)) > sq->side)
 		return (0);
