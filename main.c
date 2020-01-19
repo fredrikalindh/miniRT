@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:28:23 by fredrika          #+#    #+#             */
-/*   Updated: 2020/01/13 16:31:19 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:16 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		main(int ac, char *av[])
 	g_rt.select.dir = &g_rt.camera->dir;
 	write(1, "\033[1;36mRendering image...\n\033[0m", 30);
 	ray_trace();
-	p.win_ptr = mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "miniRT");
+	p.win_ptr = mlx_new_window(p.mlx_ptr, g_rt.res_x, g_rt.res_y, "minirt");
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img_ptr, 0, 0);
 	mlx_key_hook(p.win_ptr, deal_key, (void *)&p);
 	mlx_mouse_hook(p.win_ptr, deal_mouse, (void *)&p);

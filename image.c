@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:37:52 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/11 20:16:30 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:31:59 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 static void	header(unsigned char *fileh, unsigned char *infoh, int w, int h)
 {

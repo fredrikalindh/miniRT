@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 21:00:05 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/14 13:58:58 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:27 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 int		col_range(t_color c)
 {

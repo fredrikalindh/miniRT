@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/04 16:47:51 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:30:32 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ double	ft_maxd(double a, double b);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		is_digit(char *str);
-
 
 #endif

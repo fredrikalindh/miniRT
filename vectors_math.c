@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 20:34:06 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:52 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 double		sqr(double f)
 {

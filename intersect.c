@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 12:49:03 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/15 12:52:00 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:31:55 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 static int	hit_pl(t_intersection *i, t_ray r, void *shape)
 {

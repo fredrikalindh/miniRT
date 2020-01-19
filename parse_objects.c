@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/14 14:00:07 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:24 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 int		ft_pl(char **s, int i, int j)
 {

@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:32:00 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 17:58:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:33:00 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 double		normalize(t_vector *v)
 {

@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 16:33:10 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:26:56 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:02 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 static double	get_t(double t1, double t2, t_cyl *cy, t_ray r)
 {

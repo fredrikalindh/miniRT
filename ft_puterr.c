@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/06 14:15:40 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:04 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 void	ft_puterr(char *str)
 {

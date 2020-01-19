@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/14 13:17:23 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:42:58 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 static int	check_rt(char *f)
 {

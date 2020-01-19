@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 15:33:02 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:33:07 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:11 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 void	set_lights(void)
 {

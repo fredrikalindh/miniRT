@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 16:02:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:42 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 int			ray_trace(void)
 {

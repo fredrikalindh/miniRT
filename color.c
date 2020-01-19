@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 13:26:50 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/09 18:56:00 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 t_color		light_color(t_color l1, t_color l2, double d, double len)
 {

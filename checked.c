@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 14:05:23 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 15:16:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:00 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 t_color		checked(double u, double v, t_color c)
 {

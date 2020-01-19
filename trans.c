@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 13:31:22 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 16:24:55 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:45 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 void		rot(double *a, double *b)
 {

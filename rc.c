@@ -6,11 +6,11 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 16:02:13 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/13 17:04:49 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/19 13:32:31 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 t_ray		compute_ray(float pixx, float pixy)
 {
