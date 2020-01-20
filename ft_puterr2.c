@@ -6,28 +6,29 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 10:51:58 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:31:58 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 19:06:24 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void		free_globals(void)
+void		free_globals(void *prev, t_camera *start)
 {
-	void		*prev;
-	t_camera	*start;
-
-	start = g_rt.camera;
-	while (g_rt.camera != NULL && g_rt.camera->next != start)
+	while (g_rt.camera != NULL && (prev = (void *)g_rt.camera) != NULL)
 	{
-		prev = (void *)g_rt.camera;
 		g_rt.camera = g_rt.camera->next;
 		free(prev);
+		if (g_rt.camera == start)
+			break ;
 	}
-	while (g_rt.light != NULL)
+	while (g_rt.light != NULL && (prev = (void *)g_rt.light) != NULL)
 	{
-		prev = (void *)g_rt.light;
 		g_rt.light = g_rt.light->next;
+		free(prev);
+	}
+	while (g_rt.d_light != NULL && (prev = (void *)g_rt.d_light) != NULL)
+	{
+		g_rt.d_light = g_rt.d_light->next;
 		free(prev);
 	}
 	while (g_rt.shapes != NULL)
@@ -43,7 +44,7 @@ int			exit_program(void *param)
 {
 	t_param		*p;
 
-	free_globals();
+	free_globals(NULL, g_rt.camera);
 	p = (t_param *)param;
 	write(1, "\033[1;30mClosing window...\n\033[0m", 29);
 	mlx_destroy_window(p->mlx_ptr, p->win_ptr);
@@ -88,12 +89,13 @@ void		ft_puterr3(char **split)
 	write(2, "unknown instructions, on line: ", 31);
 	ft_putnbr_fd(g_rt.line, 2);
 	write(2, "\n\033[0m", 5);
-	free_globals();
+	free_globals(NULL, g_rt.camera);
 	exit(-1);
 }
 
-void		ft_puterr2(char id)
+void		ft_puterr2(char id, char **split)
 {
+	free(split);
 	write(2, "\033[1;31mError: ", 14);
 	if (g_rt.err == 0 || g_rt.err == -1)
 		write(2, "wrong instructions for ", 23);
@@ -115,6 +117,6 @@ void		ft_puterr2(char id)
 	write(2, ", on line: ", 11);
 	ft_putnbr_fd(g_rt.line, 2);
 	write(2, "\n\033[0m", 5);
-	free_globals();
+	free_globals(NULL, g_rt.camera);
 	exit(-1);
 }

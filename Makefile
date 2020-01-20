@@ -6,15 +6,15 @@
 #    By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/15 12:18:21 by fredrika          #+#    #+#              #
-#    Updated: 2020/01/13 16:07:20 by frlindh          ###   ########.fr        #
+#    Updated: 2020/01/20 19:22:58 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # NAME - COMPILATOR - FLAGS ************************************************** #
 NAME			=	minirt
 GCC				=	gcc
-FLAGS			=	-Wall -Wextra -Werror #-g3 -fsanitize=address
-EXTRA			= 	-I ./minilibx -L ./minilibx -lmlx -framework OpenGL -framework AppKit
+FLAGS			=	-Wall -Wextra -Werror
+EXTRA			= 	-lmlx -framework OpenGL -framework AppKit
 IDIR			=	-I ./includes
 
 # SRCS *********************************************************************** #

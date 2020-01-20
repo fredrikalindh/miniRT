@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 17:02:57 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:32:19 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 19:45:50 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int			ft_res(char **s, int i, int j)
 		free(s[j]);
 	(g_rt.res_x < 0 || g_rt.res_y < 0) ? g_rt.err = 4 : 0;
 	if (j != 3 || g_rt.err != 0)
-	{
-		free(s);
-		ft_puterr2('R');
-	}
+		ft_puterr2('R', s);
 	return (0);
 }
 
@@ -44,10 +41,7 @@ int			ft_amb(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (j != 5 || g_rt.err != 0)
-	{
-		free(s);
-		ft_puterr2('A');
-	}
+		ft_puterr2('A', s);
 	return (0);
 }
 
@@ -86,7 +80,7 @@ int			ft_cam(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (j != 8 || g_rt.err != 0)
-		ft_puterr2('C');
+		ft_puterr2('C', s);
 	return (0);
 }
 
@@ -100,6 +94,7 @@ int			ft_lig(char **s, int i, int j)
 			return (-1);
 		new->next = (s[0][0] == 'l') ? g_rt.light : g_rt.d_light;
 		new->coor = vector_xyz(ft_atof(s[1]), ft_atof(s[2]), ft_atof(s[3]));
+		(s[0][0] == 'l') ? 0 : normalize(&new->coor);
 		new->bright = ft_atof(s[4]);
 		new->color = new_color(ft_atoi(s[5]), ft_atoi(s[6]), ft_atoi(s[7]));
 		if (col_range(new->color) || f_range(new->bright))
@@ -112,6 +107,6 @@ int			ft_lig(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (j != 8 || g_rt.err != 0)
-		ft_puterr2('l');
+		ft_puterr2('l', s);
 	return (0);
 }

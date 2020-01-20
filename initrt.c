@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:04:55 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:42:58 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 19:36:01 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char *list[LIST_SIZE])
 	fill_scene[9] = &ft_lig;
 }
 
-static void	init_info(int fd, int i, int j)
+static void	init_info(int fd, int i, int j, int r)
 {
 	char		*line;
 	char		**s;
@@ -82,7 +82,7 @@ static void	init_info(int fd, int i, int j)
 	int			(*fill_scene[LIST_SIZE])(char**, int, int);
 
 	init_ftptr(fill_scene, list);
-	while ((get_next_line(fd, &line)) == 1 && g_rt.line++ >= 0)
+	while (r == 1 && g_rt.line++ >= 0 && (r = get_next_line(fd, &line)) != -1)
 	{
 		s = ft_split(line);
 		if ((i = 0) == 0 && s && s[0] != NULL && *s[0] != '\0')
@@ -95,9 +95,6 @@ static void	init_info(int fd, int i, int j)
 					is_digit(s[j]) == 0 ? g_rt.err = 1 : 0;
 				(i < LIST_SIZE) ? fill_scene[i](s, j, -1) : ft_puterr3(s);
 			}
-			if ((j = -1) == -1 && s[0][0] == '#')
-				while (s[++j] != NULL)
-					free(s[j]);
 		}
 		free(s);
 	}
@@ -117,7 +114,7 @@ void		init_scene(int argc, char *argv[])
 	else
 	{
 		g_rt.save = (argc == 3) ? 1 : 0;
-		init_info(fd, 0, 0);
+		init_info(fd, 0, 0, 1);
 		if (g_rt.res_x <= 0 || g_rt.res_y <= 0)
 			ft_puterr("resolution missing");
 		if (g_rt.camera == NULL)

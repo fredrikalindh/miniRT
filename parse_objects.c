@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:06:12 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:32:24 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 17:26:27 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_pl(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (g_rt.err != 0 || j > 11)
-		ft_puterr2('p');
+		ft_puterr2('p', s);
 	return (0);
 }
 
@@ -63,7 +63,7 @@ int		ft_sp(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (g_rt.err != 0 || j > 9)
-		ft_puterr2('h');
+		ft_puterr2('h', s);
 	return (0);
 }
 
@@ -92,7 +92,7 @@ int		ft_sq(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (g_rt.err != 0 || j > 12)
-		ft_puterr2('q');
+		ft_puterr2('q', s);
 	return (0);
 }
 
@@ -121,7 +121,7 @@ int		ft_cy(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (g_rt.err != 0 || j > 13 || (shell->id = cy) != cy)
-		ft_puterr2('c');
+		ft_puterr2('c', s);
 	return (0);
 }
 
@@ -150,6 +150,6 @@ int		ft_tr(char **s, int i, int j)
 	while (s && s[++j] != NULL)
 		free(s[j]);
 	if (g_rt.err != 0 || j > 14 || (shell->id = tr) != tr)
-		ft_puterr2('t');
+		ft_puterr2('t', s);
 	return (0);
 }

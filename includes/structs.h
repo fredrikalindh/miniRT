@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 13:40:08 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:41:11 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 16:07:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct		s_triangle
 	t_point			c3;
 	t_point			e1;
 	t_point			e2;
-	t_point			e3;
 	unsigned int	check:2;
 }					t_triangle;
 

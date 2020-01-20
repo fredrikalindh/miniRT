@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 18:15:25 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:32:38 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 18:33:42 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <pthread.h>
-#define THREADS 4
+#define THREADS 8
 
 void		*trace(void *p)
 {

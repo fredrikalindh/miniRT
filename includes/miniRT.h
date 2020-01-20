@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:53:59 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:41:34 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/01/20 17:32:13 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 # define MINIRT_H
 
 # include <math.h>
-# include <stdlib.h>
 # include <fcntl.h>
-# include <unistd.h>
 
-# include "../minilibx/mlx.h"
+# include <mlx.h>
 # include "ft.h"
 # include "structs.h"
 
@@ -53,9 +51,9 @@
 
 int			exit_program(void *param);
 void		ft_puterr(char *str);
-void		ft_puterr2(char c);
+void		ft_puterr2(char id, char **split);
 void		ft_puterr3(char **split);
-void		free_globals();
+void		free_globals(void *prev, t_camera *start);
 int			col_range(t_color c);
 int			v_range(t_vector v);
 int			f_range(double d);
