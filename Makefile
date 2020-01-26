@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 # NAME - COMPILATOR - FLAGS ************************************************** #
-NAME			=	minirt
+NAME			=	miniRT
 GCC				=	gcc
 FLAGS			=	-Wall -Wextra -Werror
 EXTRA			= 	-lmlx -framework OpenGL -framework AppKit
