@@ -10,6 +10,7 @@ $ ./miniRT <path-to-file.rt> [--save]
 save is optional and will save the scene as a bitmap.
 
 Syntax .rt file (all upper letter descriptions are to be entered max one time):
+
 R  [x] [y] #resolution 
 
 A  [0-1] [R, G, B] #ambient light
