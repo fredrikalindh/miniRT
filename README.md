@@ -2,6 +2,8 @@
 
 Introduction to graphics with a basic raytracer working for spheres, squares, cylinder, triangles and planes. 
 
+![miniRT](https://github.com/fredrikalindh/miniRT/blob/master/spheres.png)
+
 ### Prerequisites
 
 This project is using the ``Minilibx`` using the Metal framework and therefore should work only on macOS 10.13+.<br>
@@ -34,3 +36,5 @@ cy [x, y, z] [dir: -1, 0, 1] [radius] [height] [R, B, G] + [check] #cylinder
 
 ```
 (See examples in /scenes/ folder)
+
+![wolf](https://github.com/fredrikalindh/miniRT/blob/master/wolf2.png)
