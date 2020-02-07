@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 21:00:05 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:32:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/02/07 14:17:44 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		v_range(t_vector v)
 
 int		f_range(double d)
 {
-	if (d < 0 || d > 1)
+	if (d < 0 || d > 3)
 		return (1);
 	return (0);
 }

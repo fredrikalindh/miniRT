@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 13:26:50 by frlindh           #+#    #+#             */
-/*   Updated: 2020/01/19 13:32:01 by frlindh          ###   ########.fr       */
+/*   Updated: 2020/02/07 14:43:15 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@ t_color		light_color(t_color l1, t_color l2, double d, double len)
 	t_color			n;
 
 	len == 0 ? len = 1 : 0;
-	n.r = l1.r + l2.r / sqrt(len) * d;
-	n.g = l1.g + l2.g / sqrt(len) * d;
-	n.b = l1.b + l2.b / sqrt(len) * d;
+	n.r = (double)(l1.r) + l2.r / sqrt(len) * d;
+	n.g = (double)(l1.g) + l2.g / sqrt(len) * d;
+	n.b = (double)(l1.b) + l2.b / sqrt(len) * d;
+	// n.r = ft_min(255, n.r);
+	// n.g = ft_min(255, n.g);
+	// n.b = ft_min(255, n.b);
+	// n.r = (double)(l1.r + l2.r) / sqrt(len) * d;
+	// n.g = (double)(l1.g + l2.g) / sqrt(len) * d;
+	// n.b = (double)(l1.b + l2.b) / sqrt(len) * d;
 	return (n);
 }
 
