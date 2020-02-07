@@ -38,3 +38,4 @@ cy [x, y, z] [dir: -1, 0, 1] [radius] [height] [R, B, G] + [check] #cylinder
 (See examples in /scenes/ folder)
 
 ![wolf](https://github.com/fredrikalindh/miniRT/blob/master/wolf2.png)
+(wolf.rt by [@tharchen](https://github.com/Bressack))
